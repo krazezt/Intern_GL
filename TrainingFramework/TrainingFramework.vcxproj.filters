@@ -16,6 +16,9 @@
     <Filter Include="TrainingFramework\src\GameStates">
       <UniqueIdentifier>{2a875364-1a2b-4ea6-a6fe-716988208916}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TrainingFramework\src\GameObject\Actors">
+      <UniqueIdentifier>{6fc71967-9f3d-4691-bc49-db29d1e28304}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp">
@@ -71,6 +74,9 @@
     </ClCompile>
     <ClCompile Include="src\GameObject\SpriteAnimation.cpp">
       <Filter>TrainingFramework\src\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>TrainingFramework\src\GameObject\Actors</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -133,6 +139,9 @@
     </ClInclude>
     <ClInclude Include="src\GameObject\SpriteAnimation.h">
       <Filter>TrainingFramework\src\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>TrainingFramework\src\GameObject\Actors</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
