@@ -1,18 +1,18 @@
-#include "GSMenu.h"
+#include "GSSetting.h"
 #include "Camera.h"
-GSMenu::GSMenu() : GameStateBase(StateType::STATE_MENU), 
-	m_background(nullptr), m_listButton(std::list<std::shared_ptr<GameButton>>{}), m_textGameName(nullptr)
+GSSetting::GSSetting() : GameStateBase(StateType::STATE_MENU),
+m_background(nullptr), m_listButton(std::list<std::shared_ptr<GameButton>>{}), m_textGameName(nullptr)
 {
 }
 
 
-GSMenu::~GSMenu()
+GSSetting::~GSSetting()
 {
 }
 
 
 
-void GSMenu::Init()
+void GSSetting::Init()
 {
 	auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D.nfg");
 	auto texture = ResourceManagers::GetInstance()->GetTexture("bg_main_menu.tga");
@@ -23,29 +23,9 @@ void GSMenu::Init()
 	m_background->Set2DPosition(Globals::screenWidth / 2, Globals::screenHeight / 2);
 	m_background->SetSize(Globals::screenWidth, Globals::screenHeight);
 
-	// play button
-	texture = ResourceManagers::GetInstance()->GetTexture("btn_play.tga");
-	std::shared_ptr<GameButton> button = std::make_shared<GameButton>(model, shader, texture);
-	button->Set2DPosition(Globals::screenWidth / 2, Globals::screenHeight / 2 - 150);
-	button->SetSize(200, 200);
-	button->SetOnClick([]() {
-			GameStateMachine::GetInstance()->ChangeState(StateType::STATE_PLAY);
-		});
-	m_listButton.push_back(button);
-
-	// setting button
-	texture = ResourceManagers::GetInstance()->GetTexture("btn_settings.tga");
-	button = std::make_shared<GameButton>(model, shader, texture);
-	button->Set2DPosition(Globals::screenWidth / 2, Globals::screenHeight / 2 + 150);
-	button->SetSize(200, 200);
-	button->SetOnClick([]() {
-		GameStateMachine::GetInstance()->ChangeState(StateType::STATE_SETTING);
-		});
-	m_listButton.push_back(button);
-
 	// exit button
 	texture = ResourceManagers::GetInstance()->GetTexture("btn_close.tga");
-	button = std::make_shared<GameButton>(model, shader, texture);
+	std::shared_ptr<GameButton> button = std::make_shared<GameButton>(model, shader, texture);
 	button->Set2DPosition(Globals::screenWidth - 50, 50);
 	button->SetSize(50, 50);
 	button->SetOnClick([]() {
@@ -53,40 +33,57 @@ void GSMenu::Init()
 		});
 	m_listButton.push_back(button);
 
-	// game title
+	// music setting button
+	texture = ResourceManagers::GetInstance()->GetTexture("btn_music.tga");
+	button = std::make_shared<GameButton>(model, shader, texture);
+	button->Set2DPosition(Globals::screenWidth/2, Globals::screenHeight/2 - 150);
+	button->SetSize(200, 200);
+	button->SetOnClick([]() {
+			// Turn the music off and set texture to btn_music_off.tga
+		});
+	m_listButton.push_back(button);
+
+	// sfx setting button
+	texture = ResourceManagers::GetInstance()->GetTexture("btn_sfx.tga");
+	button = std::make_shared<GameButton>(model, shader, texture);
+	button->Set2DPosition(Globals::screenWidth / 2, Globals::screenHeight / 2 + 150);
+	button->SetSize(200, 200);
+	button->SetOnClick([]() {
+		// Turn the sfx off and set texture to btn_music_off.tga
+		});
+	m_listButton.push_back(button);
+
+	// State title
 	shader = ResourceManagers::GetInstance()->GetShader("TextShader");
 	std::shared_ptr<Font> font = ResourceManagers::GetInstance()->GetFont("Brightly Crush Shine.otf");
-	m_textGameName = std::make_shared< Text>(shader, font, "Epic Game", Vector4(1.0f, 0.5f, 0.0f, 1.0f), 3.0f);
+	m_textGameName = std::make_shared< Text>(shader, font, "Setting", Vector4(1.0f, 0.5f, 0.0f, 1.0f), 3.0f);
 	m_textGameName->Set2DPosition(Vector2(60, 200));
-
-	std::string name = "Alarm01.wav";
-	ResourceManagers::GetInstance()->PlaySound(name);
 }
 
-void GSMenu::Exit()
+void GSSetting::Exit()
 {
 	ResourceManagers::FreeInstance();
 }
 
 
-void GSMenu::Pause()
+void GSSetting::Pause()
 {
 }
 
-void GSMenu::Resume()
+void GSSetting::Resume()
 {
 }
 
 
-void GSMenu::HandleEvents()
+void GSSetting::HandleEvents()
 {
 }
 
-void GSMenu::HandleKeyEvents(int key, bool bIsPressed)
+void GSSetting::HandleKeyEvents(int key, bool bIsPressed)
 {
 }
 
-void GSMenu::HandleTouchEvents(int x, int y, bool bIsPressed)
+void GSSetting::HandleTouchEvents(int x, int y, bool bIsPressed)
 {
 	for (auto button : m_listButton)
 	{
@@ -97,11 +94,11 @@ void GSMenu::HandleTouchEvents(int x, int y, bool bIsPressed)
 	}
 }
 
-void GSMenu::HandleMouseMoveEvents(int x, int y)
+void GSSetting::HandleMouseMoveEvents(int x, int y)
 {
 }
 
-void GSMenu::Update(float deltaTime)
+void GSSetting::Update(float deltaTime)
 {
 	m_background->Update(deltaTime);
 	for (auto it : m_listButton)
@@ -110,7 +107,7 @@ void GSMenu::Update(float deltaTime)
 	}
 }
 
-void GSMenu::Draw()
+void GSSetting::Draw()
 {
 	m_background->Draw();
 	for (auto it : m_listButton)

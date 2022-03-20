@@ -10,6 +10,7 @@
 #include "Text.h"
 #include "GameButton.h"
 #include "SpriteAnimation.h"
+#include "Actors/Player.h"
 
 GSPlay::GSPlay()
 {
@@ -55,8 +56,14 @@ void GSPlay::Init()
 	
 	obj->Set2DPosition(240, 400);
 	obj->SetSize(334, 223);
-	//obj->SetRotation(Vector3(0.0f, 3.14f, 0.0f));
+	obj->SetRotation(Vector3(0.0f, 3.14f, 0.0f));
 	m_listAnimation.push_back(obj);
+
+	/*Player player;
+	player.init();
+	player.setAnimation(obj);
+	player.setLocation(440, 400);
+	player.show();*/
 }
 
 void GSPlay::Exit()

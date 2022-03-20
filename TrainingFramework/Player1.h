@@ -4,7 +4,7 @@
 
 class SpriteAnimation;
 
-class Player {
+class Player1 {
 private:
 	std::shared_ptr<SpriteAnimation> animation;
 	int x_location;
