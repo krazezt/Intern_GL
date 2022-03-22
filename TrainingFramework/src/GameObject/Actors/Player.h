@@ -1,17 +1,13 @@
 #pragma once
 #include <iostream>
 #include "GameManager/ResourceManagers.h"
+#include "Actor.h"
 
 class SpriteAnimation;
 
-class Player {
-private:
-	std::shared_ptr<SpriteAnimation> animation;
-	int x_location;
-	int y_location;
+class Player : public Actor {
 public:
-	void init();
-	void setAnimation(std::shared_ptr<SpriteAnimation> spriteAnimation);
-	void setLocation(int location_X, int location_Y);
-	void show();
+	void init() override;
+	void update(float deltaTime) override;
+	void draw() override;
 };

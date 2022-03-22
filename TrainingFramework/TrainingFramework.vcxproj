@@ -343,9 +343,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Player1.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\GameManager\ResourceManagers.cpp" />
+    <ClCompile Include="src\GameObject\Actors\Actor.cpp" />
+    <ClCompile Include="src\GameObject\Actors\Enemy\Enemy.cpp" />
     <ClCompile Include="src\GameObject\Actors\Player.cpp" />
     <ClCompile Include="src\GameObject\Font.cpp" />
     <ClCompile Include="src\GameObject\GameButton.cpp" />
@@ -366,11 +367,12 @@
     <ClCompile Include="src\TrainingFramework.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Player1.h" />
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\GameConfig.h" />
     <ClInclude Include="src\GameManager\ResourceManagers.h" />
     <ClInclude Include="src\GameManager\Singleton.h" />
+    <ClInclude Include="src\GameObject\Actors\Actor.h" />
+    <ClInclude Include="src\GameObject\Actors\Enemy\Enemy.h" />
     <ClInclude Include="src\GameObject\Actors\Player.h" />
     <ClInclude Include="src\GameObject\BaseObject.h" />
     <ClInclude Include="src\GameObject\Font.h" />
