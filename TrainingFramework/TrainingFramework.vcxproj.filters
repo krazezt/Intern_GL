@@ -80,6 +80,8 @@
     </ClCompile>
     <ClCompile Include="src\GameObject\Actors\Player.cpp" />
     <ClCompile Include="src\GameStates\GSSetting.cpp" />
+    <ClCompile Include="src\GameObject\Actors\Actor.cpp" />
+    <ClCompile Include="src\GameObject\Actors\Enemy\Enemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Application.h">
@@ -147,6 +149,8 @@
     </ClInclude>
     <ClInclude Include="src\GameObject\Actors\Player.h" />
     <ClInclude Include="src\GameStates\GSSetting.h" />
+    <ClInclude Include="src\GameObject\Actors\Actor.h" />
+    <ClInclude Include="src\GameObject\Actors\Enemy\Enemy.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

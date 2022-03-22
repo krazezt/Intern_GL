@@ -1,5 +1,6 @@
 #pragma once
 #include "GameStateBase.h"
+#include "Actors/Actor.h"
 
 class Sprite2D;
 class Sprite3D;
@@ -29,9 +30,12 @@ public:
     int m_Test;
 
 private:
+	bool	pausing;
 	std::shared_ptr<Sprite2D>	m_background;
 	std::shared_ptr<Text>		m_score;
+	std::shared_ptr<GameButton>	m_pauseButton;
 	std::list<std::shared_ptr<GameButton>>	m_listButton;
 	std::list<std::shared_ptr<SpriteAnimation>>	m_listAnimation;
+	std::list<std::shared_ptr<Actor>>	m_listActor;
 };
 

@@ -11,6 +11,7 @@
 #include "GameButton.h"
 #include "SpriteAnimation.h"
 #include "Actors/Player.h"
+#include "Actors/Actor.h"
 
 GSPlay::GSPlay()
 {
@@ -25,6 +26,7 @@ GSPlay::~GSPlay()
 void GSPlay::Init()
 {
 	m_Test = 1;
+	pausing = false;
 	auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D.nfg");
 	auto texture = ResourceManagers::GetInstance()->GetTexture("bg_play1.tga");
 
@@ -44,26 +46,26 @@ void GSPlay::Init()
 		});
 	m_listButton.push_back(button);
 
+	// button pause
+	texture = ResourceManagers::GetInstance()->GetTexture("btn_pause.tga");
+	m_pauseButton = std::make_shared<GameButton>(model, shader, texture);
+	m_pauseButton->Set2DPosition(Globals::screenWidth - 150, 50);
+	m_pauseButton->SetSize(50, 50);
+	m_pauseButton->SetOnClick([this]() {
+		Pause();
+	});
+	m_listButton.push_back(m_pauseButton);
+
 	// score
 	shader = ResourceManagers::GetInstance()->GetShader("TextShader");
 	std::shared_ptr<Font> font = ResourceManagers::GetInstance()->GetFont("Brightly Crush Shine.otf");
 	m_score = std::make_shared< Text>(shader, font, "score: 10", TextColor::RED, 1.0);
 	m_score->Set2DPosition(Vector2(5, 25));
 
-	shader = ResourceManagers::GetInstance()->GetShader("Animation");
-	texture = ResourceManagers::GetInstance()->GetTexture("Megaman_animation2.tga");
-	std::shared_ptr<SpriteAnimation> obj = std::make_shared<SpriteAnimation>(model, shader, texture, 10, 1, 0, 0.1f);
-	
-	obj->Set2DPosition(240, 400);
-	obj->SetSize(334, 223);
-	obj->SetRotation(Vector3(0.0f, 3.14f, 0.0f));
-	m_listAnimation.push_back(obj);
+	std::shared_ptr<Player> player = std::make_shared<Player>();
+	player->init();
 
-	/*Player player;
-	player.init();
-	player.setAnimation(obj);
-	player.setLocation(440, 400);
-	player.show();*/
+	m_listActor.push_back(player);
 }
 
 void GSPlay::Exit()
@@ -72,12 +74,24 @@ void GSPlay::Exit()
 }
 
 
-void GSPlay::Pause()
-{
+void GSPlay::Pause() {
+	pausing = true;
+	auto texture = ResourceManagers::GetInstance()->GetTexture("btn_play.tga");
+	m_pauseButton->SetTexture(texture);
+
+	m_pauseButton->SetOnClick([this]() {
+		Resume();
+	});
 }
 
-void GSPlay::Resume()
-{
+void GSPlay::Resume() {
+	pausing = false;
+	auto texture = ResourceManagers::GetInstance()->GetTexture("btn_pause.tga");
+	m_pauseButton->SetTexture(texture);
+
+	m_pauseButton->SetOnClick([this]() {
+		Pause();
+	});
 }
 
 
@@ -106,13 +120,16 @@ void GSPlay::HandleMouseMoveEvents(int x, int y)
 
 void GSPlay::Update(float deltaTime)
 {
-	for (auto it : m_listButton)
-	{
-		it->Update(deltaTime);
-	}
-	for (auto it : m_listAnimation)
-	{
-		it->Update(deltaTime);
+	if (!pausing) {
+		for (auto it : m_listButton) {
+			it->Update(deltaTime);
+		}
+		for (auto it : m_listAnimation) {
+			it->Update(deltaTime);
+		}
+		for (auto it : m_listActor) {
+			it->update(deltaTime);
+		}
 	}
 }
 
@@ -128,5 +145,8 @@ void GSPlay::Draw()
 	for (auto it : m_listAnimation)
 	{
 		it->Draw();
+	}
+	for (auto it : m_listActor) {
+		it->draw();
 	}
 }

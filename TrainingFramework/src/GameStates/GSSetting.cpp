@@ -29,7 +29,7 @@ void GSSetting::Init()
 	button->Set2DPosition(Globals::screenWidth - 50, 50);
 	button->SetSize(50, 50);
 	button->SetOnClick([]() {
-		exit(0);
+			GameStateMachine::GetInstance()->PopState();
 		});
 	m_listButton.push_back(button);
 

@@ -3,23 +3,20 @@
 #include "Texture.h"
 #include "SpriteAnimation.h"
 
-void Player::init() {}
+void Player::init() {
+	auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D.nfg");
+	auto shader = ResourceManagers::GetInstance()->GetShader("Animation");
+	auto texture = ResourceManagers::GetInstance()->GetTexture("Megaman_animation1.tga");
 
-void Player::setAnimation(std::shared_ptr<SpriteAnimation> animation) {
-	Player::animation = animation;
+	animation = std::make_shared<SpriteAnimation>(model, shader, texture, 10, 1, 0, 0.1f);
+	animation->Set2DPosition(240, 400);
+	animation->SetSize(334, 223);
 }
 
-void Player::setLocation(int location_X, int location_Y) {
-	Player::x_location = location_X;
-	Player::y_location = location_Y;
+void Player::update(float deltaTime) {
+	this->animation->Update(deltaTime);
 }
 
-//void Player::show() {
-//	auto shader = ResourceManagers::GetInstance()->GetShader("Animation");
-//	auto texture = ResourceManagers::GetInstance()->GetTexture("Megaman_animation1.tga");
-//	auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D.nfg");
-//
-//	animation->Set2DPosition(Player::x_location, Player::y_location);
-//	animation->SetSize(334, 223);
-//	animation->Draw();
-//}
+void Player::draw() {
+	this->animation->Draw();
+}
