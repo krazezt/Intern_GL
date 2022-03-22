@@ -15,7 +15,7 @@ GSSetting::~GSSetting()
 void GSSetting::Init()
 {
 	auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D.nfg");
-	auto texture = ResourceManagers::GetInstance()->GetTexture("bg_main_menu.tga");
+	auto texture = ResourceManagers::GetInstance()->GetTexture("Background3.tga");
 
 	// background
 	auto shader = ResourceManagers::GetInstance()->GetShader("TextureShader");
@@ -23,14 +23,14 @@ void GSSetting::Init()
 	m_background->Set2DPosition(Globals::screenWidth / 2, Globals::screenHeight / 2);
 	m_background->SetSize(Globals::screenWidth, Globals::screenHeight);
 
-	// exit button
+	// button close
 	texture = ResourceManagers::GetInstance()->GetTexture("btn_close.tga");
-	std::shared_ptr<GameButton> button = std::make_shared<GameButton>(model, shader, texture);
+	std::shared_ptr<GameButton>  button = std::make_shared<GameButton>(model, shader, texture);
 	button->Set2DPosition(Globals::screenWidth - 50, 50);
 	button->SetSize(50, 50);
-	button->SetOnClick([]() {
-			GameStateMachine::GetInstance()->PopState();
-		});
+	button->SetOnClick([this]() {
+		GameStateMachine::GetInstance()->PopState();
+	});
 	m_listButton.push_back(button);
 
 	// music setting button
@@ -62,7 +62,6 @@ void GSSetting::Init()
 
 void GSSetting::Exit()
 {
-	ResourceManagers::FreeInstance();
 }
 
 

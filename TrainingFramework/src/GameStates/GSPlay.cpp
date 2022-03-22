@@ -28,7 +28,7 @@ void GSPlay::Init()
 	m_Test = 1;
 	pausing = false;
 	auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D.nfg");
-	auto texture = ResourceManagers::GetInstance()->GetTexture("bg_play1.tga");
+	auto texture = ResourceManagers::GetInstance()->GetTexture("Background2.tga");
 
 	// background
 	auto shader = ResourceManagers::GetInstance()->GetShader("TextureShader");
@@ -43,7 +43,7 @@ void GSPlay::Init()
 	button->SetSize(50, 50);
 	button->SetOnClick([this]() {
 			GameStateMachine::GetInstance()->PopState();
-		});
+	});
 	m_listButton.push_back(button);
 
 	// button pause

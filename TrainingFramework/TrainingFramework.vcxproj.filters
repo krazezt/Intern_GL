@@ -75,9 +75,6 @@
     <ClCompile Include="src\GameObject\SpriteAnimation.cpp">
       <Filter>TrainingFramework\src\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Player1.cpp">
-      <Filter>TrainingFramework\src\GameObject\Actors</Filter>
-    </ClCompile>
     <ClCompile Include="src\GameObject\Actors\Player.cpp" />
     <ClCompile Include="src\GameStates\GSSetting.cpp" />
     <ClCompile Include="src\GameObject\Actors\Actor.cpp" />
@@ -143,9 +140,6 @@
     </ClInclude>
     <ClInclude Include="src\GameObject\SpriteAnimation.h">
       <Filter>TrainingFramework\src\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Player1.h">
-      <Filter>TrainingFramework\src\GameObject\Actors</Filter>
     </ClInclude>
     <ClInclude Include="src\GameObject\Actors\Player.h" />
     <ClInclude Include="src\GameStates\GSSetting.h" />
