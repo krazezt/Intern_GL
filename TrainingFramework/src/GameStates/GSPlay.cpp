@@ -62,7 +62,7 @@ void GSPlay::Init()
 	m_score = std::make_shared< Text>(shader, font, "score: 10", TextColor::RED, 1.0);
 	m_score->Set2DPosition(Vector2(5, 25));
 
-	std::shared_ptr<Player> player = std::make_shared<Player>();
+	player = std::make_shared<Player>();
 	player->init();
 
 	m_listActor.push_back(player);
@@ -101,6 +101,17 @@ void GSPlay::HandleEvents()
 
 void GSPlay::HandleKeyEvents(int key, bool bIsPressed)
 {
+	switch (key)
+	{
+	case KEY_MOVE_RIGHT:
+		bIsPressed ? player->horizontalMove(MoveState::MOVE_RIGHT, 1) : player->stopMove();
+		break;
+	case KEY_MOVE_LEFT:
+		bIsPressed ? player->horizontalMove(MoveState::MOVE_LEFT, 1) : player->stopMove();
+		break;
+	default:
+		break;
+	}
 }
 
 void GSPlay::HandleTouchEvents(int x, int y, bool bIsPressed)

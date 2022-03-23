@@ -5,13 +5,13 @@
 #include "Camera.h"
 #include "Texture.h"
 
-void SpriteAnimation::CaculateWorldMatrix()
-{
-	Matrix m_Sc, m_T;
-	m_Sc.SetScale(m_scale);
-	m_T.SetTranslation(m_position);
-	m_worldMatrix = m_Sc * m_T;
-}
+//void SpriteAnimation::CaculateWorldMatrix()
+//{
+//	Matrix m_Sc, m_T;
+//	m_Sc.SetScale(m_scale);
+//	m_T.SetTranslation(m_position);
+//	m_worldMatrix = m_Sc * m_T;
+//}
 
 SpriteAnimation::SpriteAnimation(std::shared_ptr<Model> model, std::shared_ptr<Shader> shader, std::shared_ptr<Texture> texture, GLint numFrames, GLint numActions, GLint currentAction, GLfloat frameTime)
 	: BaseObject()
@@ -40,7 +40,7 @@ SpriteAnimation::~SpriteAnimation()
 
 void SpriteAnimation::Init()
 {
-	CaculateWorldMatrix();
+	CalculateWorldMatrix();
 }
 
 void SpriteAnimation::Draw()
@@ -139,7 +139,7 @@ void SpriteAnimation::Set2DPosition(GLfloat width, GLfloat height)
 	float yy = 1.0 - (2.0 * m_Vec2DPos.y) /  Globals::screenHeight;
 	m_position = Vector3(xx, yy, 1.0);
 
-	CaculateWorldMatrix();
+	CalculateWorldMatrix();
 }
 
 void SpriteAnimation::Set2DPosition(Vector2 pos)
@@ -150,7 +150,7 @@ void SpriteAnimation::Set2DPosition(Vector2 pos)
 	float yy = 1.0 - (2.0 * m_Vec2DPos.y) /  Globals::screenHeight;
 	m_position = Vector3(xx, yy, 1.0);
 
-	CaculateWorldMatrix();
+	CalculateWorldMatrix();
 }
 
 Vector2 SpriteAnimation::Get2DPosition()
@@ -158,11 +158,15 @@ Vector2 SpriteAnimation::Get2DPosition()
 	return m_Vec2DPos;
 }
 
+void SpriteAnimation::SetRotation(Vector3 rotation) {
+	m_rotation = rotation;
+	CalculateWorldMatrix();
+}
 
 void SpriteAnimation::SetSize(GLint width, GLint height)
 {
 	m_iWidth = width;
 	m_iHeight = height;
 	m_scale = Vector3((float)m_iWidth /  Globals::screenWidth, (float)m_iHeight /  Globals::screenHeight, 1);
-	CaculateWorldMatrix();
+	CalculateWorldMatrix();
 }

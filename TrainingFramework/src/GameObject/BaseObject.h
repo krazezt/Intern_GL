@@ -45,7 +45,7 @@ public:
 	void SetPosition(Vector3 position) { m_position = position; }
 	Vector3 GetPosition() { return m_position; }
 
-	void SetRotation(Vector3 rotation) { m_rotation = rotation; }
+	virtual void SetRotation(Vector3 rotation) { m_rotation = rotation; }
 	Vector3 GetRotation() { return m_rotation; }
 
 	void SetScale(Vector3 scale) { m_scale = scale; }

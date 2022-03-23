@@ -4,7 +4,7 @@ class SpriteAnimation : public BaseObject
 {
 private:
 	std::string		m_Text;
-	void			CaculateWorldMatrix();
+	//void			CaculateWorldMatrix();
 protected:
 	Vector2			m_Vec2DPos;
 	GLint			m_iHeight;
@@ -26,6 +26,7 @@ public:
 
 	void		Set2DPosition(GLfloat x, GLfloat y);
 	void		Set2DPosition(Vector2 pos);
+	void		SetRotation(Vector3 rotation) override;
 
 	Vector2		Get2DPosition();
 	void		SetSize(GLint width, GLint height);
