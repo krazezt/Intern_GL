@@ -101,6 +101,7 @@ void GSPlay::HandleEvents()
 
 void GSPlay::HandleKeyEvents(int key, bool bIsPressed)
 {
+	if (pausing) return;
 	switch (key)
 	{
 	case KEY_MOVE_RIGHT:
