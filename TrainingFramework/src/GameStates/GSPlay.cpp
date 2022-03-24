@@ -10,8 +10,6 @@
 #include "Text.h"
 #include "GameButton.h"
 #include "SpriteAnimation.h"
-#include "Actors/Player.h"
-#include "Actors/Actor.h"
 
 GSPlay::GSPlay()
 {
@@ -59,13 +57,20 @@ void GSPlay::Init()
 	// score
 	shader = ResourceManagers::GetInstance()->GetShader("TextShader");
 	std::shared_ptr<Font> font = ResourceManagers::GetInstance()->GetFont("Brightly Crush Shine.otf");
-	m_score = std::make_shared< Text>(shader, font, "score: 10", TextColor::RED, 1.0);
+	m_score = std::make_shared<Text>(shader, font, "score: 10", TextColor::RED, 1.0);
 	m_score->Set2DPosition(Vector2(5, 25));
 
+	// Player
 	player = std::make_shared<Player>();
 	player->init();
 
 	m_listActor.push_back(player);
+
+	// Level
+	std::shared_ptr<BaseTerrain> terrain;
+	terrain = std::make_shared<Platform1>();
+	terrain->init(200, 600);
+	m_listTerrain.push_back(terrain);
 }
 
 void GSPlay::Exit()
@@ -105,10 +110,10 @@ void GSPlay::HandleKeyEvents(int key, bool bIsPressed)
 	switch (key)
 	{
 	case KEY_MOVE_RIGHT:
-		bIsPressed ? player->horizontalMove(MoveState::MOVE_RIGHT, 1) : player->stopMove();
+		bIsPressed ? player->horizontalMove(MoveState::MOVE_RIGHT, 1.0f) : player->stopMove();
 		break;
 	case KEY_MOVE_LEFT:
-		bIsPressed ? player->horizontalMove(MoveState::MOVE_LEFT, 1) : player->stopMove();
+		bIsPressed ? player->horizontalMove(MoveState::MOVE_LEFT, 1.0f) : player->stopMove();
 		break;
 	default:
 		break;
@@ -142,6 +147,9 @@ void GSPlay::Update(float deltaTime)
 		for (auto it : m_listActor) {
 			it->update(deltaTime);
 		}
+		for (auto it : m_listTerrain) {
+			it->update(deltaTime);
+		}
 	}
 }
 
@@ -159,6 +167,9 @@ void GSPlay::Draw()
 		it->Draw();
 	}
 	for (auto it : m_listActor) {
+		it->draw();
+	}
+	for (auto it : m_listTerrain) {
 		it->draw();
 	}
 }

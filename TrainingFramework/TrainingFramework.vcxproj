@@ -344,18 +344,25 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\GameManager\CollisionManager.cpp" />
     <ClCompile Include="src\GameManager\ResourceManagers.cpp" />
     <ClCompile Include="src\GameObject\Actors\Actor.cpp" />
     <ClCompile Include="src\GameObject\Actors\Enemy\Enemy.cpp" />
     <ClCompile Include="src\GameObject\Actors\Player.cpp" />
+    <ClCompile Include="src\GameObject\CollisionBox2D.cpp" />
     <ClCompile Include="src\GameObject\Font.cpp" />
     <ClCompile Include="src\GameObject\GameButton.cpp" />
+    <ClCompile Include="src\GameObject\ObjectType\Collision.cpp" />
+    <ClCompile Include="src\GameObject\ObjectType\ObjectTypeFactory.cpp" />
     <ClCompile Include="src\GameObject\Sprite2D.cpp" />
     <ClCompile Include="src\GameObject\Camera.cpp" />
     <ClCompile Include="src\GameObject\Sprite3D.cpp" />
     <ClCompile Include="src\GameObject\Model.cpp" />
     <ClCompile Include="src\GameObject\Shader.cpp" />
     <ClCompile Include="src\GameObject\SpriteAnimation.cpp" />
+    <ClCompile Include="src\GameObject\Terrain\BaseTerrain.cpp" />
+    <ClCompile Include="src\GameObject\Terrain\Platform\Platform1.cpp" />
+    <ClCompile Include="src\GameObject\Terrain\StaticTerrain.cpp" />
     <ClCompile Include="src\GameObject\Text.cpp" />
     <ClCompile Include="src\GameObject\Texture.cpp" />
     <ClCompile Include="src\GameStates\GameStateBase.cpp" />
@@ -364,25 +371,33 @@
     <ClCompile Include="src\GameStates\GSMenu.cpp" />
     <ClCompile Include="src\GameStates\GSPlay.cpp" />
     <ClCompile Include="src\GameStates\GSSetting.cpp" />
-    <ClCompile Include="src\TrainingFramework.cpp" />
+    <ClCompile Include="src\Megaman.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\GameConfig.h" />
+    <ClInclude Include="src\GameManager\CollisionManager.h" />
     <ClInclude Include="src\GameManager\ResourceManagers.h" />
     <ClInclude Include="src\GameManager\Singleton.h" />
     <ClInclude Include="src\GameObject\Actors\Actor.h" />
     <ClInclude Include="src\GameObject\Actors\Enemy\Enemy.h" />
     <ClInclude Include="src\GameObject\Actors\Player.h" />
     <ClInclude Include="src\GameObject\BaseObject.h" />
+    <ClInclude Include="src\GameObject\CollisionBox2D.h" />
     <ClInclude Include="src\GameObject\Font.h" />
     <ClInclude Include="src\GameObject\GameButton.h" />
+    <ClInclude Include="src\GameObject\ObjectType\Category.h" />
+    <ClInclude Include="src\GameObject\ObjectType\Collision.h" />
+    <ClInclude Include="src\GameObject\ObjectType\ObjectTypeFactory.h" />
     <ClInclude Include="src\GameObject\Sprite2D.h" />
     <ClInclude Include="src\GameObject\Camera.h" />
     <ClInclude Include="src\GameObject\Sprite3D.h" />
     <ClInclude Include="src\GameObject\Model.h" />
     <ClInclude Include="src\GameObject\Shader.h" />
     <ClInclude Include="src\GameObject\SpriteAnimation.h" />
+    <ClInclude Include="src\GameObject\Terrain\BaseTerrain.h" />
+    <ClInclude Include="src\GameObject\Terrain\Platform\Platform1.h" />
+    <ClInclude Include="src\GameObject\Terrain\StaticTerrain.h" />
     <ClInclude Include="src\GameObject\Text.h" />
     <ClInclude Include="src\GameObject\Texture.h" />
     <ClInclude Include="src\GameStates\GameStateBase.h" />
