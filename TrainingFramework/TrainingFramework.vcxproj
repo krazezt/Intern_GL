@@ -364,7 +364,7 @@
     <ClCompile Include="src\GameStates\GSMenu.cpp" />
     <ClCompile Include="src\GameStates\GSPlay.cpp" />
     <ClCompile Include="src\GameStates\GSSetting.cpp" />
-    <ClCompile Include="src\TrainingFramework.cpp" />
+    <ClCompile Include="src\Megaman.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Application.h" />

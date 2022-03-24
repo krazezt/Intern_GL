@@ -24,7 +24,7 @@
     <ClCompile Include="src\Application.cpp">
       <Filter>TrainingFramework\src</Filter>
     </ClCompile>
-    <ClCompile Include="src\TrainingFramework.cpp">
+    <ClCompile Include="src\Megaman.cpp">
       <Filter>TrainingFramework\src</Filter>
     </ClCompile>
     <ClCompile Include="src\GameObject\Sprite2D.cpp">
