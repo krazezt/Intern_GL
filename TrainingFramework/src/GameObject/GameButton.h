@@ -13,6 +13,6 @@ public:
 	bool	IsHolding();
 
 private:
-	std::function<void(void)>m_pBtClick;
+	std::function<void(void)> m_pBtClick;
 	bool	m_isHolding;
 };

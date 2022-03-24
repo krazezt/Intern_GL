@@ -79,6 +79,13 @@
     <ClCompile Include="src\GameStates\GSSetting.cpp" />
     <ClCompile Include="src\GameObject\Actors\Actor.cpp" />
     <ClCompile Include="src\GameObject\Actors\Enemy\Enemy.cpp" />
+    <ClCompile Include="src\GameObject\Terrain\BaseTerrain.cpp" />
+    <ClCompile Include="src\GameManager\CollisionManager.cpp" />
+    <ClCompile Include="src\GameObject\ObjectType\ObjectTypeFactory.cpp" />
+    <ClCompile Include="src\GameObject\ObjectType\Collision.cpp" />
+    <ClCompile Include="src\GameObject\Terrain\StaticTerrain.cpp" />
+    <ClCompile Include="src\GameObject\CollisionBox2D.cpp" />
+    <ClCompile Include="src\GameObject\Terrain\Platform\Platform1.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Application.h">
@@ -145,6 +152,14 @@
     <ClInclude Include="src\GameStates\GSSetting.h" />
     <ClInclude Include="src\GameObject\Actors\Actor.h" />
     <ClInclude Include="src\GameObject\Actors\Enemy\Enemy.h" />
+    <ClInclude Include="src\GameObject\Terrain\BaseTerrain.h" />
+    <ClInclude Include="src\GameObject\ObjectType\Category.h" />
+    <ClInclude Include="src\GameObject\ObjectType\Collision.h" />
+    <ClInclude Include="src\GameManager\CollisionManager.h" />
+    <ClInclude Include="src\GameObject\ObjectType\ObjectTypeFactory.h" />
+    <ClInclude Include="src\GameObject\Terrain\StaticTerrain.h" />
+    <ClInclude Include="src\GameObject\CollisionBox2D.h" />
+    <ClInclude Include="src\GameObject\Terrain\Platform\Platform1.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

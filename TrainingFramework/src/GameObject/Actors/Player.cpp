@@ -3,12 +3,15 @@
 #include "Texture.h"
 #include "SpriteAnimation.h"
 
+Player::Player() {}
+Player::~Player() {}
+
 void Player::init() {
 	auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D.nfg");
 	auto shader = ResourceManagers::GetInstance()->GetShader("Animation");
 	auto texture = ResourceManagers::GetInstance()->GetTexture("Megaman_animation_Start.tga");
 
-	movement_speed = 200;
+	movement_speed = 350;
 	totalTime = 0;
 	playing = false;
 
@@ -24,12 +27,15 @@ void Player::init() {
 	IDLE_Right_Animation->SetSize(300, 200);
 
 	texture = ResourceManagers::GetInstance()->GetTexture("Megaman_animation_MoveLeft.tga");
-	moveLeft_Animation = std::make_shared<SpriteAnimation>(model, shader, texture, 10, 1, 0, 0.1f);
+	moveLeft_Animation = std::make_shared<SpriteAnimation>(model, shader, texture, 10, 1, 0, 0.075f);
 	moveLeft_Animation->SetSize(300, 200);
 
 	texture = ResourceManagers::GetInstance()->GetTexture("Megaman_animation_MoveRight.tga");
-	moveRight_Animation = std::make_shared<SpriteAnimation>(model, shader, texture, 10, 1, 0, 0.1f);
+	moveRight_Animation = std::make_shared<SpriteAnimation>(model, shader, texture, 10, 1, 0, 0.075f);
 	moveRight_Animation->SetSize(300, 200);
+
+	collisionBox = std::make_shared<CollisionBox2D>();
+	collisionBox->init(this->x_location, this->y_location, 150, 100);
 
 	this->setLocation(240, 400);
 }
@@ -54,10 +60,12 @@ void Player::update(float deltaTime) {
 	}
 
 	this->animation->Update(deltaTime);
+	this->collisionBox->update(deltaTime);
 }
 
 void Player::draw() {
 	this->animation->Draw();
+	this->collisionBox->draw();
 }
 
 void Player::stopMove() {
@@ -74,7 +82,7 @@ void Player::moveRight() {
 
 }
 
-void Player::horizontalMove(MoveState moveState, int velocityScale) {
+void Player::horizontalMove(MoveState moveState, float velocityScale) {
 
 	this->moveState = moveState;
 	this->velocityScale = velocityScale;
@@ -90,4 +98,8 @@ void Player::horizontalMove(MoveState moveState, int velocityScale) {
 		default:
 			break;
 	}
+}
+
+void Player::setCategory(Category category) {
+	this->category = category;
 }

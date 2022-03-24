@@ -1,7 +1,9 @@
 #pragma once
 #include "GameStateBase.h"
-#include "Actors/Actor.h"
 #include "Actors/Player.h"
+#include "Actors/Actor.h"
+#include "Terrain/BaseTerrain.h"
+#include "Terrain/Platform/Platform1.h"
 
 class Sprite2D;
 class Sprite3D;
@@ -36,8 +38,9 @@ private:
 	std::shared_ptr<Sprite2D>	m_background;
 	std::shared_ptr<Text>		m_score;
 	std::shared_ptr<GameButton>	m_pauseButton;
-	std::list<std::shared_ptr<GameButton>>	m_listButton;
+	std::list<std::shared_ptr<GameButton>>		m_listButton;
 	std::list<std::shared_ptr<SpriteAnimation>>	m_listAnimation;
-	std::list<std::shared_ptr<Actor>>	m_listActor;
+	std::list<std::shared_ptr<Actor>>			m_listActor;
+	std::list<std::shared_ptr<BaseTerrain>>		m_listTerrain;
 };
 
