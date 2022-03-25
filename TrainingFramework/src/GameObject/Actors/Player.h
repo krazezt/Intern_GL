@@ -25,10 +25,8 @@ private:
 	float		totalTime;
 	bool		playing;
 
-	std::shared_ptr<SpriteAnimation> IDLE_Left_Animation;
-	std::shared_ptr<SpriteAnimation> IDLE_Right_Animation;
-	std::shared_ptr<SpriteAnimation> moveLeft_Animation;
-	std::shared_ptr<SpriteAnimation> moveRight_Animation;
+	std::shared_ptr<SpriteAnimation> IDLE_Animation;
+	std::shared_ptr<SpriteAnimation> move_Animation;
 public:
 	Player();
 	~Player();

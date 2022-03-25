@@ -1,5 +1,6 @@
 #include "CollisionBox2D.h"
 #include "ResourceManagers.h"
+#include "GameConfig.h"
 
 CollisionBox2D::CollisionBox2D() {}
 CollisionBox2D::~CollisionBox2D() {}
@@ -17,7 +18,7 @@ void CollisionBox2D::init(float x_location, float y_location, float width, float
 	this->Test_box->Set2DPosition(this->x_location, this->y_location);
 	this->Test_box->SetSize(this->width, this->height);
 
-	this->showTestBox = true;
+	this->showTestBox = SHOW_HITBOX;
 }
 
 bool CollisionBox2D::detectCollision(CollisionBox2D box1, CollisionBox2D box2) {

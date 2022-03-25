@@ -11,39 +11,34 @@ void Player::init() {
 	auto shader = ResourceManagers::GetInstance()->GetShader("Animation");
 	auto texture = ResourceManagers::GetInstance()->GetTexture("Megaman_animation_Start.tga");
 
+	int size_x = 150, size_y = 100;
+
 	movement_speed = 350;
 	totalTime = 0;
 	playing = false;
 
 	animation = std::make_shared<SpriteAnimation>(model, shader, texture, 7, 1, 0, 0.2f);
-	animation->SetSize(300, 200);
-
-	texture = ResourceManagers::GetInstance()->GetTexture("Megaman_animation_IDLE_Left.tga");
-	IDLE_Left_Animation = std::make_shared<SpriteAnimation>(model, shader, texture, 3, 1, 0, 0.5f);
-	IDLE_Left_Animation->SetSize(300, 200);
+	animation->SetSize(size_x, size_y);
 
 	texture = ResourceManagers::GetInstance()->GetTexture("Megaman_animation_IDLE_Right.tga");
-	IDLE_Right_Animation = std::make_shared<SpriteAnimation>(model, shader, texture, 3, 1, 0, 0.5f);
-	IDLE_Right_Animation->SetSize(300, 200);
-
-	texture = ResourceManagers::GetInstance()->GetTexture("Megaman_animation_MoveLeft.tga");
-	moveLeft_Animation = std::make_shared<SpriteAnimation>(model, shader, texture, 10, 1, 0, 0.075f);
-	moveLeft_Animation->SetSize(300, 200);
+	IDLE_Animation = std::make_shared<SpriteAnimation>(model, shader, texture, 3, 1, 0, 0.5f);
+	IDLE_Animation->SetSize(size_x, size_y);
 
 	texture = ResourceManagers::GetInstance()->GetTexture("Megaman_animation_MoveRight.tga");
-	moveRight_Animation = std::make_shared<SpriteAnimation>(model, shader, texture, 10, 1, 0, 0.075f);
-	moveRight_Animation->SetSize(300, 200);
+	move_Animation = std::make_shared<SpriteAnimation>(model, shader, texture, 10, 1, 0, 0.075f);
+	move_Animation->SetSize(size_x, size_y);
 
 	collisionBox = std::make_shared<CollisionBox2D>();
-	collisionBox->init(this->x_location, this->y_location, 150, 100);
+	collisionBox->init(this->x_location, this->y_location, size_x, size_y);
 
 	this->setLocation(240, 400);
+	// this->animation->SetRotation(Vector3(PI, 0.0f, 0.0f));
 }
 
 void Player::update(float deltaTime) {
 	totalTime += deltaTime;
 	if (totalTime > 1.0f && playing == false) {
-		this->animation = IDLE_Right_Animation;
+		this->animation = IDLE_Animation;
 		this->setLocation(x_location, y_location);
 		playing = true;
 	}
@@ -69,10 +64,10 @@ void Player::draw() {
 }
 
 void Player::stopMove() {
+	this->animation = IDLE_Animation;
 	if (this->moveState == MoveState::MOVE_RIGHT)
-		this->animation = IDLE_Right_Animation;
-	else this->animation = IDLE_Left_Animation;
-
+		this->animation->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
+	else this->animation->SetRotation(Vector3(0.0f, PI, 0.0f));
 	this->moveState = MoveState::IDLE;
 
 	this->setLocation(x_location, y_location);
@@ -83,17 +78,17 @@ void Player::moveRight() {
 }
 
 void Player::horizontalMove(MoveState moveState, float velocityScale) {
-
 	this->moveState = moveState;
 	this->velocityScale = velocityScale;
+	this->animation = move_Animation;
 
-	switch (moveState)
+	switch (this->moveState)
 	{
 		case MoveState::MOVE_RIGHT:
-			this->animation = moveRight_Animation;
+			this->animation->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
 			break;
 		case MoveState::MOVE_LEFT:
-			this->animation = moveLeft_Animation;
+			this->animation->SetRotation(Vector3(0.0f, PI, 0.0f));
 			break;
 		default:
 			break;
