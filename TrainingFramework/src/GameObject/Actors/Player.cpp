@@ -11,28 +11,31 @@ void Player::init() {
 	auto shader = ResourceManagers::GetInstance()->GetShader("Animation");
 	auto texture = ResourceManagers::GetInstance()->GetTexture("Megaman_animation_Start.tga");
 
-	int size_x = 150, size_y = 100;
+	int width = 150, height = 100;
 
 	movement_speed = 350;
 	totalTime = 0;
 	playing = false;
 
 	animation = std::make_shared<SpriteAnimation>(model, shader, texture, 7, 1, 0, 0.2f);
-	animation->SetSize(size_x, size_y);
+	animation->SetSize(width, height);
 
 	texture = ResourceManagers::GetInstance()->GetTexture("Megaman_animation_IDLE_Right.tga");
 	IDLE_Animation = std::make_shared<SpriteAnimation>(model, shader, texture, 3, 1, 0, 0.5f);
-	IDLE_Animation->SetSize(size_x, size_y);
+	IDLE_Animation->SetSize(width, height);
 
 	texture = ResourceManagers::GetInstance()->GetTexture("Megaman_animation_MoveRight.tga");
 	move_Animation = std::make_shared<SpriteAnimation>(model, shader, texture, 10, 1, 0, 0.075f);
-	move_Animation->SetSize(size_x, size_y);
+	move_Animation->SetSize(width, height);
 
+	this->initCollisionBox(this->x_location, this->y_location, width, height);
+
+	this->setLocation(400, 420);
+}
+
+void Player::initCollisionBox(float x_location, float y_location, float width, float height) {
 	collisionBox = std::make_shared<CollisionBox2D>();
-	collisionBox->init(this->x_location, this->y_location, size_x, size_y);
-
-	this->setLocation(240, 400);
-	// this->animation->SetRotation(Vector3(PI, 0.0f, 0.0f));
+	collisionBox->init(this->x_location, this->y_location, width, height);
 }
 
 void Player::update(float deltaTime) {

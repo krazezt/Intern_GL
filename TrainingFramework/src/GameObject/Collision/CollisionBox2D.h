@@ -18,6 +18,11 @@ public:
 	void	update(float deltaTime);
 	void	draw();
 
-	bool	detectCollision(CollisionBox2D box1, CollisionBox2D box2);
+	bool	detectCollision(std::shared_ptr<CollisionBox2D> box);
+
+	float	getLocationX() { return x_location; };
+	float	getLocationY() { return y_location; };
+	float	getWidth() { return width; };
+	float	getHeight() { return height; };
 	void	setLocation(float x_location, float y_location);
 };

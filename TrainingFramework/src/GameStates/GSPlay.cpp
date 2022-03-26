@@ -69,7 +69,7 @@ void GSPlay::Init()
 	// Level
 	std::shared_ptr<BaseTerrain> terrain;
 	terrain = std::make_shared<Platform1>();
-	terrain->init(200, 600);
+	terrain->init(800, 600);
 	m_listTerrain.push_back(terrain);
 }
 
@@ -148,6 +148,8 @@ void GSPlay::Update(float deltaTime)
 			it->update(deltaTime);
 		}
 		for (auto it : m_listTerrain) {
+			if (player->getCollisionBox()->detectCollision(it->getCollisionBox()))
+				std::cout << "Collision detected\n";
 			it->update(deltaTime);
 		}
 	}

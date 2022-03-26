@@ -35,6 +35,8 @@ public:
 	void update(float deltaTime) override;
 	void draw() override;
 
+	virtual void initCollisionBox(float x_location, float y_location, float width, float height);
+
 	void moveRight();
 	void horizontalMove(MoveState moveState, float velocityScale);
 	void stopMove();

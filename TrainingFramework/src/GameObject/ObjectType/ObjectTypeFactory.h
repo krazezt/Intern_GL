@@ -1,6 +1,6 @@
 #pragma once
 #include "Category.h"
-#include "Collision.h"
+#include "Collision/Collision.h"
 
 class ObjectTypeFactory {
 public:
