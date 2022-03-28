@@ -7,13 +7,13 @@
 
 class CollisionManager : public CSingleton<CollisionManager> {
 private:
-	CollisionManager();
-	~CollisionManager();
-
 	std::list<std::shared_ptr<CollisionInteractive>> list_collisionInteractive;
 
 	void	addCollisionInteractive(Category category1, Category category2, Collision interactive);
 public:
+	CollisionManager();
+	~CollisionManager();
+
 	void		init();
 	Collision	getCollisionInteractive(Category category1, Category category2);
 };

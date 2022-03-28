@@ -6,8 +6,6 @@
 
 class BaseTerrain : public Collidable {
 protected:
-	float x_location;
-	float y_location;
 	Category category;
 
 	std::shared_ptr<Sprite2D>	sprite2D;
@@ -19,4 +17,5 @@ public:
 	virtual void draw();
 
 	virtual void init(float x_location, float y_location) = 0;
+	virtual void setLocation(float x_location, float y_location) = 0;
 };

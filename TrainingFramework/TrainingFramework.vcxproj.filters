@@ -86,6 +86,8 @@
     <ClCompile Include="src\GameObject\Terrain\StaticTerrain.cpp" />
     <ClCompile Include="src\GameObject\Collision\CollisionBox2D.cpp" />
     <ClCompile Include="src\GameObject\Terrain\Platform\Platform1.cpp" />
+    <ClCompile Include="src\GameObject\ObjectType\Collidable.cpp" />
+    <ClCompile Include="src\GameObject\BaseGameObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Application.h">
@@ -161,6 +163,7 @@
     <ClInclude Include="src\GameObject\Collision\CollisionBox2D.h" />
     <ClInclude Include="src\GameObject\Terrain\Platform\Platform1.h" />
     <ClInclude Include="src\GameObject\ObjectType\Collidable.h" />
+    <ClInclude Include="src\GameObject\BaseGameObject.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

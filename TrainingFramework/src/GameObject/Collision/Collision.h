@@ -3,7 +3,7 @@
 #include "ObjectType/Category.h"
 
 enum class Collision {
-	IGNORE = 0,
+	IGNORED = 0,
 	OVERLAP,
 	BLOCK,
 };
