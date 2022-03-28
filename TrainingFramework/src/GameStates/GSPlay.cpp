@@ -60,6 +60,8 @@ void GSPlay::Init()
 	m_score = std::make_shared<Text>(shader, font, "score: 10", TextColor::RED, 1.0);
 	m_score->Set2DPosition(Vector2(5, 25));
 
+	CollisionManager::GetInstance()->init();
+
 	// Player
 	player = std::make_shared<Player>();
 	player->init();
@@ -148,8 +150,10 @@ void GSPlay::Update(float deltaTime)
 			it->update(deltaTime);
 		}
 		for (auto it : m_listTerrain) {
-			if (player->getCollisionBox()->detectCollision(it->getCollisionBox()))
-				std::cout << "Collision detected\n";
+			if (player->getCollisionBox()->detectCollision(it->getCollisionBox())) {
+				std::cout << "Collision detected!\n";
+				player->applyCollision(it);
+			}
 			it->update(deltaTime);
 		}
 	}

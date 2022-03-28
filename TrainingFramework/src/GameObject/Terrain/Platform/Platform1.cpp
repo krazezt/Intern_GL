@@ -25,3 +25,6 @@ void Platform1::initCollisionBox(float x_location, float y_location, float width
 	collisionBox = std::make_shared<CollisionBox2D>();
 	collisionBox->init(this->x_location, this->y_location, width, height);
 }
+
+void Platform1::setLocation(float x_location, float y_location) {
+}

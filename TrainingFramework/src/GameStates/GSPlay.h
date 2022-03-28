@@ -4,6 +4,7 @@
 #include "Actors/Actor.h"
 #include "Terrain/BaseTerrain.h"
 #include "Terrain/Platform/Platform1.h"
+#include "CollisionManager.h"
 
 class Sprite2D;
 class Sprite3D;
