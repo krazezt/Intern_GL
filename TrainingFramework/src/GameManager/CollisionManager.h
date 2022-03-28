@@ -2,7 +2,7 @@
 #include <iostream>
 #include <list>
 #include "Singleton.h"
-#include "ObjectType/Collision.h"
+#include "Collision/Collision.h"
 #include "ObjectType/Category.h"
 
 class CollisionManager : public CSingleton<CollisionManager> {

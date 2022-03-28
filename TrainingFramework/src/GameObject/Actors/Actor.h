@@ -1,11 +1,12 @@
 #pragma once
 #include <iostream>
 #include "ObjectType/Category.h"
-#include "CollisionBox2D.h"
+#include "Collision/CollisionBox2D.h"
+#include "ObjectType/Collidable.h"
 
 class SpriteAnimation;
 
-class Actor {
+class Actor : public Collidable {
 protected:
 	std::shared_ptr<SpriteAnimation> animation;
 	float x_location;
@@ -13,8 +14,6 @@ protected:
 	int movement_speed;
 	
 	Category	category;
-
-	std::shared_ptr<CollisionBox2D>	collisionBox;
 public:
 	void setLocation(float location_X, float location_Y);
 	float getLocationX();

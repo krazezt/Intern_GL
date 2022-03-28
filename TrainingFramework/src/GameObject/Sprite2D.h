@@ -20,8 +20,7 @@ public:
 	void		Update(GLfloat deltatime) override;
 
 	void		Set2DPosition(GLint x, GLint y);
-	void		Set2DPosition(Vector2 position);
-	void		SetRotation(Vector3 rotation) override;
+	void		SetRotation(Vector3 rotation);
 	void		SetSize(GLint width, GLint height);
 };
 

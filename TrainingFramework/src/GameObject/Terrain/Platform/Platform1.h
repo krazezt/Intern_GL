@@ -7,4 +7,5 @@ public:
 	~Platform1();
 
 	void init(float x_location, float y_location) override;
+	void initCollisionBox(float x_location, float y_location, float width, float height);
 };

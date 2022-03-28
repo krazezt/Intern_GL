@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-#include "Category.h"
+#include "ObjectType/Category.h"
 
 enum class Collision {
 	IGNORE = 0,

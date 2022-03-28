@@ -107,13 +107,8 @@ void Sprite2D::Set2DPosition(GLint x, GLint y)
 	CalculateWorldMatrix();
 }
 
-void Sprite2D::Set2DPosition(Vector2 position)
+void Sprite2D::SetRotation(Vector3 rotation)
 {
-	m_position = Vector3(position.x, position.y, 0.0f);
-	CalculateWorldMatrix();
-}
-
-void Sprite2D::SetRotation(Vector3 rotation) {
 	m_rotation = rotation;
 	CalculateWorldMatrix();
 }

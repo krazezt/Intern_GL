@@ -25,10 +25,8 @@ private:
 	float		totalTime;
 	bool		playing;
 
-	std::shared_ptr<SpriteAnimation> IDLE_Left_Animation;
-	std::shared_ptr<SpriteAnimation> IDLE_Right_Animation;
-	std::shared_ptr<SpriteAnimation> moveLeft_Animation;
-	std::shared_ptr<SpriteAnimation> moveRight_Animation;
+	std::shared_ptr<SpriteAnimation> IDLE_Animation;
+	std::shared_ptr<SpriteAnimation> move_Animation;
 public:
 	Player();
 	~Player();
@@ -36,6 +34,8 @@ public:
 	void init() override;
 	void update(float deltaTime) override;
 	void draw() override;
+
+	virtual void initCollisionBox(float x_location, float y_location, float width, float height);
 
 	void moveRight();
 	void horizontalMove(MoveState moveState, float velocityScale);
