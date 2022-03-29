@@ -17,3 +17,5 @@ float Actor::getLocationX() {
 float Actor::getLocationY() {
 	return this->y_location;
 }
+
+void Actor::consumeCollision() {}

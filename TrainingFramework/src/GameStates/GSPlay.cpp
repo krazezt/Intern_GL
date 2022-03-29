@@ -71,7 +71,7 @@ void GSPlay::Init()
 	// Level
 	std::shared_ptr<BaseTerrain> terrain;
 	terrain = std::make_shared<Platform1>();
-	terrain->init(800, 600);
+	terrain->init(1600, 600);
 	m_listTerrain.push_back(terrain);
 }
 
@@ -151,7 +151,6 @@ void GSPlay::Update(float deltaTime)
 		}
 		for (auto it : m_listTerrain) {
 			if (player->getCollisionBox()->detectCollision(it->getCollisionBox())) {
-				std::cout << "Collision detected!\n";
 				player->applyCollision(it);
 			}
 			it->update(deltaTime);

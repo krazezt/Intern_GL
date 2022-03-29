@@ -6,16 +6,16 @@
 
 class BaseTerrain : public Collidable {
 protected:
-	Category category;
-
 	std::shared_ptr<Sprite2D>	sprite2D;
 public:
 	BaseTerrain();
 	~BaseTerrain();
 
-	virtual void update(float deltaTime);
-	virtual void draw();
+	virtual void	update(float deltaTime);
+	virtual void	draw();
 
-	virtual void init(float x_location, float y_location) = 0;
-	virtual void setLocation(float x_location, float y_location) = 0;
+	virtual void	init(float x_location, float y_location) = 0;
+	virtual void	setLocation(float x_location, float y_location) = 0;
+
+	virtual void	consumeCollision();
 };
