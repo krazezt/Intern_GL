@@ -36,6 +36,7 @@ public:
 	void draw() override;
 
 	virtual void initCollisionBox(float x_location, float y_location, float width, float height);
+	void consumeCollision() override;
 
 	void moveRight();
 	void horizontalMove(MoveState moveState, float velocityScale);

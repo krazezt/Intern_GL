@@ -14,8 +14,11 @@ void Player::init() {
 	int width = 150, height = 100;
 
 	movement_speed = 350;
+	velocityScale = 1;
 	totalTime = 0;
 	playing = false;
+	category = Category::PLAYER;
+	prev_deltaTime = 0;
 
 	animation = std::make_shared<SpriteAnimation>(model, shader, texture, 7, 1, 0, 0.2f);
 	animation->SetSize(width, height);
@@ -29,8 +32,9 @@ void Player::init() {
 	move_Animation->SetSize(width, height);
 
 	this->initCollisionBox(this->x_location, this->y_location, width, height);
+	this->velocityVector = Vector2(0.0f, 0.0f);
 
-	this->setLocation(400, 420);
+	this->setLocation(1000, 420);
 }
 
 void Player::initCollisionBox(float x_location, float y_location, float width, float height) {
@@ -46,19 +50,14 @@ void Player::update(float deltaTime) {
 		playing = true;
 	}
 
-	switch (this->moveState) {
-		case MoveState::MOVE_RIGHT:
-			this->setLocation(x_location + velocityScale * movement_speed * deltaTime, y_location);
-			break;
-		case MoveState::MOVE_LEFT:
-			this->setLocation(x_location - velocityScale * movement_speed * deltaTime, y_location);
-			break;
-		default:
-			break;
+	if (!this->list_CollisionInfo.empty()) {
+		this->consumeCollision();
 	}
 
+	this->setLocation(x_location + velocityScale * velocityVector.x * deltaTime, y_location + velocityScale * velocityVector.y * deltaTime);
 	this->animation->Update(deltaTime);
 	this->collisionBox->update(deltaTime);
+	this->prev_deltaTime = deltaTime;
 }
 
 void Player::draw() {
@@ -72,6 +71,7 @@ void Player::stopMove() {
 		this->animation->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
 	else this->animation->SetRotation(Vector3(0.0f, PI, 0.0f));
 	this->moveState = MoveState::IDLE;
+	this->velocityVector.x = 0;
 
 	this->setLocation(x_location, y_location);
 }
@@ -82,15 +82,15 @@ void Player::moveRight() {
 
 void Player::horizontalMove(MoveState moveState, float velocityScale) {
 	this->moveState = moveState;
-	this->velocityScale = velocityScale;
 	this->animation = move_Animation;
 
-	switch (this->moveState)
-	{
+	switch (this->moveState) {
 		case MoveState::MOVE_RIGHT:
+			this->velocityVector.x = movement_speed;
 			this->animation->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
 			break;
 		case MoveState::MOVE_LEFT:
+			this->velocityVector.x = -1 * movement_speed;
 			this->animation->SetRotation(Vector3(0.0f, PI, 0.0f));
 			break;
 		default:
@@ -100,4 +100,23 @@ void Player::horizontalMove(MoveState moveState, float velocityScale) {
 
 void Player::setCategory(Category category) {
 	this->category = category;
+}
+void Player::consumeCollision() {
+	while (!list_CollisionInfo.empty()) {
+		switch (list_CollisionInfo.front()->collisionType) {
+			case Collision::IGNORED:
+				break;
+			case Collision::OVERLAP:
+				break;
+			case Collision::BLOCK:
+				this->setLocation(
+					x_location - list_CollisionInfo.front()->collideVector.x * prev_deltaTime,
+					y_location - list_CollisionInfo.front()->collideVector.y * prev_deltaTime
+				);
+			default:
+				break;
+		}
+		
+		list_CollisionInfo.pop_front();
+	}
 }

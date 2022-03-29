@@ -1,7 +1,9 @@
 #include "Platform1.h"
 #include "ResourceManagers.h"
 
-Platform1::Platform1() : StaticTerrain() {};
+Platform1::Platform1() : StaticTerrain() {
+	this->category = Category::TERRAIN;
+};
 Platform1::~Platform1() {};
 
 void Platform1::init(float x_location, float y_location) {
@@ -19,6 +21,8 @@ void Platform1::init(float x_location, float y_location) {
 	sprite2D->SetSize(width, height);
 
 	this->initCollisionBox(this->x_location, this->y_location, width, height);
+	this->velocityVector = Vector2(-150.0f, 0.0f);
+	//this->velocityVector = Vector2(-350.0f, 0.0f);
 };
 
 void Platform1::initCollisionBox(float x_location, float y_location, float width, float height) {
@@ -27,4 +31,8 @@ void Platform1::initCollisionBox(float x_location, float y_location, float width
 }
 
 void Platform1::setLocation(float x_location, float y_location) {
+	this->collisionBox->setLocation(x_location, y_location);
+	this->sprite2D->Set2DPosition(x_location, y_location);
+	this->x_location = x_location;
+	this->y_location = y_location;
 }
