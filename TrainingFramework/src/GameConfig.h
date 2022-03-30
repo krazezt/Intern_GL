@@ -7,6 +7,7 @@
 #include FT_FREETYPE_H
 
 #define	SHOW_HITBOX	true;
+#define	GRAVITY		1000.0f;
 
 #ifndef _WIN32_WINNT            // Specifies that the minimum required platform is Windows Vista.
 #define _WIN32_WINNT 0x0600     // Change this to the appropriate value to target other versions of Windows.
@@ -95,7 +96,8 @@ public:
 #define KEY_DOWN			VK_DOWN
 #define KEY_MOVE_LEFT		'A'
 #define KEY_MOVE_RIGHT		'D'
-#define KEY_MOVE_FORWORD	'W'
-#define KEY_MOVE_BACKWORD	'S'
+#define KEY_MOVE_FORWARD	'W'
+#define KEY_MOVE_BACKWARD	'S'
+#define KEY_JUMP			' '
 
 #endif

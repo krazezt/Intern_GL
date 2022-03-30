@@ -6,25 +6,18 @@
 #include "CollisionManager.h"
 #include "BaseGameObject.h"
 
-enum class CollisionDetail {
-	IGNORED = 0,
-
-	OVERLAP_LEFT,
-	OVERLAP_BOTTOM,
-	OVERLAP_RIGHT,
-	OVERLAP_TOP,
-
-	BLOCK_LEFT,
-	BLOCK_BOTTOM,
-	BLOCK_RIGHT,
-	BLOCK_TOP,
+enum class CollideDirection {
+	TOP,
+	LEFT,
+	BOTTOM,
+	RIGHT,
 };
 
 typedef struct _collisionInfo {
-	Collision		collisionType;
-	CollisionDetail	collisionDetail;
-	Vector2			collideVector;
-	Category		collideObjCategory;
+	Collision			collisionType;
+	CollideDirection	collideDirection;
+	Vector2				collideVector;
+	Category			collideObjCategory;
 } CollisionInfo;
 
 class Collidable : public BaseGameObject {
