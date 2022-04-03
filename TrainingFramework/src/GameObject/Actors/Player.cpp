@@ -19,7 +19,8 @@ void Player::init() {
 	playing = false;
 	category = Category::PLAYER;
 	prev_deltaTime = 0;
-	jumpState = JumpState::JUMPING;
+	jumpState = JumpState::LANDING;
+	jumpSpeed = 1500;
 
 	animation = std::make_shared<SpriteAnimation>(model, shader, texture, 7, 1, 0, 0.2f);
 	animation->SetSize(width, height);
@@ -37,7 +38,8 @@ void Player::init() {
 	jump_Animation->SetSize(width*9/8, height);
 
 	this->initCollisionBox(this->x_location, this->y_location, width, height);
-	this->velocityVector = Vector2(0.0f, 0.0f);
+	this->velocityVector = Vector2(0.0f, 150.0f);
+	this->blockState.reset();
 
 	this->setLocation(1000, 420);
 }
@@ -59,14 +61,24 @@ void Player::update(float deltaTime) {
 		this->consumeCollision();
 	}
 
-	if (this->jumpState == JumpState::JUMPING) {
+	if (this->jumpState != JumpState::LANDING) {
 		this->velocityVector.y += deltaTime * GRAVITY;
+		if (this->velocityVector.y > 0) this->jumpState = JumpState::FALLING;
 	}
-	/*this->setLocation(x_location, y_location);*/
+	else if (!this->blockState.bottom.isBlocking) this->jumpState = JumpState::FALLING;
+
+	float prev_x = x_location, prev_y = y_location;
 	this->setLocation(x_location + velocityScale * velocityVector.x * deltaTime, y_location + velocityScale * velocityVector.y * deltaTime);
+
+	if (this->blockState.top.isBlocking && this->y_location < prev_y) this->setLocation(x_location, this->blockState.top.blockCoordinate + this->collisionBox->getHeight() / 2);
+	if (this->blockState.right.isBlocking && this->x_location > prev_x) this->setLocation(this->blockState.right.blockCoordinate - this->collisionBox->getWidth() / 2, y_location);
+	if (this->blockState.left.isBlocking && this->x_location <= prev_x) this->setLocation(this->blockState.left.blockCoordinate + this->collisionBox->getWidth() / 2, y_location);
+	if (this->blockState.bottom.isBlocking && this->y_location >= prev_y) this->setLocation(x_location, this->blockState.bottom.blockCoordinate - this->collisionBox->getHeight() / 2);
+
 	this->animation->Update(deltaTime);
 	this->collisionBox->update(deltaTime);
 	this->prev_deltaTime = deltaTime;
+	this->blockState.reset();
 }
 
 void Player::draw() {
@@ -86,8 +98,9 @@ void Player::stopMove() {
 }
 
 void Player::horizontalMove(MoveState moveState) {
+	if (!playing) return;
 	this->moveState = moveState;
-	if (this->jumpState == JumpState::LANDING) this->animation = move_Animation;
+	this->animation = move_Animation;
 
 	switch (this->moveState) {
 		case MoveState::MOVE_RIGHT:
@@ -105,13 +118,15 @@ void Player::horizontalMove(MoveState moveState) {
 
 void Player::land() {
 	this->jumpState = JumpState::LANDING;
-	this->velocityVector.y = 20.0f;
+	this->velocityVector.y = 0;
 }
 
 void Player::jump() {
+	if (!playing) return;
 	if (this->jumpState == JumpState::LANDING) {
-		this->velocityVector.y = -500;
+		this->velocityVector.y = -jumpSpeed;
 		this->jumpState = JumpState::JUMPING;
+		this->setLocation(x_location, y_location + 0.1f);
 	}
 	else return;
 }
@@ -129,25 +144,24 @@ void Player::consumeCollision() {
 			case Collision::BLOCK:
 				switch (list_CollisionInfo.front()->collideDirection) {
 					case CollideDirection::LEFT:
+						this->blockState.left.isBlocking = true;
+						this->blockState.left.blockCoordinate = list_CollisionInfo.front()->blockCoordinate;
+						break;
 					case CollideDirection::RIGHT:
-						if (jumpState != JumpState::LANDING)
-							this->setLocation(
-								x_location - list_CollisionInfo.front()->collideVector.x * prev_deltaTime,
-								y_location - list_CollisionInfo.front()->collideVector.y * prev_deltaTime
-							);
-						else 
-							this->setLocation(
-								x_location + list_CollisionInfo.front()->collideVector.x * prev_deltaTime,
-								y_location - list_CollisionInfo.front()->collideVector.y * prev_deltaTime
-							);
+						this->blockState.right.isBlocking = true;
+						this->blockState.right.blockCoordinate = list_CollisionInfo.front()->blockCoordinate;
 						break;
 					case CollideDirection::TOP:
+						this->blockState.top.isBlocking = true;
+						this->blockState.top.blockCoordinate = list_CollisionInfo.front()->blockCoordinate;
+						this->velocityVector.y = 100.0f;
 						break;
 					case CollideDirection::BOTTOM:
-						if (list_CollisionInfo.front()->collideObjCategory == Category::TERRAIN) {
+						if (this->jumpState == JumpState::FALLING && list_CollisionInfo.front()->collideObjCategory == Category::TERRAIN) {
 							this->land();
-							y_location -= list_CollisionInfo.front()->collideVector.y * prev_deltaTime;
 						}
+						this->blockState.bottom.isBlocking = true;
+						this->blockState.bottom.blockCoordinate = list_CollisionInfo.front()->blockCoordinate;
 						break;
 					default:
 						break;

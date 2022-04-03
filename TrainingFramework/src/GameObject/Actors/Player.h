@@ -15,6 +15,7 @@ enum class MoveState {
 enum class JumpState {
 	LANDING = 0,
 	JUMPING = 1,
+	FALLING = 2,
 };
 
 class Player : public Actor {
@@ -23,6 +24,7 @@ private:
 	JumpState	jumpState;
 	float		velocityScale;
 	float		totalTime;
+	float		jumpSpeed;
 	bool		playing;
 
 	std::shared_ptr<SpriteAnimation> IDLE_Animation;
