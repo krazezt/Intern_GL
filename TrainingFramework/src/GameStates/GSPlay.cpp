@@ -71,7 +71,11 @@ void GSPlay::Init()
 	// Level
 	std::shared_ptr<BaseTerrain> terrain;
 	terrain = std::make_shared<Platform1>();
-	terrain->init(1600, 600);
+	terrain->init(1400, 600);
+	m_listTerrain.push_back(terrain);
+
+	terrain = std::make_shared<Platform1>();
+	terrain->init(1000, 700);
 	m_listTerrain.push_back(terrain);
 }
 
@@ -112,11 +116,13 @@ void GSPlay::HandleKeyEvents(int key, bool bIsPressed)
 	switch (key)
 	{
 	case KEY_MOVE_RIGHT:
-		bIsPressed ? player->horizontalMove(MoveState::MOVE_RIGHT, 1.0f) : player->stopMove();
+		bIsPressed ? player->horizontalMove(MoveState::MOVE_RIGHT) : player->stopMove();
 		break;
 	case KEY_MOVE_LEFT:
-		bIsPressed ? player->horizontalMove(MoveState::MOVE_LEFT, 1.0f) : player->stopMove();
+		bIsPressed ? player->horizontalMove(MoveState::MOVE_LEFT) : player->stopMove();
 		break;
+	case KEY_JUMP:
+		bIsPressed ? player->jump() : NULL;
 	default:
 		break;
 	}

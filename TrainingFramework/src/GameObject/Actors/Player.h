@@ -13,7 +13,7 @@ enum class MoveState {
 };
 
 enum class JumpState {
-	IDLE = 0,
+	LANDING = 0,
 	JUMPING = 1,
 };
 
@@ -27,6 +27,7 @@ private:
 
 	std::shared_ptr<SpriteAnimation> IDLE_Animation;
 	std::shared_ptr<SpriteAnimation> move_Animation;
+	std::shared_ptr<SpriteAnimation> jump_Animation;
 public:
 	Player();
 	~Player();
@@ -38,8 +39,9 @@ public:
 	virtual void initCollisionBox(float x_location, float y_location, float width, float height);
 	void consumeCollision() override;
 
-	void moveRight();
-	void horizontalMove(MoveState moveState, float velocityScale);
+	void horizontalMove(MoveState moveState);
+	void jump();
+	void land();
 	void stopMove();
 
 	void setCategory(Category category) override;

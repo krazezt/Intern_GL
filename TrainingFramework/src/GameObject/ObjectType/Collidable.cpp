@@ -11,14 +11,12 @@ void Collidable::applyCollision(std::shared_ptr<Collidable> collideObj) {
 
 	Vector2 tmp_collideVector = collisionInfo->collideVector;
 
-	if (CollisionManager::GetInstance()->getCollisionInteractive(this->getCategory(), collideObj->getCategory()) == Collision::BLOCK) {
-		collisionInfo->collisionType = Collision::BLOCK;
-		collisionInfo->collisionDetail = (
+	collisionInfo->collisionType = CollisionManager::GetInstance()->getCollisionInteractive(this->getCategory(), collideObj->getCategory());
+	collisionInfo->collideDirection = (
 			std::abs(tmp_collideVector.x) > std::abs(tmp_collideVector.y) ?
-			(tmp_collideVector.x < 0 ? CollisionDetail::BLOCK_LEFT : CollisionDetail::BLOCK_RIGHT) :
-			(tmp_collideVector.y < 0 ? CollisionDetail::BLOCK_TOP : CollisionDetail::BLOCK_BOTTOM)
+			(tmp_collideVector.x < 0 ? CollideDirection::LEFT : CollideDirection::RIGHT) :
+			(tmp_collideVector.y < 0 ? CollideDirection::TOP : CollideDirection::BOTTOM)
 			);
-	}
 
 	this->list_CollisionInfo.push_back(collisionInfo);
 }
