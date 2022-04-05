@@ -16,7 +16,7 @@ enum class CollideDirection {
 typedef struct _collisionInfo {
 	Collision			collisionType;
 	CollideDirection	collideDirection;
-	Vector2				collideVector;
+	Vector2				collideObjVelocityVector;
 	Category			collideObjCategory;
 	float				blockCoordinate;
 } CollisionInfo;

@@ -38,10 +38,10 @@ void Player::init() {
 	jump_Animation->SetSize(width*9/8, height);
 
 	this->initCollisionBox(this->x_location, this->y_location, width, height);
-	this->velocityVector = Vector2(0.0f, 150.0f);
+	this->velocityVector = Vector2(0.0f, 0.0f);
 	this->blockState.reset();
 
-	this->setLocation(1000, 420);
+	this->setLocation(1000, 450);
 }
 
 void Player::initCollisionBox(float x_location, float y_location, float width, float height) {
@@ -70,10 +70,17 @@ void Player::update(float deltaTime) {
 	float prev_x = x_location, prev_y = y_location;
 	this->setLocation(x_location + velocityScale * velocityVector.x * deltaTime, y_location + velocityScale * velocityVector.y * deltaTime);
 
-	if (this->blockState.top.isBlocking && this->y_location < prev_y) this->setLocation(x_location, this->blockState.top.blockCoordinate + this->collisionBox->getHeight() / 2);
-	if (this->blockState.right.isBlocking && this->x_location > prev_x) this->setLocation(this->blockState.right.blockCoordinate - this->collisionBox->getWidth() / 2, y_location);
-	if (this->blockState.left.isBlocking && this->x_location <= prev_x) this->setLocation(this->blockState.left.blockCoordinate + this->collisionBox->getWidth() / 2, y_location);
-	if (this->blockState.bottom.isBlocking && this->y_location >= prev_y) this->setLocation(x_location, this->blockState.bottom.blockCoordinate - this->collisionBox->getHeight() / 2);
+	if (this->blockState.top.isBlocking && this->y_location < this->blockState.top.blockCoordinate + this->collisionBox->getHeight() / 2)
+		this->setLocation(x_location, this->blockState.top.blockCoordinate + this->collisionBox->getHeight() / 2);
+
+	if (this->blockState.right.isBlocking && this->x_location > this->blockState.right.blockCoordinate - this->collisionBox->getWidth() / 2)
+		this->setLocation(this->blockState.right.blockCoordinate - this->collisionBox->getWidth() / 2, y_location);
+
+	if (this->blockState.left.isBlocking && this->x_location < this->blockState.left.blockCoordinate + this->collisionBox->getWidth() / 2)
+		this->setLocation(this->blockState.left.blockCoordinate + this->collisionBox->getWidth() / 2, y_location);
+
+	if (this->blockState.bottom.isBlocking && this->y_location > this->blockState.bottom.blockCoordinate - this->collisionBox->getHeight() / 2)
+		this->setLocation(x_location, this->blockState.bottom.blockCoordinate - this->collisionBox->getHeight() / 2);
 
 	this->animation->Update(deltaTime);
 	this->collisionBox->update(deltaTime);
@@ -162,6 +169,7 @@ void Player::consumeCollision() {
 						}
 						this->blockState.bottom.isBlocking = true;
 						this->blockState.bottom.blockCoordinate = list_CollisionInfo.front()->blockCoordinate;
+						this->setLocation(x_location + list_CollisionInfo.front()->collideObjVelocityVector.x * prev_deltaTime, y_location);
 						break;
 					default:
 						break;
