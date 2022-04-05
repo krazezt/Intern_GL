@@ -79,7 +79,11 @@ void GSPlay::Init()
 	m_listTerrain.push_back(terrain);
 
 	terrain = std::make_shared<Platform1>();
-	terrain->init(1000, 0);
+	terrain->init(1000, 150);
+	m_listTerrain.push_back(terrain);
+
+	terrain = std::make_shared<Platform1>();
+	terrain->init(600, 600);
 	m_listTerrain.push_back(terrain);
 }
 

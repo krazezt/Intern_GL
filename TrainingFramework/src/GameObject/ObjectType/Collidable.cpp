@@ -6,10 +6,8 @@ void Collidable::applyCollision(std::shared_ptr<Collidable> collideObj) {
 
 	std::shared_ptr<CollisionInfo> collisionInfo = std::make_shared<CollisionInfo>();
 
-	collisionInfo->collideVector = this->velocityVector - collideObj->getVelocityVector();
+	collisionInfo->collideObjVelocityVector = collideObj->getVelocityVector();
 	collisionInfo->collideObjCategory = collideObj->getCategory();
-
-	Vector2 tmp_collideVector = collisionInfo->collideVector;
 
 	collisionInfo->collisionType = CollisionManager::GetInstance()->getCollisionInteractive(this->getCategory(), collideObj->getCategory());
 	
@@ -21,8 +19,8 @@ void Collidable::applyCollision(std::shared_ptr<Collidable> collideObj) {
 
 	collisionInfo->collideDirection = (
 			std::abs(deltaX) > std::abs(deltaY) ?
-				(deltaY < 0 ? CollideDirection::TOP : CollideDirection::BOTTOM) :
-				(deltaX < 0 ? CollideDirection::LEFT : CollideDirection::RIGHT)
+				(deltaY < 0 ? CollideDirection::TOP : (deltaY > 0 ? CollideDirection::BOTTOM : y_dir > 0 ? CollideDirection::BOTTOM : CollideDirection::TOP)) :		// 2 dong nay: Do khi va cham, tai frame sau thi this da bi block
+				(deltaX < 0 ? CollideDirection::LEFT : (deltaX > 0 ? CollideDirection::RIGHT : x_dir > 0 ? CollideDirection::RIGHT : CollideDirection:: LEFT))		// Va do do', deltaX hoac deltaY = 0 -> thuat toan detect sai huong.
 		);
 
 	switch (collisionInfo->collideDirection) {
