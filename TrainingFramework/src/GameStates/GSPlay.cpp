@@ -214,3 +214,7 @@ void GSPlay::Draw()
 void GSPlay::addSpawnedActor(std::shared_ptr<Actor> spawnedActor) {
 	m_listSpwActor.push_back(spawnedActor);
 }
+
+void GSPlay::removeSpawnedActor(std::shared_ptr<Actor> spawnedActor) {
+	m_listSpwActor.remove(spawnedActor);
+}

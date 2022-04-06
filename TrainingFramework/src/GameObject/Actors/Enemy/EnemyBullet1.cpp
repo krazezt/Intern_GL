@@ -1,4 +1,5 @@
 #include "EnemyBullet1.h"
+#include "GameStates//GSPlay.h"
 
 EnemyBullet1::EnemyBullet1() {
 	this->category = Category::ENEMY_BULLET;
@@ -30,6 +31,7 @@ void EnemyBullet1::initCollisionBox(float x_location, float y_location, float wi
 }
 
 void EnemyBullet1::update(float deltaTime) {
+	totalTime += deltaTime;
 	this->setLocation(x_location + this->velocityVector.x * deltaTime, y_location + this->velocityVector.y * deltaTime);
 	this->animation->Update(deltaTime);
 	this->collisionBox->update(deltaTime);
