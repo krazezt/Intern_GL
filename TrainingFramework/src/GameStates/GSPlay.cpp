@@ -13,6 +13,8 @@
 
 #include "Actors/Enemy/Enemy1.h"
 
+std::list<std::shared_ptr<Actor>>	GSPlay::m_listSpwActor;
+
 GSPlay::GSPlay()
 {
 }
@@ -89,7 +91,7 @@ void GSPlay::Init()
 
 	std::shared_ptr<Enemy> enemy;
 	enemy = std::make_shared<Enemy1>();
-	enemy->init(1400, 400);
+	enemy->init(1400, 300);
 	m_listActor.push_back(enemy);
 }
 
@@ -178,6 +180,9 @@ void GSPlay::Update(float deltaTime)
 		}
 
 		for (auto it : m_listSpwActor) {
+			if (player->getCollisionBox()->detectCollision(it->getCollisionBox())) {
+				player->applyCollision(it);
+			}
 			it->update(deltaTime);
 		}
 	}

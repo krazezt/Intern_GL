@@ -16,6 +16,7 @@ void Enemy1::init(float x_location, float y_location) {
 	width = 140;
 	height = 140;
 	bulletLoading = true;
+	m_totalTime = 0.0f;
 
 	animation = std::make_shared<SpriteAnimation>(model, shader, texture, 15, 1, 0, 0.1f);
 	animation->SetSize(width, height);
@@ -43,7 +44,10 @@ void Enemy1::update(float deltaTime) {
 		newBullet->init(this->x_location, this->y_location + 80);
 		GSPlay::addSpawnedActor(newBullet);
 	}
-	else if (bulletLoading = true) {
+	else if (
+			((((int)(m_totalTime / 0.1f)) % 15) < 10) &&
+			(bulletLoading == true)
+		) {
 		bulletLoading = false;
 	}
 

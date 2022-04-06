@@ -25,6 +25,7 @@ private:
 	float		totalTime;
 	float		jumpSpeed;
 	bool		playing;
+	bool		died;
 
 	std::shared_ptr<SpriteAnimation> IDLE_Animation;
 	std::shared_ptr<SpriteAnimation> move_Animation;
@@ -44,4 +45,5 @@ public:
 	void jump();
 	void land();
 	void stopMove();
+	void die();
 };
