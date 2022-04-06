@@ -11,8 +11,8 @@ void EnemyBullet1::init(float x_location, float y_location) {
 	auto shader = ResourceManagers::GetInstance()->GetShader("Animation");
 	auto texture = ResourceManagers::GetInstance()->GetTexture("EnemyBullet1.tga");
 
-	width = 23;
-	height = 80;
+	width = 38;
+	height = 47;
 
 	animation = std::make_shared<SpriteAnimation>(model, shader, texture, 4, 1, 0, 0.1f);
 	animation->SetSize(width, height);
@@ -30,7 +30,7 @@ void EnemyBullet1::initCollisionBox(float x_location, float y_location, float wi
 }
 
 void EnemyBullet1::update(float deltaTime) {
-	this->setLocation(x_location * this->velocityVector.x * deltaTime, y_location * this->velocityVector.y * deltaTime);
+	this->setLocation(x_location + this->velocityVector.x * deltaTime, y_location + this->velocityVector.y * deltaTime);
 	this->animation->Update(deltaTime);
 	this->collisionBox->update(deltaTime);
 }

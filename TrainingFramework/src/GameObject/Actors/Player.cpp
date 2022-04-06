@@ -20,6 +20,7 @@ void Player::init(float x_location, float y_location) {
 	prev_deltaTime = 0;
 	jumpState = JumpState::LANDING;
 	jumpSpeed = 1500;
+	died = false;
 
 	animation = std::make_shared<SpriteAnimation>(model, shader, texture, 7, 1, 0, 0.2f);
 	animation->SetSize(width, height);
@@ -93,6 +94,7 @@ void Player::draw() {
 }
 
 void Player::stopMove() {
+	if (!playing || died) return;
 	this->animation = IDLE_Animation;
 	if (this->moveState == MoveState::MOVE_RIGHT)
 		this->animation->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
@@ -104,7 +106,7 @@ void Player::stopMove() {
 }
 
 void Player::horizontalMove(MoveState moveState) {
-	if (!playing) return;
+	if (!playing || died) return;
 	this->moveState = moveState;
 	this->animation = move_Animation;
 
@@ -128,7 +130,7 @@ void Player::land() {
 }
 
 void Player::jump() {
-	if (!playing) return;
+	if (!playing || died) return;
 	if (this->jumpState == JumpState::LANDING) {
 		this->velocityVector.y = -jumpSpeed;
 		this->jumpState = JumpState::JUMPING;
@@ -143,6 +145,13 @@ void Player::consumeCollision() {
 			case Collision::IGNORED:
 				break;
 			case Collision::OVERLAP:
+				switch (list_CollisionInfo.front()->collideObjCategory)
+				{
+				case Category::ENEMY_BULLET:
+					this->die();
+				default:
+					break;
+				}
 				break;
 			case Collision::BLOCK:
 				switch (list_CollisionInfo.front()->collideDirection) {
@@ -176,4 +185,15 @@ void Player::consumeCollision() {
 		
 		list_CollisionInfo.pop_front();
 	}
+}
+
+void Player::die() {
+	auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D.nfg");
+	auto shader = ResourceManagers::GetInstance()->GetShader("Animation");
+	auto texture = ResourceManagers::GetInstance()->GetTexture("Megaman_animation_Start.tga");
+
+	animation = std::make_shared<SpriteAnimation>(model, shader, texture, 7, 1, 0, 0.2f);
+	animation->SetSize(width, height);
+	died = true;
+	this->velocityVector = Vector2(0.0f, 0.0f);
 }
