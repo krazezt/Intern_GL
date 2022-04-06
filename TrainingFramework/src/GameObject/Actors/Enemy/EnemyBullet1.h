@@ -3,6 +3,7 @@
 
 class EnemyBullet1 : public Actor {
 	private:
+		float totalTime;
 	protected:
 	public:
 		EnemyBullet1();

@@ -190,9 +190,9 @@ void Player::consumeCollision() {
 void Player::die() {
 	auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D.nfg");
 	auto shader = ResourceManagers::GetInstance()->GetShader("Animation");
-	auto texture = ResourceManagers::GetInstance()->GetTexture("Megaman_animation_Start.tga");
+	auto texture = ResourceManagers::GetInstance()->GetTexture("Megaman_animation_Dying.tga");
 
-	animation = std::make_shared<SpriteAnimation>(model, shader, texture, 7, 1, 0, 0.2f);
+	animation = std::make_shared<SpriteAnimation>(model, shader, texture, 11, 1, 0, 0.2f);
 	animation->SetSize(width, height);
 	died = true;
 	this->velocityVector = Vector2(0.0f, 0.0f);

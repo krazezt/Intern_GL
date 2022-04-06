@@ -32,6 +32,7 @@ public:
 	void	Update(float deltaTime) override;
 	void	Draw() override;
 	static void	addSpawnedActor(std::shared_ptr<Actor> spawnedActor);
+	static void	removeSpawnedActor(std::shared_ptr<Actor> spawnedActor);
     int m_Test;
 
 private:
