@@ -11,6 +11,8 @@
 #include "GameButton.h"
 #include "SpriteAnimation.h"
 
+#include "Actors/Enemy/Enemy1.h"
+
 GSPlay::GSPlay()
 {
 }
@@ -64,12 +66,11 @@ void GSPlay::Init()
 
 	// Player
 	player = std::make_shared<Player>();
-	player->init();
-
-	m_listActor.push_back(player);
+	player->init(1000, 450);
 
 	// Level
 	std::shared_ptr<BaseTerrain> terrain;
+
 	terrain = std::make_shared<Platform1>();
 	terrain->init(1400, 600);
 	m_listTerrain.push_back(terrain);
@@ -85,6 +86,11 @@ void GSPlay::Init()
 	terrain = std::make_shared<Platform1>();
 	terrain->init(600, 600);
 	m_listTerrain.push_back(terrain);
+
+	std::shared_ptr<Enemy> enemy;
+	enemy = std::make_shared<Enemy1>();
+	enemy->init(1400, 400);
+	m_listActor.push_back(enemy);
 }
 
 void GSPlay::Exit()
@@ -154,19 +160,24 @@ void GSPlay::HandleMouseMoveEvents(int x, int y)
 void GSPlay::Update(float deltaTime)
 {
 	if (!pausing) {
+		player->update(deltaTime);
+
 		for (auto it : m_listButton) {
 			it->Update(deltaTime);
 		}
-		for (auto it : m_listAnimation) {
-			it->Update(deltaTime);
-		}
+
 		for (auto it : m_listActor) {
 			it->update(deltaTime);
 		}
+
 		for (auto it : m_listTerrain) {
 			if (player->getCollisionBox()->detectCollision(it->getCollisionBox())) {
 				player->applyCollision(it);
 			}
+			it->update(deltaTime);
+		}
+
+		for (auto it : m_listSpwActor) {
 			it->update(deltaTime);
 		}
 	}
@@ -176,19 +187,25 @@ void GSPlay::Draw()
 {
 	m_background->Draw();
 	m_score->Draw();
-	for (auto it : m_listButton)
-	{
+	player->draw();
+
+	for (auto it : m_listButton) {
 		it->Draw();
 	}
 
-	for (auto it : m_listAnimation)
-	{
-		it->Draw();
-	}
 	for (auto it : m_listActor) {
 		it->draw();
 	}
+
 	for (auto it : m_listTerrain) {
 		it->draw();
 	}
+
+	for (auto it : m_listSpwActor) {
+		it->draw();
+	}
+}
+
+void GSPlay::addSpawnedActor(std::shared_ptr<Actor> spawnedActor) {
+	m_listSpwActor.push_back(spawnedActor);
 }

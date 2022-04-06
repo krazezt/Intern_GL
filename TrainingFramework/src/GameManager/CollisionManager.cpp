@@ -15,6 +15,8 @@ Collision CollisionManager::getCollisionInteractive(Category category1, Category
 			return ci->getCollisionType();
 		}
 	}
+
+	return Collision::IGNORED;
 };
 
 void CollisionManager::addCollisionInteractive(Category category1, Category category2, Collision interactive) {
