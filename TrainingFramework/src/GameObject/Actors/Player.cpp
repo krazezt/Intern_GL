@@ -1,18 +1,17 @@
 #include "Player.h"
 #include "Shader.h"
 #include "Texture.h"
-#include "SpriteAnimation.h"
 
 Player::Player() {}
 Player::~Player() {}
 
-void Player::init() {
+void Player::init(float x_location, float y_location) {
 	auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D.nfg");
 	auto shader = ResourceManagers::GetInstance()->GetShader("Animation");
 	auto texture = ResourceManagers::GetInstance()->GetTexture("Megaman_animation_Start.tga");
 
-	int width = 150, height = 100;
-
+	width = 150;
+	height = 100;
 	movement_speed = 350;
 	velocityScale = 1;
 	totalTime = 0;
@@ -41,7 +40,7 @@ void Player::init() {
 	this->velocityVector = Vector2(0.0f, 0.0f);
 	this->blockState.reset();
 
-	this->setLocation(1000, 450);
+	this->setLocation(x_location, y_location);
 }
 
 void Player::initCollisionBox(float x_location, float y_location, float width, float height) {
@@ -138,9 +137,6 @@ void Player::jump() {
 	else return;
 }
 
-void Player::setCategory(Category category) {
-	this->category = category;
-}
 void Player::consumeCollision() {
 	while (!list_CollisionInfo.empty()) {
 		switch (list_CollisionInfo.front()->collisionType) {

@@ -88,6 +88,8 @@
     <ClCompile Include="src\GameObject\Terrain\Platform\Platform1.cpp" />
     <ClCompile Include="src\GameObject\ObjectType\Collidable.cpp" />
     <ClCompile Include="src\GameObject\BaseGameObject.cpp" />
+    <ClCompile Include="src\GameObject\Actors\Enemy\Enemy1.cpp" />
+    <ClCompile Include="src\GameObject\Actors\Enemy\EnemyBullet1.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Application.h">
@@ -164,6 +166,8 @@
     <ClInclude Include="src\GameObject\Terrain\Platform\Platform1.h" />
     <ClInclude Include="src\GameObject\ObjectType\Collidable.h" />
     <ClInclude Include="src\GameObject\BaseGameObject.h" />
+    <ClInclude Include="src\GameObject\Actors\Enemy\Enemy1.h" />
+    <ClInclude Include="src\GameObject\Actors\Enemy\EnemyBullet1.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

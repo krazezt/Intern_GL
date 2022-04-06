@@ -348,6 +348,8 @@
     <ClCompile Include="src\GameManager\ResourceManagers.cpp" />
     <ClCompile Include="src\GameObject\Actors\Actor.cpp" />
     <ClCompile Include="src\GameObject\Actors\Enemy\Enemy.cpp" />
+    <ClCompile Include="src\GameObject\Actors\Enemy\Enemy1.cpp" />
+    <ClCompile Include="src\GameObject\Actors\Enemy\EnemyBullet1.cpp" />
     <ClCompile Include="src\GameObject\Actors\Player.cpp" />
     <ClCompile Include="src\GameObject\BaseGameObject.cpp" />
     <ClCompile Include="src\GameObject\Collision\CollisionBox2D.cpp" />
@@ -383,6 +385,8 @@
     <ClInclude Include="src\GameManager\Singleton.h" />
     <ClInclude Include="src\GameObject\Actors\Actor.h" />
     <ClInclude Include="src\GameObject\Actors\Enemy\Enemy.h" />
+    <ClInclude Include="src\GameObject\Actors\Enemy\Enemy1.h" />
+    <ClInclude Include="src\GameObject\Actors\Enemy\EnemyBullet1.h" />
     <ClInclude Include="src\GameObject\Actors\Player.h" />
     <ClInclude Include="src\GameObject\BaseGameObject.h" />
     <ClInclude Include="src\GameObject\BaseObject.h" />

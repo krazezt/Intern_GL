@@ -1,6 +1,5 @@
 #pragma once
 #include <iostream>
-#include "GameManager/ResourceManagers.h"
 #include "Actor.h"
 #include "SpriteAnimation.h"
 
@@ -34,7 +33,7 @@ public:
 	Player();
 	~Player();
 
-	void init() override;
+	void init(float x_location, float y_location) override;
 	void update(float deltaTime) override;
 	void draw() override;
 
@@ -45,6 +44,4 @@ public:
 	void jump();
 	void land();
 	void stopMove();
-
-	void setCategory(Category category) override;
 };

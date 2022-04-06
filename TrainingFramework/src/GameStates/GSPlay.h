@@ -31,6 +31,7 @@ public:
 	void	HandleMouseMoveEvents(int x, int y) override;
 	void	Update(float deltaTime) override;
 	void	Draw() override;
+	static void	addSpawnedActor(std::shared_ptr<Actor> spawnedActor);
     int m_Test;
 
 private:
@@ -40,8 +41,8 @@ private:
 	std::shared_ptr<Text>		m_score;
 	std::shared_ptr<GameButton>	m_pauseButton;
 	std::list<std::shared_ptr<GameButton>>		m_listButton;
-	std::list<std::shared_ptr<SpriteAnimation>>	m_listAnimation;
 	std::list<std::shared_ptr<Actor>>			m_listActor;
 	std::list<std::shared_ptr<BaseTerrain>>		m_listTerrain;
+	static std::list<std::shared_ptr<Actor>>	m_listSpwActor;
 };
 
