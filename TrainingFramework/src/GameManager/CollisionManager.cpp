@@ -8,6 +8,7 @@ void CollisionManager::init() {
 	
 	addCollisionInteractive(Category::PLAYER, Category::TERRAIN, Collision::BLOCK);
 	addCollisionInteractive(Category::PLAYER, Category::ENEMY_BULLET, Collision::OVERLAP);
+	addCollisionInteractive(Category::PLAYER, Category::ENEMY, Collision::OVERLAP);
 };
 
 Collision CollisionManager::getCollisionInteractive(Category category1, Category category2) {

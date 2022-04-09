@@ -24,8 +24,11 @@
 class Globals
 {
 public:
-	static int Globals::screenWidth;
-	static int Globals::screenHeight;
+	static int	Globals::screenWidth;
+	static int	Globals::screenHeight;
+	static bool	sfx_on;
+	static bool	music_on;
+	static int playerCount;
 };
 
 // define value

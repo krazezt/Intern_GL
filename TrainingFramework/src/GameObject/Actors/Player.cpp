@@ -10,8 +10,8 @@ void Player::init(float x_location, float y_location) {
 	auto shader = ResourceManagers::GetInstance()->GetShader("Animation");
 	auto texture = ResourceManagers::GetInstance()->GetTexture("Megaman_animation_Start.tga");
 
-	width = 150;
-	height = 100;
+	width = 120;
+	height = 90;
 	movement_speed = 350;
 	velocityScale = 1;
 	totalTime = 0;
@@ -21,6 +21,13 @@ void Player::init(float x_location, float y_location) {
 	jumpState = JumpState::LANDING;
 	jumpSpeed = 1500;
 	died = false;
+	dying = false;
+
+	keyMoveLeft = -1;
+	keyMoveRight = -1;
+	keyJump = -1;
+	keyMoveUp = -1;
+	keyMoveDown = -1;
 
 	animation = std::make_shared<SpriteAnimation>(model, shader, texture, 7, 1, 0, 0.2f);
 	animation->SetSize(width, height);
@@ -37,7 +44,7 @@ void Player::init(float x_location, float y_location) {
 	jump_Animation = std::make_shared<SpriteAnimation>(model, shader, texture, 1, 1, 0, 1.0f);
 	jump_Animation->SetSize(width*9/8, height);
 
-	this->initCollisionBox(this->x_location, this->y_location, width, height);
+	this->initCollisionBox(this->x_location, this->y_location, width/1.5f, height);
 	this->velocityVector = Vector2(0.0f, 0.0f);
 	this->blockState.reset();
 
@@ -50,7 +57,15 @@ void Player::initCollisionBox(float x_location, float y_location, float width, f
 }
 
 void Player::update(float deltaTime) {
+	if (died) return;
+
 	totalTime += deltaTime;
+	dieTime = dying ? dieTime : totalTime;
+
+	if (totalTime - dieTime >= 2.2f) {
+		died = true;
+	}
+	
 	if (totalTime > 1.0f && playing == false) {
 		this->animation = IDLE_Animation;
 		this->setLocation(x_location, y_location);
@@ -89,16 +104,52 @@ void Player::update(float deltaTime) {
 }
 
 void Player::draw() {
+	if (died) return;
 	this->animation->Draw();
 	this->collisionBox->draw();
 }
 
+void Player::bindKeys(int keyMoveLeft, int keyMoveRight, int keyJump, int keyMoveUp, int keyMoveDown) {
+	this->keyMoveLeft = keyMoveLeft;
+	this->keyMoveRight = keyMoveRight;
+	this->keyJump = keyJump;
+	this->keyMoveUp = keyMoveUp;
+	this->keyMoveDown = keyMoveDown;
+};
+
+void Player::handleKeyEvent(int key, bool bIsPressed) {
+	if (key == keyMoveRight)
+		bIsPressed ? this->horizontalMove(MoveState::MOVE_RIGHT) : this->stopMove();
+	else if (key == keyMoveLeft)
+		bIsPressed ? this->horizontalMove(MoveState::MOVE_LEFT) : this->stopMove();
+	else if (key == keyJump)
+		bIsPressed ? this->jump() : NULL;
+	else if (key == keyMoveUp)
+		bIsPressed ? this->verticalMove(MoveState::MOVE_UP) : this->stopMove();
+	else if (key == keyMoveDown)
+		bIsPressed ? this->verticalMove(MoveState::MOVE_DOWN) : this->stopMove();
+}
+
 void Player::stopMove() {
-	if (!playing || died) return;
+	if (!playing || died || dying) return;
 	this->animation = IDLE_Animation;
-	if (this->moveState == MoveState::MOVE_RIGHT)
-		this->animation->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
-	else this->animation->SetRotation(Vector3(0.0f, PI, 0.0f));
+	switch (moveState) {
+		case MoveState::MOVE_RIGHT:
+			this->animation->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
+			break;
+		case MoveState::MOVE_LEFT:
+			this->animation->SetRotation(Vector3(0.0f, PI, 0.0f));
+			break;
+		case MoveState::MOVE_DOWN:
+			this->velocityVector.y -= movement_speed;
+			break;
+		case MoveState::MOVE_UP:
+			this->velocityVector.y += movement_speed;
+			break;
+		default:
+			break;
+	}
+
 	this->moveState = MoveState::IDLE;
 	this->velocityVector.x = 0;
 
@@ -106,7 +157,7 @@ void Player::stopMove() {
 }
 
 void Player::horizontalMove(MoveState moveState) {
-	if (!playing || died) return;
+	if (!playing || died || dying) return;
 	this->moveState = moveState;
 	this->animation = move_Animation;
 
@@ -124,13 +175,30 @@ void Player::horizontalMove(MoveState moveState) {
 	}
 }
 
+void Player::verticalMove(MoveState moveState) {
+	if (!playing || died || dying) return;
+	this->moveState = moveState;
+	this->animation = move_Animation;
+
+	switch (this->moveState) {
+		case MoveState::MOVE_UP:
+			this->velocityVector.y = -1 * movement_speed;
+			break;
+		case MoveState::MOVE_DOWN:
+			this->velocityVector.y = movement_speed;
+			break;
+		default:
+			break;
+	}
+}
+
 void Player::land() {
 	this->jumpState = JumpState::LANDING;
 	this->velocityVector.y = 0;
 }
 
 void Player::jump() {
-	if (!playing || died) return;
+	if (!playing || died || dying) return;
 	if (this->jumpState == JumpState::LANDING) {
 		this->velocityVector.y = -jumpSpeed;
 		this->jumpState = JumpState::JUMPING;
@@ -147,10 +215,12 @@ void Player::consumeCollision() {
 			case Collision::OVERLAP:
 				switch (list_CollisionInfo.front()->collideObjCategory)
 				{
-				case Category::ENEMY_BULLET:
-					this->die();
-				default:
-					break;
+					case Category::ENEMY:
+					case Category::ENEMY_BULLET:
+						this->die();
+						break;
+					default:
+						break;
 				}
 				break;
 			case Collision::BLOCK:
@@ -188,12 +258,13 @@ void Player::consumeCollision() {
 }
 
 void Player::die() {
+	if (dying) return;
 	auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D.nfg");
 	auto shader = ResourceManagers::GetInstance()->GetShader("Animation");
 	auto texture = ResourceManagers::GetInstance()->GetTexture("Megaman_animation_Dying.tga");
 
 	animation = std::make_shared<SpriteAnimation>(model, shader, texture, 11, 1, 0, 0.2f);
 	animation->SetSize(width, height);
-	died = true;
+	dying = true;
 	this->velocityVector = Vector2(0.0f, 0.0f);
 }

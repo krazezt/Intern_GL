@@ -26,8 +26,10 @@ void Application::Update(GLfloat deltaTime)
 {
 	GameStateMachine::GetInstance()->PerformStateChange();
 
-	if (GameStateMachine::GetInstance()->HasState())
+	if (GameStateMachine::GetInstance()->HasState()) {
+		if (deltaTime == 0) return;
 		GameStateMachine::GetInstance()->CurrentState()->Update(deltaTime);
+	}
 }
 
 void Application::Render()

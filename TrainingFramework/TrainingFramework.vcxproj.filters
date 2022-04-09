@@ -63,7 +63,7 @@
     <ClCompile Include="src\GameStates\GSMenu.cpp">
       <Filter>TrainingFramework\src\GameStates</Filter>
     </ClCompile>
-    <ClCompile Include="src\GameStates\GSPlay.cpp">
+    <ClCompile Include="src\GameStates\GSPlaySurvive.cpp">
       <Filter>TrainingFramework\src\GameStates</Filter>
     </ClCompile>
     <ClCompile Include="src\GameManager\ResourceManagers.cpp">
@@ -90,6 +90,12 @@
     <ClCompile Include="src\GameObject\BaseGameObject.cpp" />
     <ClCompile Include="src\GameObject\Actors\Enemy\Enemy1.cpp" />
     <ClCompile Include="src\GameObject\Actors\Enemy\EnemyBullet1.cpp" />
+    <ClCompile Include="src\GameObject\Actors\Enemy\Enemy2.cpp" />
+    <ClCompile Include="src\GameObject\Actors\Enemy\EnemyBullet2.cpp" />
+    <ClCompile Include="src\GameStates\GSChoosingMode.cpp" />
+    <ClCompile Include="src\GameObject\Terrain\Platform\MapEdge.cpp" />
+    <ClCompile Include="src\GameObject\Terrain\Platform\Platform2.cpp" />
+    <ClCompile Include="src\GameStates\GSChooseNumberOfPlayers.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Application.h">
@@ -140,7 +146,7 @@
     <ClInclude Include="src\GameStates\GSMenu.h">
       <Filter>TrainingFramework\src\GameStates</Filter>
     </ClInclude>
-    <ClInclude Include="src\GameStates\GSPlay.h">
+    <ClInclude Include="src\GameStates\GSPlaySurvive.h">
       <Filter>TrainingFramework\src\GameStates</Filter>
     </ClInclude>
     <ClInclude Include="src\GameManager\ResourceManagers.h">
@@ -168,6 +174,12 @@
     <ClInclude Include="src\GameObject\BaseGameObject.h" />
     <ClInclude Include="src\GameObject\Actors\Enemy\Enemy1.h" />
     <ClInclude Include="src\GameObject\Actors\Enemy\EnemyBullet1.h" />
+    <ClInclude Include="src\GameObject\Actors\Enemy\Enemy2.h" />
+    <ClInclude Include="src\GameObject\Actors\Enemy\EnemyBullet2.h" />
+    <ClInclude Include="src\GameStates\GSChoosingMode.h" />
+    <ClInclude Include="src\GameObject\Terrain\Platform\MapEdge.h" />
+    <ClInclude Include="src\GameObject\Terrain\Platform\Platform2.h" />
+    <ClInclude Include="src\GameStates\GSChooseNumberOfPlayers.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

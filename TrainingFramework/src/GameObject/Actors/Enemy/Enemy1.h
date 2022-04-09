@@ -5,6 +5,7 @@ class Enemy1 : public Enemy {
 	private:
 		float	m_totalTime;
 		bool	bulletLoading;
+		bool	movingRight;
 	public:
 		Enemy1();
 		~Enemy1();
