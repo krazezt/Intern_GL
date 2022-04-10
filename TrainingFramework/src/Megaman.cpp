@@ -8,6 +8,7 @@ int		Globals::screenHeight = 900;
 bool	Globals::sfx_on = true;
 bool	Globals::music_on = true;
 int		Globals::playerCount = 1;
+float	Globals::gravity = 5000.0f;
 
 GLint Init(ESContext* esContext)
 {

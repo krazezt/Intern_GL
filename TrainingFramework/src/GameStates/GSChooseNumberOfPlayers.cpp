@@ -16,10 +16,13 @@ GSChooseNumberOfPlayers::~GSChooseNumberOfPlayers()
 void GSChooseNumberOfPlayers::Init()
 {
 	switch (GameStateMachine::GetInstance()->getChoosingMode()) {
-	case StateType::STATE_PLAY_SURVIVE:
+	case PlayMode::SURVIVE:
 		maxPlayer = 2;
 		minPlayer = 1;
 		break;
+	case PlayMode::TRIGGER:
+		maxPlayer = 2;
+		minPlayer = 1;
 	default:
 		break;
 	}
@@ -97,7 +100,7 @@ void GSChooseNumberOfPlayers::Init()
 	m_playButton->SetSize(200, 200);
 	m_playButton->SetOnClick([this]() {
 			Globals::playerCount = this->n_o_player;
-			GameStateMachine::GetInstance()->ChangeState(GameStateMachine::GetInstance()->getChoosingMode());
+			GameStateMachine::GetInstance()->ChangeState( GameStateMachine::GetInstance()->getGameStateByMode( GameStateMachine::GetInstance()->getChoosingMode() ) );
 		});
 	m_listButton.push_back(m_playButton);
 }

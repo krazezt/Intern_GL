@@ -11,15 +11,22 @@ enum class StateType
 	STATE_INTRO,
 	STATE_MENU,
 	STATE_PLAY_SURVIVE,
+	STATE_PLAY_TRIGGER,
 	STATE_SETTING,
 	STATE_CHOOSING_MODE,
 	STATE_CHOOSING_N_O_PLAYERS,
 };
 
+enum class PlayMode {
+	INVALID,
+	SURVIVE,
+	TRIGGER,
+};
+
 class GameStateMachine : public CSingleton<GameStateMachine>
 {
 private:
-	StateType	choosingMode;
+	PlayMode	choosingMode;
 	std::list < std::shared_ptr<GameStateBase>>	m_StateStack;
 	std::shared_ptr<GameStateBase>				m_pActiveState;
 	std::shared_ptr<GameStateBase>				m_pNextState;
@@ -40,8 +47,9 @@ public:
 	void	Quit() { m_running = false; }
 	void	PerformStateChange();
 
-	StateType	getChoosingMode() { return choosingMode; };
-	void		setChoosingMode(StateType choosingMode) { this->choosingMode = choosingMode; };
+	PlayMode	getChoosingMode() { return choosingMode; };
+	void		setChoosingMode(PlayMode choosingMode) { this->choosingMode = choosingMode; };
+	StateType	getGameStateByMode(PlayMode choosingMode);
 
 	inline std::shared_ptr<GameStateBase> CurrentState()const
 	{

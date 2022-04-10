@@ -96,6 +96,10 @@
     <ClCompile Include="src\GameObject\Terrain\Platform\MapEdge.cpp" />
     <ClCompile Include="src\GameObject\Terrain\Platform\Platform2.cpp" />
     <ClCompile Include="src\GameStates\GSChooseNumberOfPlayers.cpp" />
+    <ClCompile Include="src\GameStates\GSPlayTrigger.cpp" />
+    <ClCompile Include="src\GameObject\Actors\TriggerBlock.cpp" />
+    <ClCompile Include="src\GameObject\Terrain\Triggerer.cpp" />
+    <ClCompile Include="src\GameObject\Terrain\Platform\WoodenBox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Application.h">
@@ -180,6 +184,10 @@
     <ClInclude Include="src\GameObject\Terrain\Platform\MapEdge.h" />
     <ClInclude Include="src\GameObject\Terrain\Platform\Platform2.h" />
     <ClInclude Include="src\GameStates\GSChooseNumberOfPlayers.h" />
+    <ClInclude Include="src\GameStates\GSPlayTrigger.h" />
+    <ClInclude Include="src\GameObject\Actors\TriggerBlock.h" />
+    <ClInclude Include="src\GameObject\Terrain\Triggerer.h" />
+    <ClInclude Include="src\GameObject\Terrain\Platform\WoodenBox.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

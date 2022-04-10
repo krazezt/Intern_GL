@@ -31,6 +31,11 @@ private:
 	bool		died;
 	bool		dying;
 
+	bool		movingUp;
+	bool		movingLeft;
+	bool		movingDown;
+	bool		movingRight;
+
 	int keyMoveLeft;
 	int keyMoveRight;
 	int keyJump;
@@ -55,9 +60,10 @@ public:
 	void handleKeyEvent(int key, bool bIsPressed);
 	void horizontalMove(MoveState moveState);
 	void verticalMove(MoveState moveState);
+	void calculateMove();
 	void jump();
 	void land();
-	void stopMove();
+	void stopMove(MoveState moveState);
 	void die();
 	bool isDied() { return died; };
 };

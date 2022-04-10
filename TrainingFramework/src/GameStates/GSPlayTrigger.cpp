@@ -1,4 +1,4 @@
-#include "GSPlaySurvive.h"
+#include "GSPlayTrigger.h"
 
 #include "Shader.h"
 #include "Texture.h"
@@ -11,32 +11,30 @@
 #include "GameButton.h"
 #include "SpriteAnimation.h"
 
-#include "Actors/Enemy/Enemy1.h"
-#include "Actors/Enemy/Enemy2.h"
 #include "Terrain/Platform/MapEdge.h"
-#include "Terrain/Platform/Platform1.h"
-#include "Terrain/Platform/Platform2.h"
+#include "Terrain/Platform/WoodenBox.h"
 
-std::list<std::shared_ptr<Actor>>	GSPlaySurvive::m_listSpwActor;
-
-GSPlaySurvive::GSPlaySurvive()
+GSPlayTrigger::GSPlayTrigger()
 {
 }
 
 
-GSPlaySurvive::~GSPlaySurvive()
+GSPlayTrigger::~GSPlayTrigger()
 {
 }
 
 
-void GSPlaySurvive::Init()
+void GSPlayTrigger::Init()
 {
 	m_Test = 1;
 	pausing = false;
-	isLose = false;
-	score = 0;
+	isEnd = false;
+	initScore = 100;
 	totalTime = 0.0f;
-	Globals::gravity = 5000.0f;
+	win = false;
+	Globals::gravity = 0.0f;
+
+	score = initScore;
 
 	auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D.nfg");
 	auto texture = ResourceManagers::GetInstance()->GetTexture("Background2.tga");
@@ -53,8 +51,8 @@ void GSPlaySurvive::Init()
 	button->Set2DPosition(Globals::screenWidth - 50, 50);
 	button->SetSize(50, 50);
 	button->SetOnClick([this]() {
-			GameStateMachine::GetInstance()->PopState();
-	});
+		GameStateMachine::GetInstance()->PopState();
+		});
 	m_listButton.push_back(button);
 
 	// button pause
@@ -64,7 +62,7 @@ void GSPlaySurvive::Init()
 	m_pauseButton->SetSize(50, 50);
 	m_pauseButton->SetOnClick([this]() {
 		Pause();
-	});
+		});
 	m_listButton.push_back(m_pauseButton);
 
 	// Map edges
@@ -97,156 +95,199 @@ void GSPlaySurvive::Init()
 	// Player
 	std::shared_ptr<Player> player = std::make_shared<Player>();
 	player->init(1020, 650);
-	player->bindKeys(KEY_MOVE_LEFT, KEY_MOVE_RIGHT, KEY_JUMP, -1, -1);
+	player->bindKeys(KEY_MOVE_LEFT, KEY_MOVE_RIGHT, -1, KEY_MOVE_FORWARD, KEY_MOVE_BACKWARD);
 	m_listPlayer.push_back(player);
 
 	if (Globals::playerCount > 1) {
 		player = std::make_shared<Player>();
-		player->init(1100, 650);
-		player->bindKeys(KEY_LEFT, KEY_RIGHT, KEY_UP, -1, -1);
+		player->init(1200, 650);
+		player->bindKeys(KEY_LEFT, KEY_RIGHT, -1, KEY_UP, KEY_DOWN);
 		m_listPlayer.push_back(player);
 	}
 
 	// Level
 	std::shared_ptr<BaseTerrain> terrain;
 
-	terrain = std::make_shared<Platform1>();
-	terrain->init(700, 800);
+	terrain = std::make_shared<WoodenBox>();
+	terrain->init(200, 200);
 	m_listTerrain.push_back(terrain);
 
-	terrain = std::make_shared<Platform1>();
-	terrain->init(1100, 800);
+	terrain = std::make_shared<WoodenBox>();
+	terrain->init(700, 200);
 	m_listTerrain.push_back(terrain);
 
-	terrain = std::make_shared<Platform1>();
-	terrain->init(400, 400);
+	terrain = std::make_shared<WoodenBox>();
+	terrain->init(1500, 200);
 	m_listTerrain.push_back(terrain);
 
-	terrain = std::make_shared<Platform1>();
-	terrain->init(1400, 400);
+	terrain = std::make_shared<WoodenBox>();
+	terrain->init(1000, 420);
 	m_listTerrain.push_back(terrain);
 
-	terrain = std::make_shared<Platform2>();
-	terrain->init(900, 600);
+	terrain = std::make_shared<WoodenBox>();
+	terrain->init(450, 600);
 	m_listTerrain.push_back(terrain);
 
-	// Enemies
-	std::shared_ptr<Enemy> enemy;
-	
-	enemy = std::make_shared<Enemy1>();
-	enemy->init(1600, 70);
-	m_listActor.push_back(enemy);
+	terrain = std::make_shared<WoodenBox>();
+	terrain->init(1300, 600);
+	m_listTerrain.push_back(terrain);
 
-	enemy = std::make_shared<Enemy1>();
-	enemy->init(400, 70);
-	m_listActor.push_back(enemy);
+	terrain = std::make_shared<WoodenBox>();
+	terrain->init(1000, 750);
+	m_listTerrain.push_back(terrain);
 
-	enemy = std::make_shared<Enemy2>();
-	enemy->init(1000, 300);
-	m_listActor.push_back(enemy);
+	terrain = std::make_shared<WoodenBox>();
+	terrain->init(1700, 750);
+	m_listTerrain.push_back(terrain);
 
-	enemy = std::make_shared<Enemy2>();
-	enemy->init(200, 300);
-	m_listActor.push_back(enemy);
+	// Trigger block
+	m_triggerBlock = std::make_shared<TriggerBlock>();
+	m_triggerBlock->init(850, 650);
 
-	enemy = std::make_shared<Enemy2>();
-	enemy->init(600, 700);
-	m_listActor.push_back(enemy);
+	// Triggerer
+	std::shared_ptr<Triggerer> triggerer;
 
-	enemy = std::make_shared<Enemy2>();
-	enemy->init(1400, 700);
-	m_listActor.push_back(enemy);
+	triggerer = std::make_shared<Triggerer>();
+	triggerer->init(450, 200);
+	m_listTriggerer.push_back(triggerer);
+
+	triggerer = std::make_shared<Triggerer>();
+	triggerer->init(1000, 200);
+	m_listTriggerer.push_back(triggerer);
+
+	triggerer = std::make_shared<Triggerer>();
+	triggerer->init(1700, 200);
+	m_listTriggerer.push_back(triggerer);
+
+	triggerer = std::make_shared<Triggerer>();
+	triggerer->init(450, 420);
+	m_listTriggerer.push_back(triggerer);
+
+	triggerer = std::make_shared<Triggerer>();
+	triggerer->init(700, 420);
+	m_listTriggerer.push_back(triggerer);
+
+	triggerer = std::make_shared<Triggerer>();
+	triggerer->init(1500, 420);
+	m_listTriggerer.push_back(triggerer);
+
+	triggerer = std::make_shared<Triggerer>();
+	triggerer->init(1300, 750);
+	m_listTriggerer.push_back(triggerer);
+
+	triggerer = std::make_shared<Triggerer>();
+	triggerer->init(700, 750);
+	m_listTriggerer.push_back(triggerer);
 }
 
-void GSPlaySurvive::Exit()
+void GSPlayTrigger::Exit()
 {
-	m_listSpwActor.clear();
 }
 
 
-void GSPlaySurvive::Pause() {
+void GSPlayTrigger::Pause() {
 	pausing = true;
 	auto texture = ResourceManagers::GetInstance()->GetTexture("btn_play.tga");
 	m_pauseButton->SetTexture(texture);
 
 	m_pauseButton->SetOnClick([this]() {
-		Resume();
-	});
+			Resume();
+		});
 }
 
-void GSPlaySurvive::Resume() {
+void GSPlayTrigger::Resume() {
 	pausing = false;
 	auto texture = ResourceManagers::GetInstance()->GetTexture("btn_pause.tga");
 	m_pauseButton->SetTexture(texture);
 
 	m_pauseButton->SetOnClick([this]() {
-		Pause();
-	});
+			Pause();
+		});
 }
 
 
-void GSPlaySurvive::HandleEvents()
+void GSPlayTrigger::HandleEvents()
 {
 }
 
-void GSPlaySurvive::HandleKeyEvents(int key, bool bIsPressed)
+void GSPlayTrigger::HandleKeyEvents(int key, bool bIsPressed)
 {
-	if (pausing) return;
+	if (this->isEnd || pausing) return;
 	for (auto i : m_listPlayer) {
 		i->handleKeyEvent(key, bIsPressed);
 	}
 }
 
-void GSPlaySurvive::HandleTouchEvents(int x, int y, bool bIsPressed)
+void GSPlayTrigger::HandleTouchEvents(int x, int y, bool bIsPressed)
 {
 	for (auto button : m_listButton)
 	{
-		if(button->HandleTouchEvents(x, y, bIsPressed))
+		if (button->HandleTouchEvents(x, y, bIsPressed))
 		{
 			break;
 		}
 	}
 }
 
-void GSPlaySurvive::HandleMouseMoveEvents(int x, int y)
+void GSPlayTrigger::HandleMouseMoveEvents(int x, int y)
 {
 }
 
-void GSPlaySurvive::checkLose() {
-	bool lose = true;
-	for (auto it : m_listPlayer) {
-		if (!it->isDied()) lose = false;
+void GSPlayTrigger::checkEnd() {
+	if (score <= 0) {
+		win = false;
+		isEnd = true;
+		initEndgameText();
+		return;
+	}
+	
+	for (auto i : m_listTriggerer) {
+		if (!i->checkTriggered()) return;
 	}
 
+	win = true;
+	isEnd = true;
+	initEndgameText();
+}
+
+void GSPlayTrigger::initEndgameText() {
 	char str[30];
-	sprintf(str, "End game (%d pts)", this->score);
+	if (win) {
+		sprintf(str, "You won! (%d pts)", this->score);
+	}
+	else {
+		sprintf(str, "You lose!");
+	}
 
 	auto shader = ResourceManagers::GetInstance()->GetShader("TextShader");
 	std::shared_ptr<Font> font = ResourceManagers::GetInstance()->GetFont("Brightly Crush Shine.otf");
-	m_endGame= std::make_shared<Text>(shader, font, str, TextColor::RED, 2.0);
+	m_endGame = std::make_shared<Text>(shader, font, str, TextColor::RED, 2.0);
 	m_endGame->Set2DPosition(Vector2(Globals::screenWidth / 2 - 200, Globals::screenHeight / 2));
-	this->isLose = lose;
 }
 
-void GSPlaySurvive::Update(float deltaTime)
+void GSPlayTrigger::Update(float deltaTime)
 {
-	if (this->isLose) return;
-
-	this->checkLose();
+	this->checkEnd();
+	if (this->isEnd) return;
 
 	totalTime += deltaTime;
 
 	if (!pausing) {
 		if (score != std::round(totalTime)) {
-			score = std::round(totalTime);
+			score = initScore - std::round(totalTime);
 			char str[30];
-			sprintf(str, "Score: %d", score);
+			sprintf(str, "Time left: %d seconds", score);
 
 			m_score->SetText(str);
 		}
 
+		m_triggerBlock->update(deltaTime);
+
 		for (auto it : m_listPlayer) {
 			it->update(deltaTime);
+			if (m_triggerBlock->getCollisionBox()->detectCollision(it->getCollisionBox())) {
+				m_triggerBlock->applyCollision(it);
+			}
 		}
 
 		for (auto it : m_listButton) {
@@ -254,10 +295,6 @@ void GSPlaySurvive::Update(float deltaTime)
 		}
 
 		for (auto it : m_listActor) {
-			for (auto i : m_listPlayer)
-				if (i->getCollisionBox()->detectCollision(it->getCollisionBox())) {
-					i->applyCollision(it);
-				}
 			it->update(deltaTime);
 		}
 
@@ -266,20 +303,29 @@ void GSPlaySurvive::Update(float deltaTime)
 				if (i->getCollisionBox()->detectCollision(it->getCollisionBox())) {
 					i->applyCollision(it);
 				}
+
+			if (m_triggerBlock->getCollisionBox()->detectCollision(it->getCollisionBox())) {
+				m_triggerBlock->applyCollision(it);
+			}
+
 			it->update(deltaTime);
 		}
 
-		for (auto it : m_listSpwActor) {
+		for (auto it : m_listTriggerer) {
+			if (m_triggerBlock->getCollisionBox()->detectCollision(it->getCollisionBox())) {
+				m_triggerBlock->applyCollision(it);
+				it->trigger();
+			}
+
 			for (auto i : m_listPlayer)
 				if (i->getCollisionBox()->detectCollision(it->getCollisionBox())) {
 					i->applyCollision(it);
 				}
-			it->update(deltaTime);
 		}
 	}
 }
 
-void GSPlaySurvive::Draw()
+void GSPlayTrigger::Draw()
 {
 	m_background->Draw();
 
@@ -295,22 +341,16 @@ void GSPlaySurvive::Draw()
 		it->draw();
 	}
 
-	for (auto it : m_listSpwActor) {
+	for (auto it : m_listTriggerer) {
 		it->draw();
 	}
 
+	m_triggerBlock->draw();
+
 	m_score->Draw();
-	if (this->isLose) m_endGame->Draw();
+	if (this->isEnd) m_endGame->Draw();
 
 	for (auto it : m_listButton) {
 		it->Draw();
 	}
-}
-
-void GSPlaySurvive::addSpawnedActor(std::shared_ptr<Actor> spawnedActor) {
-	m_listSpwActor.push_back(spawnedActor);
-}
-
-void GSPlaySurvive::removeSpawnedActor(std::shared_ptr<Actor> spawnedActor) {
-	m_listSpwActor.remove(spawnedActor);
 }

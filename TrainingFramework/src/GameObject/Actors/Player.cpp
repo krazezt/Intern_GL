@@ -29,6 +29,11 @@ void Player::init(float x_location, float y_location) {
 	keyMoveUp = -1;
 	keyMoveDown = -1;
 
+	movingUp = false;
+	movingDown = false;
+	movingLeft = false;
+	movingRight = false;
+
 	animation = std::make_shared<SpriteAnimation>(model, shader, texture, 7, 1, 0, 0.2f);
 	animation->SetSize(width, height);
 
@@ -77,7 +82,7 @@ void Player::update(float deltaTime) {
 	}
 
 	if (this->jumpState != JumpState::LANDING) {
-		this->velocityVector.y += deltaTime * GRAVITY;
+		this->velocityVector.y += deltaTime * Globals::gravity;
 		if (this->velocityVector.y > 0) this->jumpState = JumpState::FALLING;
 	}
 	else if (!this->blockState.bottom.isBlocking) this->jumpState = JumpState::FALLING;
@@ -119,39 +124,46 @@ void Player::bindKeys(int keyMoveLeft, int keyMoveRight, int keyJump, int keyMov
 
 void Player::handleKeyEvent(int key, bool bIsPressed) {
 	if (key == keyMoveRight)
-		bIsPressed ? this->horizontalMove(MoveState::MOVE_RIGHT) : this->stopMove();
+		bIsPressed ? this->horizontalMove(MoveState::MOVE_RIGHT) : this->stopMove(MoveState::MOVE_RIGHT);
 	else if (key == keyMoveLeft)
-		bIsPressed ? this->horizontalMove(MoveState::MOVE_LEFT) : this->stopMove();
+		bIsPressed ? this->horizontalMove(MoveState::MOVE_LEFT) : this->stopMove(MoveState::MOVE_LEFT);
 	else if (key == keyJump)
 		bIsPressed ? this->jump() : NULL;
 	else if (key == keyMoveUp)
-		bIsPressed ? this->verticalMove(MoveState::MOVE_UP) : this->stopMove();
+		bIsPressed ? this->verticalMove(MoveState::MOVE_UP) : this->stopMove(MoveState::MOVE_UP);
 	else if (key == keyMoveDown)
-		bIsPressed ? this->verticalMove(MoveState::MOVE_DOWN) : this->stopMove();
+		bIsPressed ? this->verticalMove(MoveState::MOVE_DOWN) : this->stopMove(MoveState::MOVE_DOWN);
 }
 
-void Player::stopMove() {
+void Player::stopMove(MoveState moveState) {
 	if (!playing || died || dying) return;
-	this->animation = IDLE_Animation;
+	
 	switch (moveState) {
 		case MoveState::MOVE_RIGHT:
-			this->animation->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
+			movingRight = false;
+			IDLE_Animation->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
+			this->velocityVector.x = 0;
 			break;
 		case MoveState::MOVE_LEFT:
-			this->animation->SetRotation(Vector3(0.0f, PI, 0.0f));
+			movingLeft = false;
+			IDLE_Animation->SetRotation(Vector3(0.0f, PI, 0.0f));
+			this->velocityVector.x = 0;
 			break;
 		case MoveState::MOVE_DOWN:
-			this->velocityVector.y -= movement_speed;
+			movingDown = false;
+			this->velocityVector.y = 0;
 			break;
 		case MoveState::MOVE_UP:
-			this->velocityVector.y += movement_speed;
+			movingUp = false;
+			this->velocityVector.y = 0;
 			break;
 		default:
 			break;
 	}
 
+	if (!movingLeft && !movingRight && !movingUp && !movingDown) this->animation = IDLE_Animation;
+
 	this->moveState = MoveState::IDLE;
-	this->velocityVector.x = 0;
 
 	this->setLocation(x_location, y_location);
 }
@@ -164,10 +176,12 @@ void Player::horizontalMove(MoveState moveState) {
 	switch (this->moveState) {
 		case MoveState::MOVE_RIGHT:
 			this->velocityVector.x = movement_speed;
+			this->movingRight = true;
 			this->animation->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
 			break;
 		case MoveState::MOVE_LEFT:
 			this->velocityVector.x = -1 * movement_speed;
+			this->movingLeft = true;
 			this->animation->SetRotation(Vector3(0.0f, PI, 0.0f));
 			break;
 		default:
@@ -183,9 +197,11 @@ void Player::verticalMove(MoveState moveState) {
 	switch (this->moveState) {
 		case MoveState::MOVE_UP:
 			this->velocityVector.y = -1 * movement_speed;
+			this->movingUp = true;
 			break;
 		case MoveState::MOVE_DOWN:
 			this->velocityVector.y = movement_speed;
+			this->movingDown = true;
 			break;
 		default:
 			break;
@@ -205,6 +221,10 @@ void Player::jump() {
 		this->setLocation(x_location, y_location + 0.1f);
 	}
 	else return;
+}
+
+void Player::calculateMove() {
+
 }
 
 void Player::consumeCollision() {
@@ -236,7 +256,8 @@ void Player::consumeCollision() {
 					case CollideDirection::TOP:
 						this->blockState.top.isBlocking = true;
 						this->blockState.top.blockCoordinate = list_CollisionInfo.front()->blockCoordinate;
-						this->velocityVector.y = 100.0f;
+						this->setLocation(x_location, y_location + 0.1f);
+						this->velocityVector.y = Globals::gravity * 0.02f;
 						break;
 					case CollideDirection::BOTTOM:
 						if (this->jumpState == JumpState::FALLING && list_CollisionInfo.front()->collideObjCategory == Category::TERRAIN) {

@@ -8,6 +8,7 @@
 #include "GSSetting.h"
 #include "GSChoosingMode.h"
 #include "GSChooseNumberOfPlayers.h"
+#include "GSPlayTrigger.h"
 
 #include "GameStatebase.h"
 
@@ -29,6 +30,9 @@ std::shared_ptr<GameStateBase> GameStateBase::CreateState(StateType stt)
 		break;
 	case StateType::STATE_PLAY_SURVIVE:
 		gs = std::make_shared<GSPlaySurvive>();
+		break;
+	case StateType::STATE_PLAY_TRIGGER:
+		gs = std::make_shared<GSPlayTrigger>();
 		break;
 	case StateType::STATE_SETTING:
 		gs = std::make_shared<GSSetting>();
