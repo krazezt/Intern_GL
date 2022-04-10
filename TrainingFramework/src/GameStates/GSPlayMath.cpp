@@ -1,4 +1,7 @@
-#include "GSPlaySurvive.h"
+#include <cstdlib>
+#include <ctime>
+
+#include "GSPlayMath.h"
 
 #include "Shader.h"
 #include "Texture.h"
@@ -17,24 +20,22 @@
 #include "Terrain/Platform/Platform1.h"
 #include "Terrain/Platform/Platform2.h"
 
-std::list<std::shared_ptr<Actor>>	GSPlaySurvive::m_listSpwActor;
-
-GSPlaySurvive::GSPlaySurvive()
+GSPlayMath::GSPlayMath()
 {
 }
 
 
-GSPlaySurvive::~GSPlaySurvive()
+GSPlayMath::~GSPlayMath()
 {
 }
 
 
-void GSPlaySurvive::Init()
+void GSPlayMath::Init()
 {
-	m_Test = 1;
 	pausing = false;
-	isLose = false;
+	isEnd = false;
 	score = 0;
+	timeLeft = 100;
 	totalTime = 0.0f;
 	Globals::gravity = 5000.0f;
 
@@ -53,8 +54,8 @@ void GSPlaySurvive::Init()
 	button->Set2DPosition(Globals::screenWidth - 50, 50);
 	button->SetSize(50, 50);
 	button->SetOnClick([this]() {
-			GameStateMachine::GetInstance()->PopState();
-	});
+		GameStateMachine::GetInstance()->PopState();
+		});
 	m_listButton.push_back(button);
 
 	// button pause
@@ -63,8 +64,8 @@ void GSPlaySurvive::Init()
 	m_pauseButton->Set2DPosition(Globals::screenWidth - 150, 50);
 	m_pauseButton->SetSize(50, 50);
 	m_pauseButton->SetOnClick([this]() {
-		Pause();
-	});
+			Pause();
+		});
 	m_listButton.push_back(m_pauseButton);
 
 	// Map edges
@@ -89,7 +90,7 @@ void GSPlaySurvive::Init()
 	// score
 	shader = ResourceManagers::GetInstance()->GetShader("TextShader");
 	std::shared_ptr<Font> font = ResourceManagers::GetInstance()->GetFont("Brightly Crush Shine.otf");
-	m_score = std::make_shared<Text>(shader, font, "Score: 0", TextColor::RED, 1.0);
+	m_score = std::make_shared<Text>(shader, font, "score: 10", TextColor::RED, 1.0);
 	m_score->Set2DPosition(Vector2(5, 25));
 
 	CollisionManager::GetInstance()->init();
@@ -129,67 +130,38 @@ void GSPlaySurvive::Init()
 	terrain = std::make_shared<Platform2>();
 	terrain->init(900, 600);
 	m_listTerrain.push_back(terrain);
-
-	// Enemies
-	std::shared_ptr<Enemy> enemy;
-	
-	enemy = std::make_shared<Enemy1>();
-	enemy->init(1600, 70);
-	m_listActor.push_back(enemy);
-
-	enemy = std::make_shared<Enemy1>();
-	enemy->init(400, 70);
-	m_listActor.push_back(enemy);
-
-	enemy = std::make_shared<Enemy2>();
-	enemy->init(1000, 300);
-	m_listActor.push_back(enemy);
-
-	enemy = std::make_shared<Enemy2>();
-	enemy->init(200, 300);
-	m_listActor.push_back(enemy);
-
-	enemy = std::make_shared<Enemy2>();
-	enemy->init(600, 700);
-	m_listActor.push_back(enemy);
-
-	enemy = std::make_shared<Enemy2>();
-	enemy->init(1400, 700);
-	m_listActor.push_back(enemy);
 }
 
-void GSPlaySurvive::Exit()
-{
-	m_listSpwActor.clear();
+void GSPlayMath::Exit() {
 }
 
 
-void GSPlaySurvive::Pause() {
+void GSPlayMath::Pause() {
 	pausing = true;
 	auto texture = ResourceManagers::GetInstance()->GetTexture("btn_play.tga");
 	m_pauseButton->SetTexture(texture);
 
 	m_pauseButton->SetOnClick([this]() {
-		Resume();
-	});
+			Resume();
+		});
 }
 
-void GSPlaySurvive::Resume() {
+void GSPlayMath::Resume() {
 	pausing = false;
 	auto texture = ResourceManagers::GetInstance()->GetTexture("btn_pause.tga");
 	m_pauseButton->SetTexture(texture);
 
 	m_pauseButton->SetOnClick([this]() {
-		Pause();
-	});
+			Pause();
+		});
 }
 
 
-void GSPlaySurvive::HandleEvents()
+void GSPlayMath::HandleEvents()
 {
 }
 
-void GSPlaySurvive::HandleKeyEvents(int key, bool bIsPressed)
+void GSPlayMath::HandleKeyEvents(int key, bool bIsPressed)
 {
 	if (pausing) return;
 	for (auto i : m_listPlayer) {
@@ -197,42 +169,30 @@ void GSPlaySurvive::HandleKeyEvents(int key, bool bIsPressed)
 	}
 }
 
-void GSPlaySurvive::HandleTouchEvents(int x, int y, bool bIsPressed)
+void GSPlayMath::HandleTouchEvents(int x, int y, bool bIsPressed)
 {
 	for (auto button : m_listButton)
 	{
-		if(button->HandleTouchEvents(x, y, bIsPressed))
+		if (button->HandleTouchEvents(x, y, bIsPressed))
 		{
 			break;
 		}
 	}
 }
 
-void GSPlaySurvive::HandleMouseMoveEvents(int x, int y)
+void GSPlayMath::HandleMouseMoveEvents(int x, int y)
 {
 }
 
-void GSPlaySurvive::checkLose() {
-	bool lose = true;
-	for (auto it : m_listPlayer) {
-		if (!it->isDied()) lose = false;
-	}
-
-	char str[30];
-	sprintf(str, "End game (%d pts)", this->score);
-
-	auto shader = ResourceManagers::GetInstance()->GetShader("TextShader");
-	std::shared_ptr<Font> font = ResourceManagers::GetInstance()->GetFont("Brightly Crush Shine.otf");
-	m_endGame= std::make_shared<Text>(shader, font, str, TextColor::RED, 2.0);
-	m_endGame->Set2DPosition(Vector2(Globals::screenWidth / 2 - 200, Globals::screenHeight / 2));
-	this->isLose = lose;
+void GSPlayMath::checkEndgame() {
+	
 }
 
-void GSPlaySurvive::Update(float deltaTime)
+void GSPlayMath::Update(float deltaTime)
 {
-	if (this->isLose) return;
+	if (this->isEnd) return;
 
-	this->checkLose();
+	this->checkEndgame();
 
 	totalTime += deltaTime;
 
@@ -254,10 +214,6 @@ void GSPlaySurvive::Update(float deltaTime)
 		}
 
 		for (auto it : m_listActor) {
-			for (auto i : m_listPlayer)
-				if (i->getCollisionBox()->detectCollision(it->getCollisionBox())) {
-					i->applyCollision(it);
-				}
 			it->update(deltaTime);
 		}
 
@@ -268,18 +224,10 @@ void GSPlaySurvive::Update(float deltaTime)
 				}
 			it->update(deltaTime);
 		}
-
-		for (auto it : m_listSpwActor) {
-			for (auto i : m_listPlayer)
-				if (i->getCollisionBox()->detectCollision(it->getCollisionBox())) {
-					i->applyCollision(it);
-				}
-			it->update(deltaTime);
-		}
 	}
 }
 
-void GSPlaySurvive::Draw()
+void GSPlayMath::Draw()
 {
 	m_background->Draw();
 
@@ -295,22 +243,22 @@ void GSPlaySurvive::Draw()
 		it->draw();
 	}
 
-	for (auto it : m_listSpwActor) {
-		it->draw();
-	}
-
 	m_score->Draw();
-	if (this->isLose) m_endGame->Draw();
+	if (this->isEnd) m_endGame->Draw();
 
 	for (auto it : m_listButton) {
 		it->Draw();
 	}
 }
 
-void GSPlaySurvive::addSpawnedActor(std::shared_ptr<Actor> spawnedActor) {
-	m_listSpwActor.push_back(spawnedActor);
-}
+void GSPlayMath::initRandomSeed() {
+	srand(time(NULL));
+};
 
-void GSPlaySurvive::removeSpawnedActor(std::shared_ptr<Actor> spawnedActor) {
-	m_listSpwActor.remove(spawnedActor);
-}
+int	 GSPlayMath::getRandomValue(int from, int to) {
+	return (rand() % (from - to + 1) + from);
+};
+
+void GSPlayMath::setupNewRound() {};
+bool GSPlayMath::checkEndRound() {};
+bool GSPlayMath::checkEndGame() {};

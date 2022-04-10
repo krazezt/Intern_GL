@@ -12,6 +12,7 @@ enum class StateType
 	STATE_MENU,
 	STATE_PLAY_SURVIVE,
 	STATE_PLAY_TRIGGER,
+	STATE_PLAY_MATH,
 	STATE_SETTING,
 	STATE_CHOOSING_MODE,
 	STATE_CHOOSING_N_O_PLAYERS,
@@ -21,6 +22,7 @@ enum class PlayMode {
 	INVALID,
 	SURVIVE,
 	TRIGGER,
+	MATH,
 };
 
 class GameStateMachine : public CSingleton<GameStateMachine>

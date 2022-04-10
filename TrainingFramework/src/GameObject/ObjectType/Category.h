@@ -7,4 +7,5 @@ enum class Category {
 	ENEMY_BULLET,
 	TRIGGER_BLOCK,
 	TRIGGERER,
+	NUMBER_BLOCK,
 };

@@ -17,12 +17,17 @@ void GSChooseNumberOfPlayers::Init()
 {
 	switch (GameStateMachine::GetInstance()->getChoosingMode()) {
 	case PlayMode::SURVIVE:
-		maxPlayer = 2;
 		minPlayer = 1;
+		maxPlayer = 2;
 		break;
 	case PlayMode::TRIGGER:
-		maxPlayer = 2;
 		minPlayer = 1;
+		maxPlayer = 2;
+		break;
+	case PlayMode::MATH:
+		minPlayer = 2;
+		maxPlayer = 2;
+		break;
 	default:
 		break;
 	}

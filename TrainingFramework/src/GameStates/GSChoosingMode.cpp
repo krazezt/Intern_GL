@@ -4,6 +4,7 @@
 PlayMode GSChoosingMode::modeList[10] = {
 	PlayMode::SURVIVE,
 	PlayMode::TRIGGER,
+	PlayMode::MATH
 };
 
 GSChoosingMode::GSChoosingMode() : GameStateBase(StateType::STATE_CHOOSING_MODE),
@@ -149,6 +150,10 @@ void GSChoosingMode::setChoosingModeIndex(int newModeIndex) {
 		break;
 	case PlayMode::TRIGGER:
 		texture = ResourceManagers::GetInstance()->GetTexture("Background2.tga");
+		m_modeButton->SetTexture(texture);
+		break;
+	case PlayMode::MATH:
+		texture = ResourceManagers::GetInstance()->GetTexture("Background3.tga");
 		m_modeButton->SetTexture(texture);
 		break;
 	default:

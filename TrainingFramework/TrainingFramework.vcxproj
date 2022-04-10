@@ -352,6 +352,7 @@
     <ClCompile Include="src\GameObject\Actors\Enemy\Enemy2.cpp" />
     <ClCompile Include="src\GameObject\Actors\Enemy\EnemyBullet1.cpp" />
     <ClCompile Include="src\GameObject\Actors\Enemy\EnemyBullet2.cpp" />
+    <ClCompile Include="src\GameObject\Actors\NumberBlock.cpp" />
     <ClCompile Include="src\GameObject\Actors\Player.cpp" />
     <ClCompile Include="src\GameObject\Actors\TriggerBlock.cpp" />
     <ClCompile Include="src\GameObject\Terrain\Platform\WoodenBox.cpp" />
@@ -382,6 +383,7 @@
     <ClCompile Include="src\GameStates\GSChoosingMode.cpp" />
     <ClCompile Include="src\GameStates\GSIntro.cpp" />
     <ClCompile Include="src\GameStates\GSMenu.cpp" />
+    <ClCompile Include="src\GameStates\GSPlayMath.cpp" />
     <ClCompile Include="src\GameStates\GSPlaySurvive.cpp" />
     <ClCompile Include="src\GameStates\GSPlayTrigger.cpp" />
     <ClCompile Include="src\GameStates\GSSetting.cpp" />
@@ -399,6 +401,7 @@
     <ClInclude Include="src\GameObject\Actors\Enemy\Enemy2.h" />
     <ClInclude Include="src\GameObject\Actors\Enemy\EnemyBullet1.h" />
     <ClInclude Include="src\GameObject\Actors\Enemy\EnemyBullet2.h" />
+    <ClInclude Include="src\GameObject\Actors\NumberBlock.h" />
     <ClInclude Include="src\GameObject\Actors\Player.h" />
     <ClInclude Include="src\GameObject\Actors\TriggerBlock.h" />
     <ClInclude Include="src\GameObject\Terrain\Platform\WoodenBox.h" />
@@ -431,6 +434,7 @@
     <ClInclude Include="src\GameStates\GSChoosingMode.h" />
     <ClInclude Include="src\GameStates\GSIntro.h" />
     <ClInclude Include="src\GameStates\GSMenu.h" />
+    <ClInclude Include="src\GameStates\GSPlayMath.h" />
     <ClInclude Include="src\GameStates\GSPlaySurvive.h" />
     <ClInclude Include="src\GameStates\GSPlayTrigger.h" />
     <ClInclude Include="src\GameStates\GSSetting.h" />

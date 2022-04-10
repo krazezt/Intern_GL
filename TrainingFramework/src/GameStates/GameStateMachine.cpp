@@ -92,6 +92,8 @@ StateType GameStateMachine::getGameStateByMode(PlayMode choosingMode) {
 			return StateType::STATE_PLAY_SURVIVE;
 		case PlayMode::TRIGGER:
 			return StateType::STATE_PLAY_TRIGGER;
+		case PlayMode::MATH:
+			return StateType::STATE_PLAY_MATH;
 		default:
 			return StateType::STATE_INVALID;
 	}
