@@ -10,12 +10,31 @@ enum class StateType
 	STATE_INVALID = 0,
 	STATE_INTRO,
 	STATE_MENU,
-	STATE_PLAY,
+	STATE_PLAY_SURVIVE,
+	STATE_PLAY_TRIGGER,
+	STATE_PLAY_MATH,
 	STATE_SETTING,
+	STATE_CHOOSING_MODE,
+	STATE_CHOOSING_N_O_PLAYERS,
+	STATE_TUTORIAL,
+};
+
+enum class PlayMode {
+	INVALID,
+	SURVIVE,
+	TRIGGER,
+	MATH,
 };
 
 class GameStateMachine : public CSingleton<GameStateMachine>
 {
+private:
+	PlayMode	choosingMode;
+	std::list < std::shared_ptr<GameStateBase>>	m_StateStack;
+	std::shared_ptr<GameStateBase>				m_pActiveState;
+	std::shared_ptr<GameStateBase>				m_pNextState;
+	bool	m_running;
+	bool	m_fullscreen;
 public:
 	GameStateMachine();
 	~GameStateMachine();
@@ -31,6 +50,10 @@ public:
 	void	Quit() { m_running = false; }
 	void	PerformStateChange();
 
+	PlayMode	getChoosingMode() { return choosingMode; };
+	void		setChoosingMode(PlayMode choosingMode) { this->choosingMode = choosingMode; };
+	StateType	getGameStateByMode(PlayMode choosingMode);
+
 	inline std::shared_ptr<GameStateBase> CurrentState()const
 	{
 		return m_pActiveState;
@@ -45,12 +68,5 @@ public:
 	{
 		return m_StateStack.size() > 0;
 	}
-
-private:
-	std::list < std::shared_ptr<GameStateBase>>	m_StateStack;
-	std::shared_ptr<GameStateBase>				m_pActiveState;
-	std::shared_ptr<GameStateBase>				m_pNextState;
-	bool	m_running;
-	bool	m_fullscreen;
 };
 

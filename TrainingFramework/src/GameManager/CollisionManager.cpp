@@ -7,7 +7,15 @@ void CollisionManager::init() {
 	// Init all collision interactives
 	
 	addCollisionInteractive(Category::PLAYER, Category::TERRAIN, Collision::BLOCK);
+	addCollisionInteractive(Category::PLAYER, Category::TRIGGERER, Collision::BLOCK);
 	addCollisionInteractive(Category::PLAYER, Category::ENEMY_BULLET, Collision::OVERLAP);
+	addCollisionInteractive(Category::PLAYER, Category::ENEMY, Collision::OVERLAP);
+	
+	addCollisionInteractive(Category::TRIGGER_BLOCK, Category::PLAYER, Collision::OVERLAP);
+	addCollisionInteractive(Category::TRIGGER_BLOCK, Category::TERRAIN, Collision::OVERLAP);
+	addCollisionInteractive(Category::TRIGGER_BLOCK, Category::TRIGGERER, Collision::OVERLAP);
+
+	addCollisionInteractive(Category::NUMBER_BLOCK, Category::PLAYER, Collision::OVERLAP);
 };
 
 Collision CollisionManager::getCollisionInteractive(Category category1, Category category2) {

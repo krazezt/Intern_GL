@@ -1,12 +1,12 @@
-#include "Platform1.h"
+#include "Platform2.h"
 #include "ResourceManagers.h"
 
-Platform1::Platform1() : StaticTerrain() {
+Platform2::Platform2() : BaseTerrain() {
 	this->category = Category::TERRAIN;
 };
-Platform1::~Platform1() {};
+Platform2::~Platform2() {};
 
-void Platform1::init(float x_location, float y_location) {
+void Platform2::init(float x_location, float y_location) {
 	this->x_location = x_location;
 	this->y_location = y_location;
 
@@ -21,17 +21,27 @@ void Platform1::init(float x_location, float y_location) {
 	sprite2D->SetSize(width, height);
 
 	this->initCollisionBox(this->x_location, this->y_location, width, height);
-	this->velocityVector = Vector2(0.0f, 0.0f);
+	this->velocityVector = Vector2(150.0f, 0.0f);
 };
 
-void Platform1::initCollisionBox(float x_location, float y_location, float width, float height) {
+void Platform2::initCollisionBox(float x_location, float y_location, float width, float height) {
 	collisionBox = std::make_shared<CollisionBox2D>();
 	collisionBox->init(this->x_location, this->y_location, width, height);
 }
 
-void Platform1::setLocation(float x_location, float y_location) {
+void Platform2::setLocation(float x_location, float y_location) {
 	this->collisionBox->setLocation(x_location, y_location);
 	this->sprite2D->Set2DPosition(x_location, y_location);
 	this->x_location = x_location;
 	this->y_location = y_location;
 }
+
+void Platform2::update(float deltaTime) {
+	if (x_location - this->collisionBox->getWidth()/2 <= 0 || x_location + this->collisionBox->getWidth()/2 >= Globals::screenWidth) {
+		this->velocityVector.x *= -1;
+	}
+
+	this->setLocation(x_location + this->velocityVector.x * deltaTime, y_location + velocityVector.y * deltaTime);
+	this->sprite2D->Update(deltaTime);
+	this->collisionBox->update(deltaTime);
+};

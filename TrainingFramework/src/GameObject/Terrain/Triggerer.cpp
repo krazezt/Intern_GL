@@ -1,19 +1,21 @@
-#include "Platform1.h"
+#include "Triggerer.h"
 #include "ResourceManagers.h"
 
-Platform1::Platform1() : StaticTerrain() {
-	this->category = Category::TERRAIN;
+Triggerer::Triggerer() : StaticTerrain() {
+	this->category = Category::TRIGGERER;
 };
-Platform1::~Platform1() {};
 
-void Platform1::init(float x_location, float y_location) {
+Triggerer::~Triggerer() {};
+
+void Triggerer::init(float x_location, float y_location) {
 	this->x_location = x_location;
 	this->y_location = y_location;
+	isTriggered = false;
 
-	float width = 350, height = 80;
+	float width = 70, height = 70;
 
 	auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D.nfg");
-	auto texture = ResourceManagers::GetInstance()->GetTexture("Platform.tga");
+	auto texture = ResourceManagers::GetInstance()->GetTexture("Triggerer_off.tga");
 	auto shader = ResourceManagers::GetInstance()->GetShader("TextureShader");
 
 	sprite2D = std::make_shared<Sprite2D>(model, shader, texture);
@@ -24,14 +26,21 @@ void Platform1::init(float x_location, float y_location) {
 	this->velocityVector = Vector2(0.0f, 0.0f);
 };
 
-void Platform1::initCollisionBox(float x_location, float y_location, float width, float height) {
+void Triggerer::initCollisionBox(float x_location, float y_location, float width, float height) {
 	collisionBox = std::make_shared<CollisionBox2D>();
 	collisionBox->init(this->x_location, this->y_location, width, height);
 }
 
-void Platform1::setLocation(float x_location, float y_location) {
+void Triggerer::setLocation(float x_location, float y_location) {
 	this->collisionBox->setLocation(x_location, y_location);
 	this->sprite2D->Set2DPosition(x_location, y_location);
 	this->x_location = x_location;
 	this->y_location = y_location;
+}
+
+void Triggerer::trigger() {
+	this->isTriggered = true;
+
+	std::shared_ptr<Texture> texture = ResourceManagers::GetInstance()->GetTexture("Triggerer_on.tga");
+	this->sprite2D->SetTexture(texture);
 }

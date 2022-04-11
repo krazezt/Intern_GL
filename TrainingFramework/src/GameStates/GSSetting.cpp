@@ -23,6 +23,12 @@ void GSSetting::Init()
 	m_background->Set2DPosition(Globals::screenWidth / 2, Globals::screenHeight / 2);
 	m_background->SetSize(Globals::screenWidth, Globals::screenHeight);
 
+	// Load all button textures
+	texture_musicButton_On = ResourceManagers::GetInstance()->GetTexture("btn_music.tga");
+	texture_musicButton_Off = ResourceManagers::GetInstance()->GetTexture("btn_music_off.tga");
+	texture_sfxButton_On = ResourceManagers::GetInstance()->GetTexture("btn_sfx.tga");
+	texture_sfxButton_Off = ResourceManagers::GetInstance()->GetTexture("btn_sfx_off.tga");
+
 	// button close
 	texture = ResourceManagers::GetInstance()->GetTexture("btn_close.tga");
 	std::shared_ptr<GameButton>  button = std::make_shared<GameButton>(model, shader, texture);
@@ -38,9 +44,14 @@ void GSSetting::Init()
 	m_musicButton = std::make_shared<GameButton>(model, shader, texture);
 	m_musicButton->Set2DPosition(Globals::screenWidth/2, Globals::screenHeight/2 - 150);
 	m_musicButton->SetSize(200, 200);
-	m_musicButton->SetOnClick([this]() {
-		this->musicOff();
-	});
+	if (Globals::music_on) {
+		m_musicButton->SetOnClick([this]() {
+				this->musicOff();
+			});
+		m_musicButton->SetTexture(texture_musicButton_On);
+	}
+	else musicOff();
+
 	m_listButton.push_back(m_musicButton);
 
 	// sfx setting button
@@ -48,9 +59,9 @@ void GSSetting::Init()
 	m_sfxButton = std::make_shared<GameButton>(model, shader, texture);
 	m_sfxButton->Set2DPosition(Globals::screenWidth / 2, Globals::screenHeight / 2 + 150);
 	m_sfxButton->SetSize(200, 200);
-	m_sfxButton->SetOnClick([this]() {
-		this->sfxOff();
-	});
+	if (Globals::sfx_on) this->sfxOn();
+	else sfxOff();
+
 	m_listButton.push_back(m_sfxButton);
 
 	// State title
@@ -58,12 +69,6 @@ void GSSetting::Init()
 	std::shared_ptr<Font> font = ResourceManagers::GetInstance()->GetFont("Brightly Crush Shine.otf");
 	m_textGameName = std::make_shared< Text>(shader, font, "Setting", Vector4(1.0f, 0.5f, 0.0f, 1.0f), 3.0f);
 	m_textGameName->Set2DPosition(Vector2(60, 200));
-
-	// Load all button textures
-	texture_musicButton_On = ResourceManagers::GetInstance()->GetTexture("btn_music.tga");
-	texture_musicButton_Off = ResourceManagers::GetInstance()->GetTexture("btn_music_off.tga");
-	texture_sfxButton_On = ResourceManagers::GetInstance()->GetTexture("btn_sfx.tga");
-	texture_sfxButton_Off = ResourceManagers::GetInstance()->GetTexture("btn_sfx_off.tga");
 }
 
 void GSSetting::musicOn() {
@@ -74,6 +79,8 @@ void GSSetting::musicOn() {
 	m_musicButton->SetOnClick([this]() {
 		this->musicOff();
 	});
+
+	Globals::music_on = true;
 }
 
 void GSSetting::musicOff() {
@@ -84,6 +91,8 @@ void GSSetting::musicOff() {
 	m_musicButton->SetOnClick([this]() {
 		this->musicOn();
 	});
+
+	Globals::music_on = false;
 }
 
 void GSSetting::sfxOn() {
@@ -91,6 +100,8 @@ void GSSetting::sfxOn() {
 	m_sfxButton->SetOnClick([this]() {
 		this->sfxOff();
 	});
+
+	Globals::sfx_on = true;
 }
 
 void GSSetting::sfxOff() {
@@ -98,6 +109,8 @@ void GSSetting::sfxOff() {
 	m_sfxButton->SetOnClick([this]() {
 		this->sfxOn();
 	});
+
+	Globals::sfx_on = false;
 }
 
 void GSSetting::Exit()
