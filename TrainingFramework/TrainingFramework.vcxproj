@@ -387,6 +387,7 @@
     <ClCompile Include="src\GameStates\GSPlaySurvive.cpp" />
     <ClCompile Include="src\GameStates\GSPlayTrigger.cpp" />
     <ClCompile Include="src\GameStates\GSSetting.cpp" />
+    <ClCompile Include="src\GameStates\GSTutorial.cpp" />
     <ClCompile Include="src\Megaman.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -438,6 +439,7 @@
     <ClInclude Include="src\GameStates\GSPlaySurvive.h" />
     <ClInclude Include="src\GameStates\GSPlayTrigger.h" />
     <ClInclude Include="src\GameStates\GSSetting.h" />
+    <ClInclude Include="src\GameStates\GSTutorial.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

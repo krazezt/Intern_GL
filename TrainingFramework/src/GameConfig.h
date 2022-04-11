@@ -6,7 +6,7 @@
 #include "ft2build.h"
 #include FT_FREETYPE_H
 
-#define	SHOW_HITBOX	true;
+#define	SHOW_HITBOX	false;
 
 #ifndef _WIN32_WINNT            // Specifies that the minimum required platform is Windows Vista.
 #define _WIN32_WINNT 0x0600     // Change this to the appropriate value to target other versions of Windows.
@@ -102,5 +102,9 @@ public:
 #define KEY_MOVE_FORWARD	'W'
 #define KEY_MOVE_BACKWARD	'S'
 #define KEY_JUMP			' '
+#define KEY_MOVE_LEFT_2		'J'
+#define KEY_MOVE_RIGHT_2	'L'
+#define KEY_MOVE_FORWARD_2	'I'
+#define KEY_MOVE_BACKWARD_2	'K'
 
 #endif

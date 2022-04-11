@@ -37,7 +37,7 @@ void Platform2::setLocation(float x_location, float y_location) {
 }
 
 void Platform2::update(float deltaTime) {
-	if (x_location - this->collisionBox->getWidth() <= 0 || x_location + this->collisionBox->getWidth() >= Globals::screenWidth) {
+	if (x_location - this->collisionBox->getWidth()/2 <= 0 || x_location + this->collisionBox->getWidth()/2 >= Globals::screenWidth) {
 		this->velocityVector.x *= -1;
 	}
 

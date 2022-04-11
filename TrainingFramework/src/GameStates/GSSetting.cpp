@@ -44,7 +44,12 @@ void GSSetting::Init()
 	m_musicButton = std::make_shared<GameButton>(model, shader, texture);
 	m_musicButton->Set2DPosition(Globals::screenWidth/2, Globals::screenHeight/2 - 150);
 	m_musicButton->SetSize(200, 200);
-	if (Globals::music_on) this->musicOn();
+	if (Globals::music_on) {
+		m_musicButton->SetOnClick([this]() {
+				this->musicOff();
+			});
+		m_musicButton->SetTexture(texture_musicButton_On);
+	}
 	else musicOff();
 
 	m_listButton.push_back(m_musicButton);

@@ -35,9 +35,13 @@ void GSPlayMath::Init()
 	pausing = false;
 	isEnd = false;
 	score = 0;
-	timeLeft = 100;
+	initTime = 100;
+	timeLeft = initTime;
 	totalTime = 0.0f;
+	requiredValue = 0;
 	Globals::gravity = 5000.0f;
+
+	initRandomSeed();
 
 	auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D.nfg");
 	auto texture = ResourceManagers::GetInstance()->GetTexture("Background2.tga");
@@ -87,24 +91,41 @@ void GSPlayMath::Init()
 	mapEdge->init(EdgeSide::RIGHT);
 	m_listTerrain.push_back(mapEdge);
 
-	// score
+	// Time left
 	shader = ResourceManagers::GetInstance()->GetShader("TextShader");
 	std::shared_ptr<Font> font = ResourceManagers::GetInstance()->GetFont("Brightly Crush Shine.otf");
-	m_score = std::make_shared<Text>(shader, font, "score: 10", TextColor::RED, 1.0);
-	m_score->Set2DPosition(Vector2(5, 25));
+	m_timeLeft = std::make_shared<Text>(shader, font, "Time Left:", TextColor::RED, 1.0);
+	m_timeLeft->Set2DPosition(Vector2(5, 25));
 
-	CollisionManager::GetInstance()->init();
+	// Required value
+	m_requireValue = std::make_shared<Text>(shader, font, "Require: 0", TextColor::RED, 1.0);
+	m_requireValue->Set2DPosition(Vector2(5, 60));
+
+	// Score
+	m_score = std::make_shared<Text>(shader, font, "Score: 0", TextColor::RED, 1.0);
+	m_score->Set2DPosition(Vector2(5, 95));
+
+	// End game text
+	m_endGame = std::make_shared<Text>(shader, font, "End game (0 pts)", TextColor::RED, 2.0);
+	m_endGame->Set2DPosition(Vector2(Globals::screenWidth / 2 - 200, Globals::screenHeight / 2));
 
 	// Player
 	std::shared_ptr<Player> player = std::make_shared<Player>();
-	player->init(1020, 650);
+	player->init(300, 650);
 	player->bindKeys(KEY_MOVE_LEFT, KEY_MOVE_RIGHT, KEY_JUMP, -1, -1);
 	m_listPlayer.push_back(player);
 
 	if (Globals::playerCount > 1) {
 		player = std::make_shared<Player>();
-		player->init(1100, 650);
+		player->init(1300, 650);
 		player->bindKeys(KEY_LEFT, KEY_RIGHT, KEY_UP, -1, -1);
+		m_listPlayer.push_back(player);
+	}
+
+	if (Globals::playerCount > 2) {
+		player = std::make_shared<Player>();
+		player->init(500, 650);
+		player->bindKeys(KEY_MOVE_LEFT_2, KEY_MOVE_RIGHT_2, KEY_MOVE_FORWARD_2, -1, -1);
 		m_listPlayer.push_back(player);
 	}
 
@@ -112,11 +133,11 @@ void GSPlayMath::Init()
 	std::shared_ptr<BaseTerrain> terrain;
 
 	terrain = std::make_shared<Platform1>();
-	terrain->init(700, 800);
+	terrain->init(400, 800);
 	m_listTerrain.push_back(terrain);
 
 	terrain = std::make_shared<Platform1>();
-	terrain->init(1100, 800);
+	terrain->init(1400, 800);
 	m_listTerrain.push_back(terrain);
 
 	terrain = std::make_shared<Platform1>();
@@ -130,6 +151,35 @@ void GSPlayMath::Init()
 	terrain = std::make_shared<Platform2>();
 	terrain->init(900, 600);
 	m_listTerrain.push_back(terrain);
+
+	// Number blocks
+	std::shared_ptr<NumberBlock> numberBlock;
+
+	numberBlock = std::make_shared<NumberBlock>();
+	numberBlock->init(400, 300);
+	m_listNumberBlock.push_back(numberBlock);
+
+	numberBlock = std::make_shared<NumberBlock>();
+	numberBlock->init(1400, 300);
+	m_listNumberBlock.push_back(numberBlock);
+
+	numberBlock = std::make_shared<NumberBlock>();
+	numberBlock->init(400, 500);
+	m_listNumberBlock.push_back(numberBlock);
+
+	numberBlock = std::make_shared<NumberBlock>();
+	numberBlock->init(1400, 500);
+	m_listNumberBlock.push_back(numberBlock);
+
+	numberBlock = std::make_shared<NumberBlock>();
+	numberBlock->init(400, 700);
+	m_listNumberBlock.push_back(numberBlock);
+
+	numberBlock = std::make_shared<NumberBlock>();
+	numberBlock->init(1400, 700);
+	m_listNumberBlock.push_back(numberBlock);
+
+	setupNewRound();
 }
 
 void GSPlayMath::Exit() {
@@ -163,7 +213,7 @@ void GSPlayMath::HandleEvents()
 
 void GSPlayMath::HandleKeyEvents(int key, bool bIsPressed)
 {
-	if (pausing) return;
+	if (pausing || isEnd) return;
 	for (auto i : m_listPlayer) {
 		i->handleKeyEvent(key, bIsPressed);
 	}
@@ -184,25 +234,23 @@ void GSPlayMath::HandleMouseMoveEvents(int x, int y)
 {
 }
 
-void GSPlayMath::checkEndgame() {
-	
-}
-
 void GSPlayMath::Update(float deltaTime)
 {
 	if (this->isEnd) return;
 
-	this->checkEndgame();
+	if (checkEndRound()) performEndRound();
+
+	if (this->checkEndGame()) return;
 
 	totalTime += deltaTime;
 
 	if (!pausing) {
-		if (score != std::round(totalTime)) {
-			score = std::round(totalTime);
+		if (initTime - timeLeft != std::round(totalTime)) {
+			timeLeft = initTime - std::round(totalTime);
 			char str[30];
-			sprintf(str, "Score: %d", score);
+			sprintf(str, "Time Left: %d", timeLeft);
 
-			m_score->SetText(str);
+			m_timeLeft->SetText(str);
 		}
 
 		for (auto it : m_listPlayer) {
@@ -224,6 +272,12 @@ void GSPlayMath::Update(float deltaTime)
 				}
 			it->update(deltaTime);
 		}
+
+		for (auto it : m_listNumberBlock) {
+			for (auto i : m_listPlayer)
+				it->applyCollision(i);
+			it->update(deltaTime);
+		}
 	}
 }
 
@@ -243,6 +297,12 @@ void GSPlayMath::Draw()
 		it->draw();
 	}
 
+	for (auto it : m_listNumberBlock) {
+		it->draw();
+	}
+
+	m_timeLeft->Draw();
+	m_requireValue->Draw();
 	m_score->Draw();
 	if (this->isEnd) m_endGame->Draw();
 
@@ -259,6 +319,59 @@ int	 GSPlayMath::getRandomValue(int from, int to) {
 	return (rand() % (from - to + 1) + from);
 };
 
-void GSPlayMath::setupNewRound() {};
-bool GSPlayMath::checkEndRound() {};
-bool GSPlayMath::checkEndGame() {};
+void GSPlayMath::setupNewRound() {
+	int k1 = 0, k2 = 0, i1 = 0, i2 = 0, n = m_listNumberBlock.size();
+	char str[15];
+
+	requiredValue = getRandomValue(5, 18);
+	k1 = getRandomValue(0, requiredValue);
+	k2 = requiredValue - k1;
+
+	i1 = getRandomValue(0, n - 1);
+	i2 = i1;
+	while (i1 == i2) i2 = getRandomValue(0, n - 1);
+
+	sprintf(str, "Require: %d", requiredValue);
+	m_requireValue->SetText(str);
+	for (auto i : m_listNumberBlock) {
+		i->setValue(getRandomValue(0, requiredValue));
+	}
+
+	auto tmpPtr = std::next(m_listNumberBlock.begin(), i1);
+	(*tmpPtr)->setValue(k1);
+
+	tmpPtr = std::next(m_listNumberBlock.begin(), i2);
+	(*tmpPtr)->setValue(k2);
+};
+
+bool GSPlayMath::checkEndRound() {
+	int s = 0;
+	for (auto i : m_listNumberBlock) {
+		if (i->checkTriggering()) s += i->getValue();
+	}
+	
+	if (s == requiredValue)
+		return true;
+	else return false;
+};
+
+bool GSPlayMath::checkEndGame() {
+	if (this->timeLeft <= 0) {
+		char str[25];
+		sprintf(str, "End game (%d pts)", score);
+		m_endGame->SetText(str);
+		this->isEnd = true;
+		return true;
+	}
+	else return false;
+};
+
+void GSPlayMath::performEndRound() {
+	char str[12];
+
+	score += 1;
+	sprintf(str, "Score: %d", score);
+	m_score->SetText(str);
+
+	setupNewRound();
+}

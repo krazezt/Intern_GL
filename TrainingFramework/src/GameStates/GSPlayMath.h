@@ -2,6 +2,7 @@
 #include "GameStateBase.h"
 #include "Actors/Player.h"
 #include "Actors/Actor.h"
+#include "Actors/NumberBlock.h"
 #include "Terrain/BaseTerrain.h"
 #include "CollisionManager.h"
 
@@ -31,26 +32,31 @@ public:
 	void	Update(float deltaTime) override;
 	void	Draw() override;
 
-	void	checkEndgame();
 	void	initRandomSeed();
 	int		getRandomValue(int from, int to);
 	void	setupNewRound();
 	bool	checkEndRound();
 	bool	checkEndGame();
+	void	performEndRound();
 
 private:
 	bool	pausing;
 	bool	isEnd;
 	int		score;
 	int		timeLeft;
+	int		initTime;
+	int		requiredValue;
 	float	totalTime;
 	std::shared_ptr<Sprite2D>	m_background;
+	std::shared_ptr<Text>		m_timeLeft;
 	std::shared_ptr<Text>		m_score;
+	std::shared_ptr<Text>		m_requireValue;
 	std::shared_ptr<Text>		m_endGame;
 	std::shared_ptr<GameButton>	m_pauseButton;
 	std::list<std::shared_ptr<Player>>			m_listPlayer;
 	std::list<std::shared_ptr<GameButton>>		m_listButton;
 	std::list<std::shared_ptr<Actor>>			m_listActor;
 	std::list<std::shared_ptr<BaseTerrain>>		m_listTerrain;
+	std::list<std::shared_ptr<NumberBlock>>		m_listNumberBlock;
 };
 

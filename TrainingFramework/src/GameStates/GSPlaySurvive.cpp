@@ -92,8 +92,6 @@ void GSPlaySurvive::Init()
 	m_score = std::make_shared<Text>(shader, font, "Score: 0", TextColor::RED, 1.0);
 	m_score->Set2DPosition(Vector2(5, 25));
 
-	CollisionManager::GetInstance()->init();
-
 	// Player
 	std::shared_ptr<Player> player = std::make_shared<Player>();
 	player->init(1020, 650);

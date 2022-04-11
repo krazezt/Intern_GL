@@ -102,6 +102,7 @@
     <ClCompile Include="src\GameObject\Terrain\Platform\WoodenBox.cpp" />
     <ClCompile Include="src\GameStates\GSPlayMath.cpp" />
     <ClCompile Include="src\GameObject\Actors\NumberBlock.cpp" />
+    <ClCompile Include="src\GameStates\GSTutorial.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Application.h">
@@ -192,6 +193,7 @@
     <ClInclude Include="src\GameObject\Terrain\Platform\WoodenBox.h" />
     <ClInclude Include="src\GameStates\GSPlayMath.h" />
     <ClInclude Include="src\GameObject\Actors\NumberBlock.h" />
+    <ClInclude Include="src\GameStates\GSTutorial.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

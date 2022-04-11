@@ -10,6 +10,10 @@ class NumberBlock : public Actor {
 private:
 	int		value;
 	bool	isTriggering;
+	std::shared_ptr<Texture>	texture_normal;
+	std::shared_ptr<Texture>	texture_triggering;
+
+	std::shared_ptr<Text>		textValue;
 public:
 	NumberBlock();
 	~NumberBlock();
@@ -21,7 +25,7 @@ public:
 	virtual void	initCollisionBox(float x_location, float y_location, float width, float height);
 	void			consumeCollision() override;
 
-	void	setValue(int newValue) { this->value = newValue; };
+	void	setValue(int newValue);
 	int		getValue() { return this->value; };
 	bool	checkTriggering() { return this->isTriggering; };
 };

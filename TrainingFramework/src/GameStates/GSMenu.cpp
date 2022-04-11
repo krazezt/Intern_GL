@@ -27,7 +27,7 @@ void GSMenu::Init()
 	// play button
 	texture = ResourceManagers::GetInstance()->GetTexture("btn_play.tga");
 	std::shared_ptr<GameButton> button = std::make_shared<GameButton>(model, shader, texture);
-	button->Set2DPosition(Globals::screenWidth / 2, Globals::screenHeight / 2 - 150);
+	button->Set2DPosition(Globals::screenWidth / 2, Globals::screenHeight / 2);
 	button->SetSize(200, 200);
 	button->SetOnClick([]() {
 			GameStateMachine::GetInstance()->ChangeState(StateType::STATE_CHOOSING_MODE);
@@ -37,10 +37,20 @@ void GSMenu::Init()
 	// setting button
 	texture = ResourceManagers::GetInstance()->GetTexture("btn_settings.tga");
 	button = std::make_shared<GameButton>(model, shader, texture);
-	button->Set2DPosition(Globals::screenWidth / 2, Globals::screenHeight / 2 + 150);
+	button->Set2DPosition(Globals::screenWidth / 2 - 200, Globals::screenHeight / 2);
 	button->SetSize(200, 200);
 	button->SetOnClick([]() {
 		GameStateMachine::GetInstance()->ChangeState(StateType::STATE_SETTING);
+		});
+	m_listButton.push_back(button);
+
+	// Tutorial button
+	texture = ResourceManagers::GetInstance()->GetTexture("btn_help.tga");
+	button = std::make_shared<GameButton>(model, shader, texture);
+	button->Set2DPosition(Globals::screenWidth / 2 + 200, Globals::screenHeight / 2);
+	button->SetSize(200, 200);
+	button->SetOnClick([]() {
+		GameStateMachine::GetInstance()->ChangeState(StateType::STATE_TUTORIAL);
 		});
 	m_listButton.push_back(button);
 

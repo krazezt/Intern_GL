@@ -10,6 +10,7 @@
 #include "GSChooseNumberOfPlayers.h"
 #include "GSPlayTrigger.h"
 #include "GSPlayMath.h"
+#include "GSTutorial.h"
 
 #include "GameStatebase.h"
 
@@ -46,6 +47,10 @@ std::shared_ptr<GameStateBase> GameStateBase::CreateState(StateType stt)
 		break;
 	case StateType::STATE_CHOOSING_N_O_PLAYERS:
 		gs = std::make_shared<GSChooseNumberOfPlayers>();
+		break;
+	case StateType::STATE_TUTORIAL:
+		gs = std::make_shared<GSTutorial>();
+		break;
 	default:
 		break;
 	}

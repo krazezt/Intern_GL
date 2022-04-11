@@ -3,7 +3,7 @@
 #include "Texture.h"
 
 NumberBlock::NumberBlock() {
-	category = Category::TRIGGER_BLOCK;
+	category = Category::NUMBER_BLOCK;
 }
 NumberBlock::~NumberBlock() {}
 
@@ -19,8 +19,16 @@ void NumberBlock::init(float x_location, float y_location) {
 	value = 0;
 	isTriggering = false;
 
+	texture_normal = ResourceManagers::GetInstance()->GetTexture("NumberBlock.tga");
+	texture_triggering = ResourceManagers::GetInstance()->GetTexture("NumberBlock_triggering.tga");
+
 	animation = std::make_shared<SpriteAnimation>(model, shader, texture, 1, 1, 0, 1.0f);
 	animation->SetSize(width, height);
+
+	shader = ResourceManagers::GetInstance()->GetShader("TextShader");
+	std::shared_ptr<Font> font = ResourceManagers::GetInstance()->GetFont("Brightly Crush Shine.otf");
+	textValue = std::make_shared<Text>(shader, font, "1", TextColor::RED, 3.0);
+	textValue->Set2DPosition(Vector2(x_location - 15, y_location + 30));
 
 	this->initCollisionBox(x_location, y_location, width, height);
 	this->velocityVector = Vector2(0.0f, 0.0f);
@@ -35,9 +43,7 @@ void NumberBlock::initCollisionBox(float x_location, float y_location, float wid
 }
 
 void NumberBlock::update(float deltaTime) {
-	if (!this->list_CollisionInfo.empty()) {
-		this->consumeCollision();
-	}
+	this->consumeCollision();
 
 	this->setLocation(x_location + velocityVector.x * deltaTime, y_location + velocityVector.y * deltaTime);
 
@@ -49,11 +55,13 @@ void NumberBlock::update(float deltaTime) {
 void NumberBlock::draw() {
 	this->animation->Draw();
 	this->collisionBox->draw();
+	this->textValue->Draw();
 }
 
 void NumberBlock::consumeCollision() {
 	if (list_CollisionInfo.empty() && isTriggering) {
 		isTriggering = false;
+		animation->SetTexture(texture_normal);
 		// TODO
 	}
 
@@ -68,7 +76,7 @@ void NumberBlock::consumeCollision() {
 				switch (list_CollisionInfo.front()->collideObjCategory) {
 					case Category::PLAYER:
 						isTriggering = true;
-						// TODO
+						animation->SetTexture(texture_triggering);
 						break;
 					default:
 						break;
@@ -81,4 +89,13 @@ void NumberBlock::consumeCollision() {
 
 		list_CollisionInfo.pop_front();
 	}
+}
+
+void NumberBlock::setValue(int newValue) {
+	this->value = newValue;
+
+	char str[3];
+	sprintf(str, "%d", this->value);
+	textValue->SetText(str);
+	textValue->Set2DPosition(Vector2(value < 10 ? (x_location - 15) : (x_location - 35), y_location + 30));
 }

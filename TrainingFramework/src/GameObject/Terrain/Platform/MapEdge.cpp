@@ -13,7 +13,7 @@ void MapEdge::init(float x_location, float y_location) {
 	float width = Globals::screenWidth + 300, height = Globals::screenHeight + 300;
 
 	auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D.nfg");
-	auto texture = ResourceManagers::GetInstance()->GetTexture("Test_box.tga");
+	auto texture = ResourceManagers::GetInstance()->GetTexture("MapEdge.tga");
 	auto shader = ResourceManagers::GetInstance()->GetShader("TextureShader");
 
 	sprite2D = std::make_shared<Sprite2D>(model, shader, texture);
@@ -26,7 +26,7 @@ void MapEdge::init(float x_location, float y_location) {
 
 void MapEdge::init(EdgeSide side) {
 	auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D.nfg");
-	auto texture = ResourceManagers::GetInstance()->GetTexture("Test_box.tga");
+	auto texture = ResourceManagers::GetInstance()->GetTexture("MapEdge.tga");
 	auto shader = ResourceManagers::GetInstance()->GetShader("TextureShader");
 
 	int width = 300, height = 300;

@@ -26,7 +26,7 @@ void GSChooseNumberOfPlayers::Init()
 		break;
 	case PlayMode::MATH:
 		minPlayer = 2;
-		maxPlayer = 2;
+		maxPlayer = 3;
 		break;
 	default:
 		break;

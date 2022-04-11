@@ -16,6 +16,7 @@ enum class StateType
 	STATE_SETTING,
 	STATE_CHOOSING_MODE,
 	STATE_CHOOSING_N_O_PLAYERS,
+	STATE_TUTORIAL,
 };
 
 enum class PlayMode {
