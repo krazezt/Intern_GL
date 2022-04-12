@@ -38,6 +38,7 @@ public:
 	//Sound
 	void AddSound(const std::string& name);
 	void PlaySound(const std::string& name, bool loop = false);
+	void PlaySFX(const std::string& name);
 	void StopSound(const std::string& name);
 private:
 	std::map<std::string, std::shared_ptr<Shader>> m_MapShader;

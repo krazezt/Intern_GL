@@ -342,6 +342,8 @@ void GSPlayMath::setupNewRound() {
 
 	tmpPtr = std::next(m_listNumberBlock.begin(), i2);
 	(*tmpPtr)->setValue(k2);
+
+	ResourceManagers::GetInstance()->PlaySFX("25 - 1up.wav");
 };
 
 bool GSPlayMath::checkEndRound() {
@@ -357,6 +359,7 @@ bool GSPlayMath::checkEndRound() {
 
 bool GSPlayMath::checkEndGame() {
 	if (this->timeLeft <= 0) {
+		ResourceManagers::GetInstance()->PlaySFX("02 - PauseMenu.wav");
 		char str[25];
 		sprintf(str, "End game (%d pts)", score);
 		m_endGame->SetText(str);

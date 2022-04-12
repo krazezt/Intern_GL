@@ -39,8 +39,10 @@ void Triggerer::setLocation(float x_location, float y_location) {
 }
 
 void Triggerer::trigger() {
+	if (this->isTriggered) return;
 	this->isTriggered = true;
 
+	ResourceManagers::GetInstance()->PlaySFX("25 - 1up.wav");
 	std::shared_ptr<Texture> texture = ResourceManagers::GetInstance()->GetTexture("Triggerer_on.tga");
 	this->sprite2D->SetTexture(texture);
 }

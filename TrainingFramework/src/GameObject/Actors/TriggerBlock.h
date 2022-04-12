@@ -20,7 +20,4 @@ public:
 
 	virtual void initCollisionBox(float x_location, float y_location, float width, float height);
 	void consumeCollision() override;
-
-	void horizontalMove(MoveState moveState);
-	void verticalMove(MoveState moveState);
 };
