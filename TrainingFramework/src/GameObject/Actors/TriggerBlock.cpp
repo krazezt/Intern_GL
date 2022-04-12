@@ -64,39 +64,9 @@ void TriggerBlock::draw() {
 	this->collisionBox->draw();
 }
 
-void TriggerBlock::horizontalMove(MoveState moveState) {
-
-	switch (this->moveState) {
-	case MoveState::MOVE_RIGHT:
-		this->velocityVector.x = movement_speed;
-		this->animation->SetRotation(Vector3(0.0f, 0.0f, 0.0f));
-		break;
-	case MoveState::MOVE_LEFT:
-		this->velocityVector.x = -1 * movement_speed;
-		this->animation->SetRotation(Vector3(0.0f, PI, 0.0f));
-		break;
-	default:
-		break;
-	}
-}
-
-void TriggerBlock::verticalMove(MoveState moveState) {
-	this->moveState = moveState;
-
-	switch (this->moveState) {
-	case MoveState::MOVE_UP:
-		this->velocityVector.y = -1 * movement_speed;
-		break;
-	case MoveState::MOVE_DOWN:
-		this->velocityVector.y = movement_speed;
-		break;
-	default:
-		break;
-	}
-}
-
 void TriggerBlock::consumeCollision() {
 	while (!list_CollisionInfo.empty()) {
+		ResourceManagers::GetInstance()->PlaySFX("10 - EnemyShoot.wav");
 		switch (list_CollisionInfo.front()->collisionType) {
 		case Collision::IGNORED:
 			break;

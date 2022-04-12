@@ -251,9 +251,11 @@ void GSPlayTrigger::checkEnd() {
 void GSPlayTrigger::initEndgameText() {
 	char str[30];
 	if (win) {
+		ResourceManagers::GetInstance()->PlaySFX("25 - 1up.wav");
 		sprintf(str, "You won! (%d pts)", this->score);
 	}
 	else {
+		ResourceManagers::GetInstance()->PlaySFX("22 - FireStorm1.wav");
 		sprintf(str, "You lose!");
 	}
 
@@ -265,8 +267,8 @@ void GSPlayTrigger::initEndgameText() {
 
 void GSPlayTrigger::Update(float deltaTime)
 {
-	this->checkEnd();
 	if (this->isEnd) return;
+	this->checkEnd();
 
 	totalTime += deltaTime;
 

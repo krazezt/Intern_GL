@@ -60,9 +60,9 @@ void NumberBlock::draw() {
 
 void NumberBlock::consumeCollision() {
 	if (list_CollisionInfo.empty() && isTriggering) {
+		ResourceManagers::GetInstance()->PlaySFX("134 - PiPiPi.wav");
 		isTriggering = false;
 		animation->SetTexture(texture_normal);
-		// TODO
 	}
 
 	while (!list_CollisionInfo.empty()) {
@@ -73,6 +73,7 @@ void NumberBlock::consumeCollision() {
 			break;
 		case Collision::OVERLAP:
 			if (!isTriggering) {
+				ResourceManagers::GetInstance()->PlaySFX("24 - EnergyFill.wav");
 				switch (list_CollisionInfo.front()->collideObjCategory) {
 					case Category::PLAYER:
 						isTriggering = true;

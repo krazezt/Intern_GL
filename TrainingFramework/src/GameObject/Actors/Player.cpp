@@ -209,11 +209,13 @@ void Player::verticalMove(MoveState moveState) {
 }
 
 void Player::land() {
+	ResourceManagers::GetInstance()->PlaySFX("06 - MegamanLand.wav");
 	this->jumpState = JumpState::LANDING;
 	this->velocityVector.y = 0;
 }
 
 void Player::jump() {
+	ResourceManagers::GetInstance()->PlaySFX("10 - EnemyShoot.wav");
 	if (!playing || died || dying) return;
 	if (this->jumpState == JumpState::LANDING) {
 		this->velocityVector.y = -jumpSpeed;
@@ -280,6 +282,7 @@ void Player::consumeCollision() {
 
 void Player::die() {
 	if (dying) return;
+	ResourceManagers::GetInstance()->PlaySFX("08 - MegamanDefeat.wav");
 	auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D.nfg");
 	auto shader = ResourceManagers::GetInstance()->GetShader("Animation");
 	auto texture = ResourceManagers::GetInstance()->GetTexture("Megaman_animation_Dying.tga");

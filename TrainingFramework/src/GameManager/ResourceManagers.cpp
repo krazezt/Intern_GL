@@ -196,6 +196,26 @@ void ResourceManagers::PlaySound(const std::string& name, bool loop)
 	m_Soloud.play(*wave);
 }
 
+void ResourceManagers::PlaySFX(const std::string& name)
+{
+	if (!Globals::sfx_on) return;
+	std::shared_ptr<SoLoud::Wav> wave;
+	auto it = m_MapWave.find(name);
+	if (it != m_MapWave.end())
+	{
+		wave = it->second;
+	}
+	else
+	{
+		std::string sound = m_SoundPath + name;
+		wave = std::make_shared<SoLoud::Wav>();
+		wave->load(sound.c_str());
+		m_MapWave.insert(std::pair<std::string, std::shared_ptr<SoLoud::Wav>>(name, wave));
+	}
+	wave->setLooping(false);
+	m_Soloud.play(*wave);
+}
+
 void ResourceManagers::StopSound(const std::string& name)
 {
 	std::shared_ptr<SoLoud::Wav> wave;
