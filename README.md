@@ -1,1 +1,1 @@
-# A simple game that same as the Megaman
+# Note that is Megamad, not Megaman =))
