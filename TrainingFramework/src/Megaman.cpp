@@ -4,11 +4,11 @@
 #include "utilities.h" 
 
 int		Globals::screenWidth = 1800;
-int		Globals::screenHeight = 900;
+int		Globals::screenHeight = Globals::screenWidth / 2;
 bool	Globals::sfx_on = true;
 bool	Globals::music_on = true;
 int		Globals::playerCount = 1;
-float	Globals::gravity = 5000.0f;
+float	Globals::gravity = Globals::screenWidth / 0.36f;
 
 GLint Init(ESContext* esContext)
 {

@@ -42,13 +42,13 @@ void GSChooseNumberOfPlayers::Init()
 	// State title
 	auto shader = ResourceManagers::GetInstance()->GetShader("TextShader");
 	std::shared_ptr<Font> font = ResourceManagers::GetInstance()->GetFont("Brightly Crush Shine.otf");
-	m_textGameName = std::make_shared<Text>(shader, font, "Choose number of players", Vector4(1.0f, 0.5f, 0.0f, 1.0f), 3.0f);
-	m_textGameName->Set2DPosition(Vector2(60, 200));
+	m_textGameName = std::make_shared<Text>(shader, font, "Choose number of players", Vector4(1.0f, 0.5f, 0.0f, 1.0f), Globals::screenWidth / 900);
+	m_textGameName->Set2DPosition(Vector2(Globals::screenWidth / 30, Globals::screenWidth / 9));
 
 	// Player count
 	sprintf(str, "%d players", n_o_player);
-	m_textPlayerCount = std::make_shared<Text>(shader, font, str, Vector4(1.0f, 0.5f, 0.0f, 1.0f), 3.0f);
-	m_textPlayerCount->Set2DPosition(Vector2(Globals::screenWidth / 2 - 160, Globals::screenHeight / 2 + 20));
+	m_textPlayerCount = std::make_shared<Text>(shader, font, str, Vector4(1.0f, 0.5f, 0.0f, 1.0f), Globals::screenWidth / 600);
+	m_textPlayerCount->Set2DPosition(Vector2(Globals::screenWidth / 2 - Globals::screenWidth / 10, Globals::screenHeight / 2 + Globals::screenWidth / 90));
 
 	// background
 	shader = ResourceManagers::GetInstance()->GetShader("TextureShader");
@@ -59,8 +59,8 @@ void GSChooseNumberOfPlayers::Init()
 	// button close
 	texture = ResourceManagers::GetInstance()->GetTexture("btn_close.tga");
 	std::shared_ptr<GameButton>  button = std::make_shared<GameButton>(model, shader, texture);
-	button->Set2DPosition(Globals::screenWidth - 50, 50);
-	button->SetSize(50, 50);
+	button->Set2DPosition(Globals::screenWidth - Globals::screenWidth / 36, Globals::screenWidth / 36);
+	button->SetSize(Globals::screenWidth / 36, Globals::screenWidth / 36);
 	button->SetOnClick([this]() {
 			GameStateMachine::GetInstance()->PopState();
 		});
@@ -69,8 +69,8 @@ void GSChooseNumberOfPlayers::Init()
 	// more player button
 	texture = ResourceManagers::GetInstance()->GetTexture("btn_next.tga");
 	m_moreButton = std::make_shared<GameButton>(model, shader, texture);
-	m_moreButton->Set2DPosition(Globals::screenWidth / 2 + 600, Globals::screenHeight / 2);
-	m_moreButton->SetSize(200, 200);
+	m_moreButton->Set2DPosition(Globals::screenWidth / 2 + Globals::screenWidth / 3, Globals::screenHeight / 2);
+	m_moreButton->SetSize(Globals::screenWidth / 9, Globals::screenWidth / 9);
 	m_moreButton->SetOnClick([this]() {
 			if (this->n_o_player + 1 > this->maxPlayer) {
 				return;
@@ -85,8 +85,8 @@ void GSChooseNumberOfPlayers::Init()
 	// less player button
 	texture = ResourceManagers::GetInstance()->GetTexture("btn_prev.tga");
 	m_lessButton = std::make_shared<GameButton>(model, shader, texture);
-	m_lessButton->Set2DPosition(Globals::screenWidth / 2 - 600, Globals::screenHeight / 2);
-	m_lessButton->SetSize(200, 200);
+	m_lessButton->Set2DPosition(Globals::screenWidth / 2 - Globals::screenWidth / 3, Globals::screenHeight / 2);
+	m_lessButton->SetSize(Globals::screenWidth / 9, Globals::screenWidth / 9);
 	m_lessButton->SetOnClick([this]() {
 			if (this->n_o_player - 1 < this->minPlayer) {
 				return;
@@ -101,8 +101,8 @@ void GSChooseNumberOfPlayers::Init()
 	// Play button
 	texture = ResourceManagers::GetInstance()->GetTexture("btn_play.tga");
 	m_playButton = std::make_shared<GameButton>(model, shader, texture);
-	m_playButton->Set2DPosition(Globals::screenWidth / 2, Globals::screenHeight / 2 + 250);
-	m_playButton->SetSize(200, 200);
+	m_playButton->Set2DPosition(Globals::screenWidth / 2, Globals::screenHeight / 2 + Globals::screenWidth / 7.2f);
+	m_playButton->SetSize(Globals::screenWidth / 9, Globals::screenWidth / 9);
 	m_playButton->SetOnClick([this]() {
 			Globals::playerCount = this->n_o_player;
 			GameStateMachine::GetInstance()->ChangeState( GameStateMachine::GetInstance()->getGameStateByMode( GameStateMachine::GetInstance()->getChoosingMode() ) );

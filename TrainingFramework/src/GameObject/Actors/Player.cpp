@@ -10,16 +10,16 @@ void Player::init(float x_location, float y_location) {
 	auto shader = ResourceManagers::GetInstance()->GetShader("Animation");
 	auto texture = ResourceManagers::GetInstance()->GetTexture("Megaman_animation_Start.tga");
 
-	width = 120;
-	height = 90;
-	movement_speed = 350;
+	width = Globals::screenWidth / 15;
+	height = Globals::screenWidth / 20;
+	movement_speed = Globals::screenWidth / 5.2;
 	velocityScale = 1;
 	totalTime = 0;
 	playing = false;
 	category = Category::PLAYER;
 	prev_deltaTime = 0;
 	jumpState = JumpState::LANDING;
-	jumpSpeed = 1500;
+	jumpSpeed = Globals::screenWidth / 1.2f;
 	died = false;
 	dying = false;
 

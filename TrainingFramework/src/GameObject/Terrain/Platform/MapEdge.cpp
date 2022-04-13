@@ -33,36 +33,36 @@ void MapEdge::init(EdgeSide side) {
 
 	switch (side)
 	{
-		case EdgeSide::TOP:
-			x_location = Globals::screenWidth / 2;
-			y_location = -150;
-			width = Globals::screenWidth + 300;
-			height = 300;
-			break;
-		case EdgeSide::LEFT:
-			x_location = -150;
-			y_location = Globals::screenHeight / 2;
-			width = 300;
-			height = Globals::screenHeight+ 300;
-			break;
-		case EdgeSide::BOTTOM:
-			x_location = Globals::screenWidth / 2;
-			y_location = Globals::screenHeight + 150;
-			width = Globals::screenWidth + 300;
-			height = 300;
-			break;
-		case EdgeSide::RIGHT:
-			x_location = Globals::screenWidth + 150;
-			y_location = Globals::screenHeight / 2;
-			width = 300;
-			height = Globals::screenHeight + 300;
-			break;
-		default:
-			break;
+	case EdgeSide::TOP:
+		x_location = Globals::screenWidth / 2;
+		y_location = -1 * Globals::screenWidth / 12;
+		width = Globals::screenWidth + Globals::screenWidth / 6;
+		height = Globals::screenWidth / 6;
+		break;
+	case EdgeSide::LEFT:
+		x_location = -1 * Globals::screenWidth / 12;
+		y_location = Globals::screenHeight / 2;
+		width = Globals::screenWidth / 6;
+		height = Globals::screenHeight + Globals::screenWidth / 6;
+		break;
+	case EdgeSide::BOTTOM:
+		x_location = Globals::screenWidth / 2;
+		y_location = Globals::screenHeight + Globals::screenWidth / 12;
+		width = Globals::screenWidth + Globals::screenWidth / 6;
+		height = Globals::screenWidth / 6;
+		break;
+	case EdgeSide::RIGHT:
+		x_location = Globals::screenWidth + Globals::screenWidth / 12;
+		y_location = Globals::screenHeight / 2;
+		width = Globals::screenWidth / 6;
+		height = Globals::screenHeight + Globals::screenWidth / 6;
+		break;
+	default:
+		break;
 	}
 
-	width += 10;
-	height += 10;
+	width += Globals::screenWidth / 180;
+	height += Globals::screenWidth / 180;
 
 	sprite2D = std::make_shared<Sprite2D>(model, shader, texture);
 	sprite2D->Set2DPosition(this->x_location, this->y_location);

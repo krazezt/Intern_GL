@@ -28,7 +28,7 @@ void GSMenu::Init()
 	texture = ResourceManagers::GetInstance()->GetTexture("btn_play.tga");
 	std::shared_ptr<GameButton> button = std::make_shared<GameButton>(model, shader, texture);
 	button->Set2DPosition(Globals::screenWidth / 2, Globals::screenHeight / 2);
-	button->SetSize(200, 200);
+	button->SetSize(Globals::screenWidth / 9, Globals::screenWidth / 9);
 	button->SetOnClick([]() {
 			GameStateMachine::GetInstance()->ChangeState(StateType::STATE_CHOOSING_MODE);
 		});
@@ -37,8 +37,8 @@ void GSMenu::Init()
 	// setting button
 	texture = ResourceManagers::GetInstance()->GetTexture("btn_settings.tga");
 	button = std::make_shared<GameButton>(model, shader, texture);
-	button->Set2DPosition(Globals::screenWidth / 2 - 200, Globals::screenHeight / 2);
-	button->SetSize(200, 200);
+	button->Set2DPosition(Globals::screenWidth / 2 - Globals::screenWidth / 9, Globals::screenHeight / 2);
+	button->SetSize(Globals::screenWidth / 9, Globals::screenWidth / 9);
 	button->SetOnClick([]() {
 		GameStateMachine::GetInstance()->ChangeState(StateType::STATE_SETTING);
 		});
@@ -47,8 +47,8 @@ void GSMenu::Init()
 	// Tutorial button
 	texture = ResourceManagers::GetInstance()->GetTexture("btn_help.tga");
 	button = std::make_shared<GameButton>(model, shader, texture);
-	button->Set2DPosition(Globals::screenWidth / 2 + 200, Globals::screenHeight / 2);
-	button->SetSize(200, 200);
+	button->Set2DPosition(Globals::screenWidth / 2 + Globals::screenWidth / 9, Globals::screenHeight / 2);
+	button->SetSize(Globals::screenWidth / 9, Globals::screenWidth / 9);
 	button->SetOnClick([]() {
 		GameStateMachine::GetInstance()->ChangeState(StateType::STATE_TUTORIAL);
 		});
@@ -58,7 +58,7 @@ void GSMenu::Init()
 	texture = ResourceManagers::GetInstance()->GetTexture("btn_close.tga");
 	button = std::make_shared<GameButton>(model, shader, texture);
 	button->Set2DPosition(Globals::screenWidth - 50, 50);
-	button->SetSize(50, 50);
+	button->SetSize(Globals::screenWidth / 36, Globals::screenWidth / 36);
 	button->SetOnClick([]() {
 		exit(0);
 		});
@@ -67,8 +67,8 @@ void GSMenu::Init()
 	// game title
 	shader = ResourceManagers::GetInstance()->GetShader("TextShader");
 	std::shared_ptr<Font> font = ResourceManagers::GetInstance()->GetFont("Brightly Crush Shine.otf");
-	m_textGameName = std::make_shared< Text>(shader, font, "Megamad", Vector4(1.0f, 0.5f, 0.0f, 1.0f), 2.0f);
-	m_textGameName->Set2DPosition(Vector2(60, 150));
+	m_textGameName = std::make_shared< Text>(shader, font, "Megamad", Vector4(1.0f, 0.5f, 0.0f, 1.0f), Globals::screenWidth / 900);
+	m_textGameName->Set2DPosition(Vector2(Globals::screenWidth / 30, Globals::screenWidth / 12));
 
 	std::string name = "HoYoMIX_Storm_trimmed.mp3";
 	ResourceManagers::GetInstance()->PlaySound(name, true);

@@ -32,8 +32,8 @@ void GSSetting::Init()
 	// button close
 	texture = ResourceManagers::GetInstance()->GetTexture("btn_close.tga");
 	std::shared_ptr<GameButton>  button = std::make_shared<GameButton>(model, shader, texture);
-	button->Set2DPosition(Globals::screenWidth - 50, 50);
-	button->SetSize(50, 50);
+	button->Set2DPosition(Globals::screenWidth - Globals::screenWidth / 36, Globals::screenWidth / 36);
+	button->SetSize(Globals::screenWidth / 36, Globals::screenWidth / 36);
 	button->SetOnClick([this]() {
 		GameStateMachine::GetInstance()->PopState();
 	});
@@ -42,8 +42,8 @@ void GSSetting::Init()
 	// music setting button
 	texture = ResourceManagers::GetInstance()->GetTexture("btn_music.tga");
 	m_musicButton = std::make_shared<GameButton>(model, shader, texture);
-	m_musicButton->Set2DPosition(Globals::screenWidth/2, Globals::screenHeight/2 - 150);
-	m_musicButton->SetSize(200, 200);
+	m_musicButton->Set2DPosition(Globals::screenWidth / 2, Globals::screenHeight / 2 - Globals::screenWidth / 12);
+	m_musicButton->SetSize(Globals::screenWidth / 9, Globals::screenWidth / 9);
 	if (Globals::music_on) {
 		m_musicButton->SetOnClick([this]() {
 				this->musicOff();
@@ -57,8 +57,8 @@ void GSSetting::Init()
 	// sfx setting button
 	texture = ResourceManagers::GetInstance()->GetTexture("btn_sfx.tga");
 	m_sfxButton = std::make_shared<GameButton>(model, shader, texture);
-	m_sfxButton->Set2DPosition(Globals::screenWidth / 2, Globals::screenHeight / 2 + 150);
-	m_sfxButton->SetSize(200, 200);
+	m_sfxButton->Set2DPosition(Globals::screenWidth / 2, Globals::screenHeight / 2 + Globals::screenWidth / 12);
+	m_sfxButton->SetSize(Globals::screenWidth / 9, Globals::screenWidth / 9);
 	if (Globals::sfx_on) this->sfxOn();
 	else sfxOff();
 
@@ -67,8 +67,8 @@ void GSSetting::Init()
 	// State title
 	shader = ResourceManagers::GetInstance()->GetShader("TextShader");
 	std::shared_ptr<Font> font = ResourceManagers::GetInstance()->GetFont("Brightly Crush Shine.otf");
-	m_textGameName = std::make_shared< Text>(shader, font, "Setting", Vector4(1.0f, 0.5f, 0.0f, 1.0f), 3.0f);
-	m_textGameName->Set2DPosition(Vector2(60, 200));
+	m_textGameName = std::make_shared< Text>(shader, font, "Setting", Vector4(1.0f, 0.5f, 0.0f, 1.0f), Globals::screenWidth / 900);
+	m_textGameName->Set2DPosition(Vector2(Globals::screenWidth / 30, Globals::screenWidth / 9));
 }
 
 void GSSetting::musicOn() {

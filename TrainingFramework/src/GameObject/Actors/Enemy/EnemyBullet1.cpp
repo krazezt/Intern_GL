@@ -11,14 +11,14 @@ void EnemyBullet1::init(float x_location, float y_location) {
 	auto shader = ResourceManagers::GetInstance()->GetShader("Animation");
 	auto texture = ResourceManagers::GetInstance()->GetTexture("EnemyBullet1.tga");
 
-	width = 38;
-	height = 47;
+	width = Globals::screenWidth / 47.4f;
+	height = Globals::screenWidth / 38.3f;
 
 	animation = std::make_shared<SpriteAnimation>(model, shader, texture, 4, 1, 0, 0.1f);
 	animation->SetSize(width, height);
 
 	this->initCollisionBox(this->x_location, this->y_location, width, height);
-	this->velocityVector = Vector2(0.0f, 400.0f);
+	this->velocityVector = Vector2(0.0f, Globals::screenWidth / 4.5f);
 	this->blockState.reset();
 
 	this->setLocation(x_location, y_location);

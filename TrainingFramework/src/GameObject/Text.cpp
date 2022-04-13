@@ -7,7 +7,7 @@
 
 
 Text::Text(std::shared_ptr<Shader> shader, std::shared_ptr<Font> font, std::string text, TextColor color, float size, TextAlign align)
-	: m_font(font), m_text(text), m_scale(Vector2(size, size)), m_align(align)
+	: m_font(font), m_text(text), m_scale(size < 1.0f ? Vector2(1.0f, 1.0f) : Vector2(size, size)), m_align(align)
 {
 	m_position = Vector3(-1.0f, 1.0f, 1.0f);
 	m_pShader = shader;
@@ -16,7 +16,7 @@ Text::Text(std::shared_ptr<Shader> shader, std::shared_ptr<Font> font, std::stri
 }
 
 Text::Text(std::shared_ptr<Shader> shader, std::shared_ptr<Font> font, std::string text, Vector4 color, float size, TextAlign align)
-	: m_font(font), m_text(text), m_scale(Vector2(size, size)), m_align(align)
+	: m_font(font), m_text(text), m_scale(size < 1.0f ? Vector2(1.0f, 1.0f) : Vector2(size, size)), m_align(align)
 {
 	m_position = Vector3(-1.0f, 1.0f, 1.0f);
 	m_pShader = shader;
@@ -25,7 +25,7 @@ Text::Text(std::shared_ptr<Shader> shader, std::shared_ptr<Font> font, std::stri
 }
 
 Text::Text(std::shared_ptr<Shader> shader, std::shared_ptr<Font> font, std::string text, std::shared_ptr<Texture> texture, float size, TextAlign align)
-	: BaseObject(-1, nullptr, shader, texture), m_font(font), m_text(text), m_scale(Vector2(size, size)), m_align(align)
+	: BaseObject(-1, nullptr, shader, texture), m_font(font), m_text(text), m_scale(size < 1.0f ? Vector2(1.0f, 1.0f) : Vector2(size, size)), m_align(align)
 {
 	m_position = Vector3(-1.0f, 1.0f, 1.0f);
 	Init();

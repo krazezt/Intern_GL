@@ -10,7 +10,7 @@ void Platform1::init(float x_location, float y_location) {
 	this->x_location = x_location;
 	this->y_location = y_location;
 
-	float width = 350, height = 80;
+	float width = Globals::screenWidth / 5.2f, height = Globals::screenWidth / 22.5f;
 
 	auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D.nfg");
 	auto texture = ResourceManagers::GetInstance()->GetTexture("Platform.tga");

@@ -12,8 +12,8 @@ void NumberBlock::init(float x_location, float y_location) {
 	auto shader = ResourceManagers::GetInstance()->GetShader("Animation");
 	auto texture = ResourceManagers::GetInstance()->GetTexture("NumberBlock.tga");
 
-	width = 100;
-	height = 100;
+	width = Globals::screenWidth / 18;
+	height = Globals::screenWidth / 18;
 	movement_speed = 0;
 	prev_deltaTime = 0;
 	value = 0;
@@ -27,8 +27,8 @@ void NumberBlock::init(float x_location, float y_location) {
 
 	shader = ResourceManagers::GetInstance()->GetShader("TextShader");
 	std::shared_ptr<Font> font = ResourceManagers::GetInstance()->GetFont("Brightly Crush Shine.otf");
-	textValue = std::make_shared<Text>(shader, font, "1", TextColor::RED, 3.0);
-	textValue->Set2DPosition(Vector2(x_location - 15, y_location + 30));
+	textValue = std::make_shared<Text>(shader, font, "1", TextColor::RED, Globals::screenWidth / 600);
+	textValue->Set2DPosition(Vector2(x_location - Globals::screenWidth / 120, y_location + Globals::screenWidth / 60));
 
 	this->initCollisionBox(x_location, y_location, width, height);
 	this->velocityVector = Vector2(0.0f, 0.0f);
@@ -98,5 +98,5 @@ void NumberBlock::setValue(int newValue) {
 	char str[3];
 	sprintf(str, "%d", this->value);
 	textValue->SetText(str);
-	textValue->Set2DPosition(Vector2(value < 10 ? (x_location - 15) : (x_location - 35), y_location + 30));
+	textValue->Set2DPosition(Vector2(value < 10 ? (x_location - Globals::screenWidth / 120) : (x_location - Globals::screenWidth / 51.4f), y_location + Globals::screenWidth / 60.0f));
 }

@@ -25,31 +25,31 @@ void GSTutorial::Init()
 	// button close
 	texture = ResourceManagers::GetInstance()->GetTexture("btn_close.tga");
 	std::shared_ptr<GameButton>  button = std::make_shared<GameButton>(model, shader, texture);
-	button->Set2DPosition(Globals::screenWidth - 50, 50);
-	button->SetSize(50, 50);
+	button->Set2DPosition(Globals::screenWidth - Globals::screenWidth / 36, Globals::screenWidth / 36);
+	button->SetSize(Globals::screenWidth / 36, Globals::screenWidth / 36);
 	button->SetOnClick([this]() {
-			GameStateMachine::GetInstance()->PopState();
+		GameStateMachine::GetInstance()->PopState();
 		});
 	m_listButton.push_back(button);
 
 	// Next button
 	texture = ResourceManagers::GetInstance()->GetTexture("btn_next.tga");
 	m_nextButton = std::make_shared<GameButton>(model, shader, texture);
-	m_nextButton->Set2DPosition(Globals::screenWidth / 2 + 600, Globals::screenHeight / 2);
-	m_nextButton->SetSize(200, 200);
+	m_nextButton->Set2DPosition(Globals::screenWidth / 2 + Globals::screenWidth / 3, Globals::screenHeight / 2);
+	m_nextButton->SetSize(Globals::screenWidth / 9, Globals::screenWidth / 9);
 	m_nextButton->SetOnClick([this]() {
-			int i = this->getChoosingModeIndex();
-			if (GSChoosingMode::modeList[i + 1] == PlayMode::INVALID) return;
+		int i = this->getChoosingModeIndex();
+		if (GSChoosingMode::modeList[i + 1] == PlayMode::INVALID) return;
 
-			this->setChoosingModeIndex(i + 1);
+		this->setChoosingModeIndex(i + 1);
 		});
 	m_listButton.push_back(m_nextButton);
 
 	// Prev button
 	texture = ResourceManagers::GetInstance()->GetTexture("btn_prev.tga");
 	m_prevButton = std::make_shared<GameButton>(model, shader, texture);
-	m_prevButton->Set2DPosition(Globals::screenWidth / 2 - 600, Globals::screenHeight / 2);
-	m_prevButton->SetSize(200, 200);
+	m_prevButton->Set2DPosition(Globals::screenWidth / 2 - Globals::screenWidth / 3, Globals::screenHeight / 2);
+	m_prevButton->SetSize(Globals::screenWidth / 9, Globals::screenWidth / 9);
 	m_prevButton->SetOnClick([this]() {
 		int i = this->getChoosingModeIndex();
 		if (i == 0) return;
@@ -62,7 +62,7 @@ void GSTutorial::Init()
 	texture = ResourceManagers::GetInstance()->GetTexture("abc.tga");
 	m_modeButton = std::make_shared<GameButton>(model, shader, texture);
 	m_modeButton->Set2DPosition(Globals::screenWidth / 2, Globals::screenHeight / 2);
-	m_modeButton->SetSize(1000, 500);
+	m_modeButton->SetSize(Globals::screenWidth / 1.8f, Globals::screenWidth / 3.6f);
 	m_modeButton->SetOnClick([this]() {
 		});
 	m_listButton.push_back(m_modeButton);
@@ -70,12 +70,12 @@ void GSTutorial::Init()
 	// State title
 	shader = ResourceManagers::GetInstance()->GetShader("TextShader");
 	std::shared_ptr<Font> font = ResourceManagers::GetInstance()->GetFont("Brightly Crush Shine.otf");
-	m_textGameName = std::make_shared<Text>(shader, font, "Tutorial", Vector4(1.0f, 0.5f, 0.0f, 1.0f), 3.0f);
-	m_textGameName->Set2DPosition(Vector2(60, 100));
+	m_textGameName = std::make_shared<Text>(shader, font, "Tutorial", Vector4(1.0f, 0.5f, 0.0f, 1.0f), Globals::screenWidth / 900);
+	m_textGameName->Set2DPosition(Vector2(Globals::screenWidth / 30, Globals::screenWidth / 18));
 
 	// Text tutorial
-	m_textTutorial = std::make_shared<Text>(shader, font, "", Vector4(1.0f, 0.5f, 0.0f, 1.0f), 1.5f);
-	m_textTutorial->Set2DPosition(Vector2(400, 150));
+	m_textTutorial = std::make_shared<Text>(shader, font, "", Vector4(1.0f, 0.5f, 0.0f, 1.0f), Globals::screenWidth / 1800);
+	m_textTutorial->Set2DPosition(Vector2(Globals::screenWidth / 4.5f, Globals::screenWidth / 12));
 
 	setChoosingModeIndex(0);
 }

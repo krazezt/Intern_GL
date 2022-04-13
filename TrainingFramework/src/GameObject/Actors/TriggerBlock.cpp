@@ -12,9 +12,9 @@ void TriggerBlock::init(float x_location, float y_location) {
 	auto shader = ResourceManagers::GetInstance()->GetShader("Animation");
 	auto texture = ResourceManagers::GetInstance()->GetTexture("TriggerBlock.tga");
 
-	width = 70;
-	height = 70;
-	movement_speed = 350;
+	width = Globals::screenWidth / 25.7f;
+	height = Globals::screenWidth / 25.7f;
+	movement_speed = Globals::screenWidth / 5.2f;
 	velocityScale = 1;
 	prev_deltaTime = 0;
 

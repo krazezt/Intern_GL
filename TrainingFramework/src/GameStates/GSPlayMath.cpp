@@ -39,7 +39,7 @@ void GSPlayMath::Init()
 	timeLeft = initTime;
 	totalTime = 0.0f;
 	requiredValue = 0;
-	Globals::gravity = 5000.0f;
+	Globals::gravity = Globals::screenWidth / 0.36f;
 
 	initRandomSeed();
 
@@ -55,8 +55,8 @@ void GSPlayMath::Init()
 	// button close
 	texture = ResourceManagers::GetInstance()->GetTexture("btn_close.tga");
 	std::shared_ptr<GameButton>  button = std::make_shared<GameButton>(model, shader, texture);
-	button->Set2DPosition(Globals::screenWidth - 50, 50);
-	button->SetSize(50, 50);
+	button->Set2DPosition(Globals::screenWidth - Globals::screenWidth / 36, Globals::screenWidth / 36);
+	button->SetSize(Globals::screenWidth / 36, Globals::screenWidth / 36);
 	button->SetOnClick([this]() {
 		GameStateMachine::GetInstance()->PopState();
 		});
@@ -65,8 +65,8 @@ void GSPlayMath::Init()
 	// button pause
 	texture = ResourceManagers::GetInstance()->GetTexture("btn_pause.tga");
 	m_pauseButton = std::make_shared<GameButton>(model, shader, texture);
-	m_pauseButton->Set2DPosition(Globals::screenWidth - 150, 50);
-	m_pauseButton->SetSize(50, 50);
+	m_pauseButton->Set2DPosition(Globals::screenWidth - Globals::screenWidth / 12, Globals::screenWidth / 36);
+	m_pauseButton->SetSize(Globals::screenWidth / 36, Globals::screenWidth / 36);
 	m_pauseButton->SetOnClick([this]() {
 			Pause();
 		});
@@ -94,37 +94,37 @@ void GSPlayMath::Init()
 	// Time left
 	shader = ResourceManagers::GetInstance()->GetShader("TextShader");
 	std::shared_ptr<Font> font = ResourceManagers::GetInstance()->GetFont("Brightly Crush Shine.otf");
-	m_timeLeft = std::make_shared<Text>(shader, font, "Time Left:", TextColor::RED, 1.0);
-	m_timeLeft->Set2DPosition(Vector2(5, 25));
+	m_timeLeft = std::make_shared<Text>(shader, font, "Time Left:", TextColor::RED, Globals::screenWidth / 1800);
+	m_timeLeft->Set2DPosition(Vector2(Globals::screenWidth / 360, Globals::screenWidth / 53));
 
 	// Required value
-	m_requireValue = std::make_shared<Text>(shader, font, "Require: 0", TextColor::RED, 1.0);
-	m_requireValue->Set2DPosition(Vector2(5, 60));
+	m_requireValue = std::make_shared<Text>(shader, font, "Require: 0", TextColor::RED, Globals::screenWidth / 1800);
+	m_requireValue->Set2DPosition(Vector2(Globals::screenWidth / 360, Globals::screenWidth / 25));
 
 	// Score
-	m_score = std::make_shared<Text>(shader, font, "Score: 0", TextColor::RED, 1.0);
-	m_score->Set2DPosition(Vector2(5, 95));
+	m_score = std::make_shared<Text>(shader, font, "Score: 0", TextColor::RED, Globals::screenWidth / 1800);
+	m_score->Set2DPosition(Vector2(Globals::screenWidth / 360, Globals::screenWidth / 16));
 
 	// End game text
-	m_endGame = std::make_shared<Text>(shader, font, "End game (0 pts)", TextColor::RED, 2.0);
-	m_endGame->Set2DPosition(Vector2(Globals::screenWidth / 2 - 200, Globals::screenHeight / 2));
+	m_endGame = std::make_shared<Text>(shader, font, "End game (0 pts)", TextColor::RED, Globals::screenWidth / 900);
+	m_endGame->Set2DPosition(Vector2(Globals::screenWidth / 2 - Globals::screenWidth / 9, Globals::screenHeight / 2));
 
 	// Player
 	std::shared_ptr<Player> player = std::make_shared<Player>();
-	player->init(300, 650);
+	player->init(Globals::screenWidth / 6, Globals::screenWidth / 2.8f);
 	player->bindKeys(KEY_MOVE_LEFT, KEY_MOVE_RIGHT, KEY_JUMP, -1, -1);
 	m_listPlayer.push_back(player);
 
 	if (Globals::playerCount > 1) {
 		player = std::make_shared<Player>();
-		player->init(1300, 650);
+		player->init(Globals::screenWidth / 1.4f, Globals::screenWidth / 2.8f);
 		player->bindKeys(KEY_LEFT, KEY_RIGHT, KEY_UP, -1, -1);
 		m_listPlayer.push_back(player);
 	}
 
 	if (Globals::playerCount > 2) {
 		player = std::make_shared<Player>();
-		player->init(500, 650);
+		player->init(Globals::screenWidth / 3.6, Globals::screenWidth / 2.8f);
 		player->bindKeys(KEY_MOVE_LEFT_2, KEY_MOVE_RIGHT_2, KEY_MOVE_FORWARD_2, -1, -1);
 		m_listPlayer.push_back(player);
 	}
@@ -133,50 +133,50 @@ void GSPlayMath::Init()
 	std::shared_ptr<BaseTerrain> terrain;
 
 	terrain = std::make_shared<Platform1>();
-	terrain->init(400, 800);
+	terrain->init(Globals::screenWidth / 4.5, Globals::screenWidth / 2.25);
 	m_listTerrain.push_back(terrain);
 
 	terrain = std::make_shared<Platform1>();
-	terrain->init(1400, 800);
+	terrain->init(Globals::screenWidth / 1.3, Globals::screenWidth / 2.25);
 	m_listTerrain.push_back(terrain);
 
 	terrain = std::make_shared<Platform1>();
-	terrain->init(400, 400);
+	terrain->init(Globals::screenWidth / 4.5, Globals::screenWidth / 4.5);
 	m_listTerrain.push_back(terrain);
 
 	terrain = std::make_shared<Platform1>();
-	terrain->init(1400, 400);
+	terrain->init(Globals::screenWidth / 1.3, Globals::screenWidth / 4.5);
 	m_listTerrain.push_back(terrain);
 
 	terrain = std::make_shared<Platform2>();
-	terrain->init(900, 600);
+	terrain->init(Globals::screenWidth / 2, Globals::screenWidth / 3);
 	m_listTerrain.push_back(terrain);
 
 	// Number blocks
 	std::shared_ptr<NumberBlock> numberBlock;
 
 	numberBlock = std::make_shared<NumberBlock>();
-	numberBlock->init(400, 300);
+	numberBlock->init(Globals::screenWidth / 4.5f, Globals::screenWidth / 6);
 	m_listNumberBlock.push_back(numberBlock);
 
 	numberBlock = std::make_shared<NumberBlock>();
-	numberBlock->init(1400, 300);
+	numberBlock->init(Globals::screenWidth / 1.3f, Globals::screenWidth / 6);
 	m_listNumberBlock.push_back(numberBlock);
 
 	numberBlock = std::make_shared<NumberBlock>();
-	numberBlock->init(400, 500);
+	numberBlock->init(Globals::screenWidth / 4.5f, Globals::screenWidth / 3.6f);
 	m_listNumberBlock.push_back(numberBlock);
 
 	numberBlock = std::make_shared<NumberBlock>();
-	numberBlock->init(1400, 500);
+	numberBlock->init(Globals::screenWidth / 1.3f, Globals::screenWidth / 3.6f);
 	m_listNumberBlock.push_back(numberBlock);
 
 	numberBlock = std::make_shared<NumberBlock>();
-	numberBlock->init(400, 700);
+	numberBlock->init(Globals::screenWidth / 4.5f, Globals::screenWidth / 2.6f);
 	m_listNumberBlock.push_back(numberBlock);
 
 	numberBlock = std::make_shared<NumberBlock>();
-	numberBlock->init(1400, 700);
+	numberBlock->init(Globals::screenWidth / 1.3f, Globals::screenWidth / 2.6f);
 	m_listNumberBlock.push_back(numberBlock);
 
 	setupNewRound();

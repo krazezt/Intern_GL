@@ -36,7 +36,7 @@ void GSPlaySurvive::Init()
 	isLose = false;
 	score = 0;
 	totalTime = 0.0f;
-	Globals::gravity = 5000.0f;
+	Globals::gravity = Globals::screenWidth / 0.36f;
 
 	auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D.nfg");
 	auto texture = ResourceManagers::GetInstance()->GetTexture("Background2.tga");
@@ -50,8 +50,8 @@ void GSPlaySurvive::Init()
 	// button close
 	texture = ResourceManagers::GetInstance()->GetTexture("btn_close.tga");
 	std::shared_ptr<GameButton>  button = std::make_shared<GameButton>(model, shader, texture);
-	button->Set2DPosition(Globals::screenWidth - 50, 50);
-	button->SetSize(50, 50);
+	button->Set2DPosition(Globals::screenWidth - Globals::screenWidth / 36, Globals::screenWidth / 36);
+	button->SetSize(Globals::screenWidth / 36, Globals::screenWidth / 36);
 	button->SetOnClick([this]() {
 			GameStateMachine::GetInstance()->PopState();
 	});
@@ -60,8 +60,8 @@ void GSPlaySurvive::Init()
 	// button pause
 	texture = ResourceManagers::GetInstance()->GetTexture("btn_pause.tga");
 	m_pauseButton = std::make_shared<GameButton>(model, shader, texture);
-	m_pauseButton->Set2DPosition(Globals::screenWidth - 150, 50);
-	m_pauseButton->SetSize(50, 50);
+	m_pauseButton->Set2DPosition(Globals::screenWidth - Globals::screenWidth / 12, Globals::screenWidth / 36);
+	m_pauseButton->SetSize(Globals::screenWidth / 36, Globals::screenWidth / 36);
 	m_pauseButton->SetOnClick([this]() {
 		Pause();
 	});
@@ -89,18 +89,18 @@ void GSPlaySurvive::Init()
 	// score
 	shader = ResourceManagers::GetInstance()->GetShader("TextShader");
 	std::shared_ptr<Font> font = ResourceManagers::GetInstance()->GetFont("Brightly Crush Shine.otf");
-	m_score = std::make_shared<Text>(shader, font, "Score: 0", TextColor::RED, 1.0);
-	m_score->Set2DPosition(Vector2(5, 25));
+	m_score = std::make_shared<Text>(shader, font, "Score: 0", TextColor::RED, Globals::screenWidth / 1800);
+	m_score->Set2DPosition(Vector2(Globals::screenWidth / 360, Globals::screenWidth / 53));
 
 	// Player
 	std::shared_ptr<Player> player = std::make_shared<Player>();
-	player->init(1020, 650);
+	player->init(Globals::screenWidth / 1.8f, Globals::screenWidth / 2.8f);
 	player->bindKeys(KEY_MOVE_LEFT, KEY_MOVE_RIGHT, KEY_JUMP, -1, -1);
 	m_listPlayer.push_back(player);
 
 	if (Globals::playerCount > 1) {
 		player = std::make_shared<Player>();
-		player->init(1100, 650);
+		player->init(Globals::screenWidth / 1.7f, Globals::screenWidth / 2.8f);
 		player->bindKeys(KEY_LEFT, KEY_RIGHT, KEY_UP, -1, -1);
 		m_listPlayer.push_back(player);
 	}
@@ -109,50 +109,50 @@ void GSPlaySurvive::Init()
 	std::shared_ptr<BaseTerrain> terrain;
 
 	terrain = std::make_shared<Platform1>();
-	terrain->init(700, 800);
+	terrain->init(Globals::screenWidth / 2.6f, Globals::screenWidth / 2.25f);
 	m_listTerrain.push_back(terrain);
 
 	terrain = std::make_shared<Platform1>();
-	terrain->init(1100, 800);
+	terrain->init(Globals::screenWidth / 1.6364f, Globals::screenWidth / 2.25f);
 	m_listTerrain.push_back(terrain);
 
 	terrain = std::make_shared<Platform1>();
-	terrain->init(400, 400);
+	terrain->init(Globals::screenWidth / 4.5f, Globals::screenWidth / 4.5f);
 	m_listTerrain.push_back(terrain);
 
 	terrain = std::make_shared<Platform1>();
-	terrain->init(1400, 400);
+	terrain->init(Globals::screenWidth / 1.3f, Globals::screenWidth / 4.5f);
 	m_listTerrain.push_back(terrain);
 
 	terrain = std::make_shared<Platform2>();
-	terrain->init(900, 600);
+	terrain->init(Globals::screenWidth / 2, Globals::screenWidth / 3);
 	m_listTerrain.push_back(terrain);
 
 	// Enemies
 	std::shared_ptr<Enemy> enemy;
-	
-	enemy = std::make_shared<Enemy1>();
-	enemy->init(1600, 70);
-	m_listActor.push_back(enemy);
 
 	enemy = std::make_shared<Enemy1>();
-	enemy->init(400, 70);
+	enemy->init(Globals::screenWidth / 1.125f, Globals::screenWidth / 25.7f);
+	m_listActor.push_back(enemy);
+
+	enemy = std::make_shared<Enemy1>();
+	enemy->init(Globals::screenWidth / 4.5f, Globals::screenWidth / 25.7f);
 	m_listActor.push_back(enemy);
 
 	enemy = std::make_shared<Enemy2>();
-	enemy->init(1000, 300);
+	enemy->init(Globals::screenWidth / 1.8f, Globals::screenWidth / 6);
 	m_listActor.push_back(enemy);
 
 	enemy = std::make_shared<Enemy2>();
-	enemy->init(200, 300);
+	enemy->init(Globals::screenWidth / 9, Globals::screenWidth / 6);
 	m_listActor.push_back(enemy);
 
 	enemy = std::make_shared<Enemy2>();
-	enemy->init(600, 700);
+	enemy->init(Globals::screenWidth / 3, Globals::screenWidth / 2.6f);
 	m_listActor.push_back(enemy);
 
 	enemy = std::make_shared<Enemy2>();
-	enemy->init(1400, 700);
+	enemy->init(Globals::screenWidth / 1.3f, Globals::screenWidth / 2.6f);
 	m_listActor.push_back(enemy);
 }
 
@@ -221,8 +221,8 @@ void GSPlaySurvive::checkLose() {
 
 	auto shader = ResourceManagers::GetInstance()->GetShader("TextShader");
 	std::shared_ptr<Font> font = ResourceManagers::GetInstance()->GetFont("Brightly Crush Shine.otf");
-	m_endGame= std::make_shared<Text>(shader, font, str, TextColor::RED, 2.0);
-	m_endGame->Set2DPosition(Vector2(Globals::screenWidth / 2 - 200, Globals::screenHeight / 2));
+	m_endGame = std::make_shared<Text>(shader, font, str, TextColor::RED, Globals::screenWidth / 900);
+	m_endGame->Set2DPosition(Vector2(Globals::screenWidth / 2 - Globals::screenWidth / 9, Globals::screenHeight / 2));
 	this->isLose = lose;
 }
 

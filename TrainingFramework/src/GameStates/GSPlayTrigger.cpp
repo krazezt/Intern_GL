@@ -48,8 +48,8 @@ void GSPlayTrigger::Init()
 	// button close
 	texture = ResourceManagers::GetInstance()->GetTexture("btn_close.tga");
 	std::shared_ptr<GameButton>  button = std::make_shared<GameButton>(model, shader, texture);
-	button->Set2DPosition(Globals::screenWidth - 50, 50);
-	button->SetSize(50, 50);
+	button->Set2DPosition(Globals::screenWidth - Globals::screenWidth / 36, Globals::screenWidth / 36);
+	button->SetSize(Globals::screenWidth / 36, Globals::screenWidth / 36);
 	button->SetOnClick([this]() {
 		GameStateMachine::GetInstance()->PopState();
 		});
@@ -58,8 +58,8 @@ void GSPlayTrigger::Init()
 	// button pause
 	texture = ResourceManagers::GetInstance()->GetTexture("btn_pause.tga");
 	m_pauseButton = std::make_shared<GameButton>(model, shader, texture);
-	m_pauseButton->Set2DPosition(Globals::screenWidth - 150, 50);
-	m_pauseButton->SetSize(50, 50);
+	m_pauseButton->Set2DPosition(Globals::screenWidth - Globals::screenWidth / 12, Globals::screenWidth / 36);
+	m_pauseButton->SetSize(Globals::screenWidth / 36, Globals::screenWidth / 36);
 	m_pauseButton->SetOnClick([this]() {
 		Pause();
 		});
@@ -87,18 +87,18 @@ void GSPlayTrigger::Init()
 	// score
 	shader = ResourceManagers::GetInstance()->GetShader("TextShader");
 	std::shared_ptr<Font> font = ResourceManagers::GetInstance()->GetFont("Brightly Crush Shine.otf");
-	m_score = std::make_shared<Text>(shader, font, "score: 10", TextColor::RED, 1.0);
-	m_score->Set2DPosition(Vector2(5, 25));
+	m_score = std::make_shared<Text>(shader, font, "Score: 10", TextColor::RED, Globals::screenWidth / 1800);
+	m_score->Set2DPosition(Vector2(Globals::screenWidth / 360, Globals::screenWidth / 53));
 
 	// Player
 	std::shared_ptr<Player> player = std::make_shared<Player>();
-	player->init(1020, 650);
+	player->init(Globals::screenWidth / 1.8f, Globals::screenWidth / 2.8f);
 	player->bindKeys(KEY_MOVE_LEFT, KEY_MOVE_RIGHT, -1, KEY_MOVE_FORWARD, KEY_MOVE_BACKWARD);
 	m_listPlayer.push_back(player);
 
 	if (Globals::playerCount > 1) {
 		player = std::make_shared<Player>();
-		player->init(1200, 650);
+		player->init(Globals::screenWidth / 1.5f, Globals::screenWidth / 2.8f);
 		player->bindKeys(KEY_LEFT, KEY_RIGHT, -1, KEY_UP, KEY_DOWN);
 		m_listPlayer.push_back(player);
 	}
@@ -107,74 +107,74 @@ void GSPlayTrigger::Init()
 	std::shared_ptr<BaseTerrain> terrain;
 
 	terrain = std::make_shared<WoodenBox>();
-	terrain->init(200, 200);
+	terrain->init(Globals::screenWidth / 9, Globals::screenWidth / 9);
 	m_listTerrain.push_back(terrain);
 
 	terrain = std::make_shared<WoodenBox>();
-	terrain->init(700, 200);
+	terrain->init(Globals::screenWidth / 2.6f, Globals::screenWidth / 9);
 	m_listTerrain.push_back(terrain);
 
 	terrain = std::make_shared<WoodenBox>();
-	terrain->init(1500, 200);
+	terrain->init(Globals::screenWidth / 1.2f, Globals::screenWidth / 9);
 	m_listTerrain.push_back(terrain);
 
 	terrain = std::make_shared<WoodenBox>();
-	terrain->init(1000, 420);
+	terrain->init(Globals::screenWidth / 1.8f, Globals::screenWidth / 4.3f);
 	m_listTerrain.push_back(terrain);
 
 	terrain = std::make_shared<WoodenBox>();
-	terrain->init(450, 600);
+	terrain->init(Globals::screenWidth / 4, Globals::screenWidth / 3);
 	m_listTerrain.push_back(terrain);
 
 	terrain = std::make_shared<WoodenBox>();
-	terrain->init(1300, 600);
+	terrain->init(Globals::screenWidth / 1.4f, Globals::screenWidth / 3);
 	m_listTerrain.push_back(terrain);
 
 	terrain = std::make_shared<WoodenBox>();
-	terrain->init(1000, 750);
+	terrain->init(Globals::screenWidth / 1.8f, Globals::screenWidth / 2.4f);
 	m_listTerrain.push_back(terrain);
 
 	terrain = std::make_shared<WoodenBox>();
-	terrain->init(1700, 750);
+	terrain->init(Globals::screenWidth / 1.06f, Globals::screenWidth / 2.4f);
 	m_listTerrain.push_back(terrain);
 
 	// Trigger block
 	m_triggerBlock = std::make_shared<TriggerBlock>();
-	m_triggerBlock->init(850, 650);
+	m_triggerBlock->init(Globals::screenWidth / 2.1f, Globals::screenWidth / 2.8f);
 
 	// Triggerer
 	std::shared_ptr<Triggerer> triggerer;
 
 	triggerer = std::make_shared<Triggerer>();
-	triggerer->init(450, 200);
+	triggerer->init(Globals::screenWidth / 4, Globals::screenWidth / 9);
 	m_listTriggerer.push_back(triggerer);
 
 	triggerer = std::make_shared<Triggerer>();
-	triggerer->init(1000, 200);
+	triggerer->init(Globals::screenWidth / 1.8f, Globals::screenWidth / 9);
 	m_listTriggerer.push_back(triggerer);
 
 	triggerer = std::make_shared<Triggerer>();
-	triggerer->init(1700, 200);
+	triggerer->init(Globals::screenWidth / 1.06f, Globals::screenWidth / 9);
 	m_listTriggerer.push_back(triggerer);
 
 	triggerer = std::make_shared<Triggerer>();
-	triggerer->init(450, 420);
+	triggerer->init(Globals::screenWidth / 4, Globals::screenWidth / 4.3f);
 	m_listTriggerer.push_back(triggerer);
 
 	triggerer = std::make_shared<Triggerer>();
-	triggerer->init(700, 420);
+	triggerer->init(Globals::screenWidth / 2.6f, Globals::screenWidth / 4.3f);
 	m_listTriggerer.push_back(triggerer);
 
 	triggerer = std::make_shared<Triggerer>();
-	triggerer->init(1500, 420);
+	triggerer->init(Globals::screenWidth / 1.2f, Globals::screenWidth / 4.3f);
 	m_listTriggerer.push_back(triggerer);
 
 	triggerer = std::make_shared<Triggerer>();
-	triggerer->init(1300, 750);
+	triggerer->init(Globals::screenWidth / 1.4f, Globals::screenWidth / 2.4f);
 	m_listTriggerer.push_back(triggerer);
 
 	triggerer = std::make_shared<Triggerer>();
-	triggerer->init(700, 750);
+	triggerer->init(Globals::screenWidth / 2.6f, Globals::screenWidth / 2.4f);
 	m_listTriggerer.push_back(triggerer);
 }
 

@@ -17,8 +17,8 @@ void Enemy2::init(float x_location, float y_location) {
 	init_y = y_location;
 	flyingUp = true;
 	movingRight = false;
-	width = 140;
-	height = 140;
+	width = Globals::screenWidth / 12.8f;
+	height = Globals::screenWidth / 12.8f;
 	bulletLoading = true;
 	m_totalTime = 0.0f;
 
@@ -26,7 +26,7 @@ void Enemy2::init(float x_location, float y_location) {
 	animation->SetSize(width, height);
 
 	this->initCollisionBox(this->x_location, this->y_location, width, height);
-	this->velocityVector = Vector2(300.0f, 300.0f);
+	this->velocityVector = Vector2(Globals::screenWidth / 6, Globals::screenWidth / 6);
 	this->blockState.reset();
 
 	this->setLocation(x_location, y_location);

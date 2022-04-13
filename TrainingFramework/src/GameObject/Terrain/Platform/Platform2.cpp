@@ -10,7 +10,7 @@ void Platform2::init(float x_location, float y_location) {
 	this->x_location = x_location;
 	this->y_location = y_location;
 
-	float width = 350, height = 80;
+	float width = Globals::screenWidth / 5.2, height = Globals::screenWidth / 22.5f;
 
 	auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D.nfg");
 	auto texture = ResourceManagers::GetInstance()->GetTexture("Platform.tga");
@@ -21,7 +21,7 @@ void Platform2::init(float x_location, float y_location) {
 	sprite2D->SetSize(width, height);
 
 	this->initCollisionBox(this->x_location, this->y_location, width, height);
-	this->velocityVector = Vector2(150.0f, 0.0f);
+	this->velocityVector = Vector2(Globals::screenWidth / 12, 0.0f);
 };
 
 void Platform2::initCollisionBox(float x_location, float y_location, float width, float height) {

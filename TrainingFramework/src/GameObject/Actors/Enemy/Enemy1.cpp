@@ -13,8 +13,8 @@ void Enemy1::init(float x_location, float y_location) {
 	auto shader = ResourceManagers::GetInstance()->GetShader("Animation");
 	auto texture = ResourceManagers::GetInstance()->GetTexture("Enemy1.tga");
 
-	width = 140;
-	height = 140;
+	width = Globals::screenWidth / 12.8f;
+	height = Globals::screenWidth / 12.8f;
 	movingRight = true;
 	bulletLoading = true;
 	m_totalTime = 0.0f;
@@ -23,7 +23,7 @@ void Enemy1::init(float x_location, float y_location) {
 	animation->SetSize(width, height);
 
 	this->initCollisionBox(this->x_location, this->y_location, width, height);
-	this->velocityVector = Vector2(150.0f, 0.0f);
+	this->velocityVector = Vector2(Globals::screenWidth / 12, 0.0f);
 	this->blockState.reset();
 
 	this->setLocation(x_location, y_location);

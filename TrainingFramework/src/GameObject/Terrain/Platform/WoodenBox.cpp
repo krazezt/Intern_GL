@@ -10,7 +10,7 @@ void WoodenBox::init(float x_location, float y_location) {
 	this->x_location = x_location;
 	this->y_location = y_location;
 
-	float width = 100, height = 100;
+	float width = Globals::screenWidth / 18, height = Globals::screenWidth / 18;
 
 	auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D.nfg");
 	auto texture = ResourceManagers::GetInstance()->GetTexture("WoodenBox.tga");

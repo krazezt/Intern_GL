@@ -12,7 +12,7 @@ void Triggerer::init(float x_location, float y_location) {
 	this->y_location = y_location;
 	isTriggered = false;
 
-	float width = 70, height = 70;
+	float width = Globals::screenWidth / 25.7f, height = Globals::screenWidth / 25.7f;
 
 	auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D.nfg");
 	auto texture = ResourceManagers::GetInstance()->GetTexture("Triggerer_off.tga");
