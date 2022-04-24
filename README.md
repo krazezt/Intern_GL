@@ -1,1 +1,1 @@
-# Note that is Megamad, not Megaman =))
+# Note that this is Megamad, not Megaman =))
